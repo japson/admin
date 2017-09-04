@@ -1,0 +1,84 @@
+@charset "utf-8";
+/* CSS Document */
+
+.table {font-size:1em;}
+.tablcentr, .tablvyvod, .tablrol, .tablpictur{ text-align:center;}
+.tablpictur div { margin:0 10px; cursor:pointer;}
+.tablvyvod {width:30px;}
+.tablsort, .sorty{width: 30px;}
+.tablrol {width:120px;}
+/*td.action, td.buttons { max-width:20em;}*/
+.btn{ padding:6px 6px; min-width:25px;}
+.editbutt{ font-size:0.9em; padding:6px 5px; min-width:55px;}
+.dropdown-toggle.editbutt { min-height:32px; min-width:26px;}
+.dropdown-menu { font-size:0.9em; }
+.namtbl { background-color:#BBB; margin:5px;}
+/*.editbutt{ font-size:0.9em; min-height:2em;}
+.dropdown-toggle.editbutt { font-size:1em; min-height:2.1em;}*/
+td input{ width:100%; min-height:30px;}
+.checkbox {text-align:center;}
+.checkbox input { margin-top:-3px;}
+td .selectcenter select{text-align:center; height:30px;}
+
+.pict-down-ikon i { margin:0 10px; cursor:pointer;}
+
+.divtblpict { max-width:600px;overflow-x: scroll; margin-bottom:15px;}
+
+#tblphoto img { min-width:170px; }
+
+.checkbox, .radio {margin:0px;}
+.glyphicon-arrow-up, .glyphicon-arrow-down, .photo{cursor:pointer; }
+.table > tbody > tr > td, .table > tbody > tr > th, .table > tfoot > tr > td, .table > tfoot > tr > th, .table > thead > tr > td, .table > thead > tr > th 
+{ padding:3px ;}
+
+.breadcrumb { margin:10px 0;}
+.small_font{ font-size:smaller; margin-top: 12px;}
+.userclass{ margin-bottom:8px;}
+.mylo { text-align:center;}
+
+#tblpos, .dropdown-menu { font-size:0.9em;}
+
+/*-------------------------------------------------------*/
+.Myconfirm { background-color:#FFF;  border: 1px solid #0b2fe0; 
+-webkit-border-radius: 9px;    -moz-border-radius: 9px;    border-radius: 9px; 
+ vertical-align: middle;    min-width:500px; max-width: 600px;
+ padding:10px; left:35%; top: 25%; position:fixed; z-index:90; text-align:center;;}	/*color:#0b2fe0;*/
+/*.Myconfirm input {width:100%;}*/
+.Myconfirm select { border: 1px solid #999; width:100%; margin-top:5px;}
+.Myconfirm select option{ margin:3px 0;}
+.Myconfirm input.editpole {width:25%;margin-top:5px;}
+.Myconfirm button {min-width:90px;}
+.errorcursiv { font-style:italic; font-weight:normal; color:#C60;}
+.zagform { margin:0 0 10px; }
+
+#overlay {
+	z-index:89; /* пoдлoжкa дoлжнa быть выше слoев элементoв сaйтa, нo ниже слoя мoдaльнoгo oкнa */
+	position:fixed; /* всегдa перекрывaет весь сaйт */
+	background-color:#000; /* чернaя */
+	opacity:0.8; /* нo немнoгo прoзрaчнa */
+	-moz-opacity:0.8; /* фикс прозрачности для старых браузеров */
+	filter:alpha(opacity=80);
+	width:100%; 
+	height:100%; /* рaзмерoм вo весь экрaн */
+	top:0; /* сверху и слевa 0, oбязaтельные свoйствa! */
+	left:0;
+	cursor:pointer;
+	display:none; /* в oбычнoм сoстoянии её нет) */
+}
+.editpolesong{background:#eee; border: 1px solid #999; width:30%; margin-right:5px; padding-left:3px;}
+.editpolesong{width:100%;}
+/*-------------------------------------------------------*/
+.delpictconfirm { margin-bottom:7px;}
+.delconfirm .confirm { width:100%; margin-bottom:15px;}
+
+.textareablock { width:940px; margin:0;}
+.cke_top.cke_reset_all {border: 1px solid #d1d1d1;}
+#cke_textID {border:none;}
+.cke_contents.cke_reset {width:540px;border: 1px solid #d1d1d1; margin:0 auto;}
+.primerclass {width:540px;margin:0 auto; height:400px;}
+.buttprev {margin:0 auto;width:540px; border-top:1px solid #999;}
+.prev_page, .next_page{position:relative; cursor:pointer; padding:5px 7px;}
+.prev_page {   float:left;}
+.next_page {  float:right;}
+.nompage {float:right; font-size:0.9em;}
+.seones {width:900px; min-height:100px;}

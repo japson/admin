@@ -1,0 +1,3 @@
+﻿$(function() {$( '#vc-container' ).cassette();
+
+});
