@@ -1,5 +1,5 @@
 // JavaScript Document
-function datPars(data){ //проверка ajax поступления
+function datPars(data){ //проверка ajax поступления22
 	var result=0;
 	var answer='Problem on the server. Its not answer.';
 	if (data.length>0) {
