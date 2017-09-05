@@ -7,13 +7,14 @@ $arc=UserCheck();
 
 if(isset($_COOKIE['auth_key'])  and $arc[0]['atribut']==1)	{
 	$param=json_decode($_POST['data']);
-	$record=str_replace('nom','',$_POST['record']);
+	//$record=str_replace('nom','',$_POST['record']);
 	
 	include('class/var_alt.php');
 	if(gettype($param)=='object') {
-			if(strlen($param->table)){$tabl=$param->table;}
-			if(strlen($param->kodmenu)){$kodmenu=$param->kodmenu;}
-			if(strlen($param->kodrasdel)){$kodrasdel=$param->kodrasdel;}
+        if(strlen($param->table)){$tabl=$param->table;}
+        if(strlen($param->kodmenu)){$kodmenu=$param->kodmenu;}
+        if(strlen($param->kodrasdel)){$kodrasdel=$param->kodrasdel;}
+        if(strlen($param->nomrec)){$record=str_replace('nom','',$param->nomrec);}
 	}
 	$key=array_search($tabl, $massTablAlias);
 		if(strlen($key)>0) {$tablic=$key;
@@ -24,7 +25,7 @@ if(isset($_COOKIE['auth_key'])  and $arc[0]['atribut']==1)	{
 		$windrecord= new RecordEdit($tablic,$db);
 		$windrecord->kodrasdel=$kodrasdel;
 		$windrecord->kodmenu=$kodmenu;
-		$temp=$windrecord->checkDelRecord($record);
+            $temp=$windrecord->checkDel($record,'kod');
 		//debug_to_console($temp);
 			if (strlen($temp)==0) {
 			$mass[0]['atribut']=1;$mass[0]['text']='';	

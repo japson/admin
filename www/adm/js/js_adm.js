@@ -71,9 +71,11 @@ $(document).on("click", "#overlay", function(event){delOverley();});
 function createMenu(){
 	var men=new createWindow('typmenu'); 	men.wincreate();	}
 function createUser(){
-	var men=new createWindow('typuser'); 	men.wincreate();	}	
+    var param=document.getElementById('users').massiv;
+	var men=new createWindow('typuser'); 	men.wincreate(param);	}
 function createParam(){
-	var men=new createWindow(''); 	men.wincreate();	}	
+    var param=document.getElementById('settings').massiv;
+	var men=new createWindow(''); 	men.wincreate(param);	}
 function createSect(){
 	var param=document.getElementById('section').massiv;
 	var men=new createWindow(''); 	men.wincreate(param);	
@@ -238,32 +240,43 @@ var elem=event.target||event.srcElement;
 		});
 }
 // удаление позиции --------------------------------------------
-function delRecord(event){
-	$("#errorsave").html('');
-	var elem=event.target||event.srcElement; 
-	var tbl=$(elem).closest('table').attr('id');
-	var nazvan=$(elem).closest('tr').children('td').eq(1).text();
-	
-	massconfirm='<div class="row delconfirm" id="delconfirm"><div class="confirm">'+'Удалить позицию '+nazvan+" ? </div><div class='row'><div class='col-sm-2 col-sm-offset-3'><button class='btn btn-success' onclick='changePictName(1);'>ОК</button></div><div class='col-sm-2 col-sm-offset-1'><button class='btn btn-warning' onclick='delOverley();'>Отмена</button></div></div></div>";
-	
-	 myConfirm(massconfirm, '')
-	return false;
-	var param=document.getElementById(tbl).massiv;
-	var tr=$(elem).closest('tr').attr('id');
-	var data='record='+tr+'&data='+JSON.stringify(param);
-	$.ajax({
-    	type: "POST",   url: "mod/recordel.php",   data: data,
-		  success: function(data){
-		// console.log( "Прибыли данные: " + data );
-		 //$("#errorsave").html(data);
-	 	var mass=datPars(data);
-	 	if (mass[0]==1) {location.reload(); }
-	 	if (mass[0]==0) { $("#errorsave").html(mass[1]); }
-  		
-		}
-		});
+transfMass=function(param){
+    elem=document.body;
+    elem.massiv=param;
+    console.log(param);
+}
+
+function delRecord(event) {
+    $("#errorsave").html('');
+    var elem = event.target || event.srcElement;
+    var tbl = $(elem).closest('table').attr('id');
+    //var nazvan=$(elem).closest('tr').children('td').eq(1).text();
+    var nazvan = $(elem).closest('tr').children('td[name="name"]').text();
+    if (nazvan.length == 0) nazvan = $(elem).closest('tr').children('td[name="note"]').text();
+    massconfirm = '<div class="row delconfirm" id="delconfirm"><div class="confirm">' + 'Удалить позицию ' + nazvan + " ? </div><div class='row'><div class='col-sm-2 col-sm-offset-3'><button class='btn btn-success' onclick='delPosition(1);'>ОК</button></div><div class='col-sm-2 col-sm-offset-1'><button class='btn btn-warning' onclick='delOverley();'>Отмена</button></div></div></div>";
+
+    var param = document.getElementById(tbl).massiv;
+    param.nomrec = $(elem).closest('tr').attr('id');
+    myConfirm(massconfirm, '', transfMass(param));
 
 }
+function delPosition(attr) {
+    var data='data='+JSON.stringify(document.body.massiv);
+    $.ajax({
+        type: "POST",   url: "mod/recordel.php",   data: data,
+        success: function(data){
+            console.log( "Прибыли данные: " + data );
+            //$("#errorsave").html(data);
+            //	  return false;
+            var mass=datPars(data);
+            if (mass[0]==1) {location.reload(); }
+            if (mass[0]==0) { $("#errorsave").html(mass[1]); }
+
+        }
+    });
+
+}
+
 
 
 // сортировка ----------------------------------
@@ -388,9 +401,9 @@ $(document).on("click", "#nosubmit", function(event){
 	
 //-------------------счетчик картинок
 function countpict(operator, nompos) {
+	//console.log(document.getElementById('namepict').massiv);
 	var param=document.getElementById('namepict').massiv.table;
-	console.log(nompos);
-	//alert(nompos);
+	//console.log(nompos);
 var nomstr=nompos;//$('.divtblpict').find('tr').eq(0).attr('id');
 	var priem=$('table[id="'+param+'"]').find('tr[id='+nomstr+']').find('[name="pictur"]').children('div').children('span');
 	console.log(priem);

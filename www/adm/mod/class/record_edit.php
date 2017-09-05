@@ -117,8 +117,158 @@ class RecordEdit extends MenuTable{ // вывод редактируемых п�
 	//debug_to_console($keys);
 	//debug_to_console(count($znach));
 	}
-	
-	public function checkDelRecord($record){ // проверка можно ли удалять
+    public function checkDel($record,$pole)  // проверка можно ли удалять
+    {   $tbl=$this->nametabl();
+        include('var_alt.php');
+        $avaltbl=$massLink[$tbl];
+        $avalpctr=$picturTbl[$tbl];
+        $pusto=1;
+        if(is_array($avaltbl)) {foreach ($avaltbl as $key=>$value) { //вызвать для подчиненных
+            if ($value == 0) {
+                $temptabl = new RecordEdit($key, $this->db()); // если нет подчиненных разделов
+                $temptabl->kodrasdel = $this->record;
+                $temptabl->kodmenu = $this->kodmenu;
+                 // debug_to_console($value);
+                $temp = $temptabl->checkDel($record, 'kodrasdel');
+
+            }
+            if ($value == 1) {
+                $pusto = $this->checkBrothers($record, $key);
+            }
+        }
+        }else{$pusto=0;}
+        $masspole=$this->massPole($record, $pole);
+       // debug_to_console($avalpctr.' '.$pusto);
+        if (strlen($avalpctr)) { $put=$picturKat[$tbl];//удалить из табл картинок и картинки
+           // debug_to_console($avalpctr.'--'.$tbl.'>> '.$put);
+            if($avalpctr==$tbl) {$this->clearPict($avalpctr,$masspole,$pole,$put);} // если сама картинко
+            else {$this->clearPict($avalpctr,$masspole,'kodrasdel',$put);}
+        }
+
+        if($avalpctr!=$tbl && !$pusto) {$this->delCur($record,$pole);} // если сама не картинко удалить запись
+        $this->del_sort(' WHERE kodrasdel='.$this->kodrasdel);
+        return $temp;
+    }
+    private function massPole($rasdel,$pole){
+	    $mass=array();
+	    $tbl=$this->nametabl();
+        $connect=$this->db();
+        $sql="SELECT  * FROM ".$tbl." WHERE ".$pole."=".$rasdel.";";
+        $stmt = $connect->prepare($sql);
+        $stmt->execute();
+        if($sms=$stmt->fetchAll(PDO::FETCH_ASSOC)) {
+            foreach ($sms as $row) {
+                array_push($mass,$row['kod']);
+            }
+        }
+
+    return $mass;
+    }
+
+
+    private function checkBrothers($record,$tabl){
+        $connect=$this->db();
+        $sql="SELECT COUNT(*) as count FROM ".$tabl." WHERE kodrasdel=".$record; // LIKE '%'"
+        $stmt=$connect->query($sql);
+        $stmt->setFetchMode(PDO::FETCH_ASSOC);
+        $row=$stmt->fetch();
+        $members=$row['count'];
+        // debug_to_console($members);
+        //$sql="SELECT * FROM ".$tabl." WHERE kodrasdel=?"; // LIKE '%'"
+        //$stmt = $connect->prepare($sql);
+        //$stmt->execute(array($record));
+        if($members){
+            return 1;
+        } else{return 0;}
+    }
+
+    private function delCur($record,$pole){
+        $connect=$this->db();
+        $sql="DELETE FROM ".$this->nametabl()." WHERE ".$pole."=?";// LIKE '%'"
+        $stmt = $connect->prepare($sql);
+        $stmt->execute(array($record));
+    }
+
+    private function clearPict($tabl,$record,$pole,$put){ //удалить из табл картинок и картинки
+        $connect=$this->db();
+        $sql="SELECT * FROM ".$tabl." WHERE ".$pole."=?"; // LIKE '%'"
+        $stmt = $connect->prepare($sql);
+       // debug_to_console($record);
+        foreach ($record as $key=>$value) {
+            $stmt->execute(array($value));
+            if($sms=$stmt->fetchAll(PDO::FETCH_ASSOC)) {
+             //  debug_to_console($sms);
+                foreach ($sms as $row){
+                    $namep=$put.$row["name"];$namesm=$put.$row["name_small"];
+                   // debug_to_console($namep);
+                    unlink($namep);	unlink($namesm);
+                }
+                $sql2="DELETE FROM ".$tabl." WHERE ".$pole."=?";// LIKE '%'"
+                $stmt2 = $connect->prepare($sql2);
+                $stmt2->execute(array($value));
+            }
+        }
+    }
+
+    private function del_sort($zapros) { // сортировка после удаления
+        $sorty=array();
+        $dbl=$this->db();
+        $tbl=$this->nametabl();
+        $sql="SELECT  kod FROM ".$tbl.$zapros."  ORDER BY sort;"; //WHERE kodmenu=? and kodrasdel=?
+        $stmt = $dbl->prepare($sql);
+        $stmt->execute(); //array($this->kodmenu,$this->kodrasdel)
+        $k=0;
+        if($sms=$stmt->fetchAll(PDO::FETCH_ASSOC)) {
+            foreach($sms as $row){
+                $sorty[$k]["kod"]=$row["kod"];
+                $k++;
+            }
+            //debug_to_console($sorty);
+        }
+
+        $sql="UPDATE ".$tbl." SET sort =? WHERE kod = ?; "; // LIKE '%'"
+        $stmt = $dbl->prepare($sql);
+        for($i=0;$i<count($sorty);$i++) {
+            $k=$i+1;
+
+            //$sql="UPDATE ".$this->tblimg." SET sort =".$k." WHERE kod = " . $sorty[$i]["kod"] . "; "; // LIKE '%'"
+
+            $stmt->execute(array($k,$sorty[$i]["kod"]));
+
+        }
+        $this->kolpict=count($stmt);
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	/*public function checkDelRecord($record){ // проверка можно ли удалять
 	$connect=$this->db();
 		$tbl=$this->nametabl(); $result=''; $resultpict='';
 		include('var_alt.php');
@@ -203,6 +353,6 @@ class RecordEdit extends MenuTable{ // вывод редактируемых п�
 			
 		}
 		$this->kolpict=count($stmt);
-	}	
+	}	*/
 }
 ?>

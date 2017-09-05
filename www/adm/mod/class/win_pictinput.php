@@ -46,7 +46,7 @@ class WindowInputPictur{ // окно ввода картинок
 		
 		$perem='<div id="downformvvod"><form class="form-horizontal" action="moduls/addfoto.php" method="post" id="form_add_foto" enctype="multipart/form-data">
 		<label class="errorcursiv" id="errform"></label>
-      <div class="form-group "><label class="control-label col-sm-4" for="namepict">Введи название:</label> <div class="col-sm-8">  <input type="text" class="form-control" name="'.$kodrasdel.'" id="namepict"></div></div>
+      <div class="form-group "><label class="control-label col-sm-4" for="namepict">Введи название:</label> <div class="col-sm-8">  <input type="text" class="form-control" name="nom'.$kod.'" id="namepict"></div></div>
 	  <div class="form-group "><label class="control-label col-sm-4" for="namefile">Введи название файла(english):</label> <div class="col-sm-8">  <input type="text" class="form-control" name="'.$kodrasdel.'" id="namefile"></div></div>
       <div class="form-group "><label class="control-label col-sm-4" for="picture">Выбери файл:</label><div class="col-sm-8"> <input type="file" name="picture" id="picture"></div></div> 
       <div class="form-group col-sm-12 "><button class="btn btn-default col-sm-offset-10 " id="nosubmit" >Загрузить</button>  </div>   </form></div>';

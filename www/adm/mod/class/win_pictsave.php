@@ -31,12 +31,12 @@ class WindowSavePictur extends WindowInputPictur{ // сохранение кар
 		if($t==0){$mass['kod']=0;$mass['txt'].='Неверный тип изображения';} else{$this->typictur=$t;}	
 		 if($kb >= $this->max_size_img*1024*1024 )//максимальный вес изображение не более 10485760 байт ( 10 мб )
     	{ $mass['kod']=0; $mass['text'].="Большой размер файла."; }
-		 $nom=$this->makename($nomer,$file); // получить последний номер сортировки
+		 $nom=$this->makename($nomer,$file,$galeryfile['name']); // получить последний номер сортировки
 		 if(strlen($nom)==0){ $mass['kod']=0; $mass['text'].="Проблема с именем файла."; }
 	return $mass;	 
 	}
 	
-	private function makename($nomer,$file){ // получить последний номер сортировки
+	private function makename($nomer,$file,$name){ // получить последний номер сортировки
 		$this->namepict='';
 		$dbl=$this->db();
 		$tbl=$this->nametabl();
@@ -46,7 +46,9 @@ class WindowSavePictur extends WindowInputPictur{ // сохранение кар
 		$stmt = $dbl->prepare($sql);
 		$stmt->execute(); 
 		if($sms=$stmt->fetch(PDO::FETCH_ASSOC)) { $tmp=$sms['count']+1;} else{$tmp=1;}
-			if(preg_match('/^[A-Z0-9_-]+$/i',$file)) {$file.='-'.date('ymdhi');}else {$file=date('ymdhi');}
+        $namefile=mb_substr($name,0,40);
+        $namefile=$this->translit($namefile);
+			if(strlen($file) && preg_match('/^[A-Z0-9_-]+$/i',$file)) {$file.='-'.date('ymdhi');}else {$file=$namefile.'-'.date('ymdhi');}
 		$this->namepict=substr($menu.'-'.$nomer.'-'.$tmp.'-'.$file,0,240);
 		return  $this->namepict;
 	}
@@ -194,6 +196,18 @@ class WindowSavePictur extends WindowInputPictur{ // сохранение кар
 		if($sms=$stmt->fetch(PDO::FETCH_ASSOC)) { $kolrec=$sms['count'];} else{$kolrec=0;}
 		
 		return $kolrec;
-	}	
+	}
+    private function translit($s) {
+        $s = (string) $s; // преобразуем в строковое значение
+        $s = strip_tags($s); // убираем HTML-теги
+        $s = str_replace(array("\n", "\r"), " ", $s); // убираем перевод каретки
+        $s = preg_replace("/\s+/", ' ', $s); // удаляем повторяющие пробелы
+        $s = trim($s); // убираем пробелы в начале и конце строки
+        $s = function_exists('mb_strtolower') ? mb_strtolower($s) : strtolower($s); // переводим строку в нижний регистр (иногда надо задать локаль)
+        $s = strtr($s, array('а'=>'a','б'=>'b','в'=>'v','г'=>'g','д'=>'d','е'=>'e','ё'=>'e','ж'=>'j','з'=>'z','и'=>'i','й'=>'y','к'=>'k','л'=>'l','м'=>'m','н'=>'n','о'=>'o','п'=>'p','р'=>'r','с'=>'s','т'=>'t','у'=>'u','ф'=>'f','х'=>'h','ц'=>'c','ч'=>'ch','ш'=>'sh','щ'=>'shch','ы'=>'y','э'=>'e','ю'=>'yu','я'=>'ya','ъ'=>'','ь'=>''));
+        $s = preg_replace("/[^0-9a-z-_ ]/i", "", $s); // очищаем строку от недопустимых символов
+        $s = str_replace(" ", "-", $s); // заменяем пробелы знаком минус
+        return $s; // возвращаем результат
+    }
 }
 ?>
