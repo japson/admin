@@ -38,8 +38,7 @@ class WindowSave extends InitTable{  // запись данных в табли�
 		$sql='INSERT INTO '. $this->nametabl().' ('.implode(',',$keys).') VALUES ('.implode(',',$tmp).')';
 		$stmt = $connect->prepare($sql);
 		$stmt->execute($znach); 
-		
-		//$dbh->lastInsertId(); 
+		//$dbh->lastInsertId();
 		//debug_to_console($sql);
 	}
 }
