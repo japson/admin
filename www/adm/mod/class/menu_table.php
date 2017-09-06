@@ -87,12 +87,16 @@ public $style='';
 								//debug_to_console($temp); 
 								break;
 							
-							case 'select': $zapr='SELECT * FROM '.$selTabl.' WHERE kod='.$value;
-							$dbl= $this->db();
-							$stmt2 = $dbl->prepare($zapr);
-							$stmt2->execute();
-							if($sms=$stmt2->fetch(PDO::FETCH_ASSOC)) {$t=$sms['type'];} else {$t='';}
-							$temp.='<td name="rol" class="tabl'.$key.'">'.$t.'</td>'; break;
+							case 'select':
+                                //debug_to_console($selTabl);
+                                if(is_array($selTabl) && $selTabl[$key]) {
+                                    $zapr='SELECT * FROM '.$selTabl[$key].' WHERE kod='.$value;
+                                    $dbl= $this->db();
+                                    $stmt2 = $dbl->prepare($zapr);
+                                    $stmt2->execute();
+                                    if($sms=$stmt2->fetch(PDO::FETCH_ASSOC)) {$t=$sms['type'];} else {$t='';}
+                                    $temp.='<td name="rol" class="tabl'.$key.'">'.$t.'</td>';
+							    }else {$temp.='<td name="rol" class="tabl'.$key.'">не определен Select</td>';} break;
 							
 							case 'href': if ($switch){$paramHR=$paramhref.'[_NOM]';}else {$paramHR='?'.mb_strtolower($value,'UTF-8');}
 							 $temp.='<td name="'.$key.'" class="tabl'.$key.'"><a href="'.$paramHR.'">'.$value.'</a></td>'; break;

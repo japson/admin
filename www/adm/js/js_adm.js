@@ -68,8 +68,9 @@ function delOverley() { $('.Myconfirm').remove();$('#overlay').fadeOut(400);$('#
 $(document).on("click", "#overlay", function(event){delOverley();});	
 	
 // вызов меню создания пункта ---------------------------------
-function createMenu(){
-	var men=new createWindow('typmenu'); 	men.wincreate();	}
+	function createMenu(){
+    var param=document.getElementById('menu').massiv;
+	var men=new createWindow('typmenu'); 	men.wincreate(param); }
 function createUser(){
     var param=document.getElementById('users').massiv;
 	var men=new createWindow('typuser'); 	men.wincreate(param);	}
@@ -84,6 +85,12 @@ function createArticle(){
 	var param=document.getElementById('post').massiv;
 	var men=new createWindow(''); 	men.wincreate(param);	
 	}
+function createElem(){
+	visualDir();return false;
+
+    var param=document.getElementById('position').massiv;
+    var men=new createWindow(''); 	men.wincreate(param);
+}
 		
 
 function createWindow(data){
@@ -613,7 +620,28 @@ function changePage(elem, direct){
 	//console.log(maspage.find('[style={opacity:1}]').attr('id'));
 }	
 	
-	
+	function visualDir() {
+        var param=document.getElementById('position').massiv;
+        console.log(param);
+        $.ajax({
+            type: "POST",   url: "mod/dirwatch.php",   data: "param="+JSON.stringify(param),
+            success: function(data){
+                  console.log( "Прибыли данные: " + data  ); //+ data
+                data= JSON.parse(data);
+               for(i=0;i<data.length;i++) {
+                   console.log(data[i]);
+               }
+				return false;
+                var mass=datPars(data);
+                if (mass[0]==0) { $("#errorsave").html(mass[1]);}
+                if (mass[0]==1) {$("#post").html(mass[1]);
+                    $('a[id="editArticle"]').replaceWith('<a href="#" id="viewArticle" onClick="viewArticle(); return false;">Посмотреть статью...</a>');
+                    editNew();
+                }
+                // location.reload();
+            }// success
+        });
+    }
 	
 	
 	

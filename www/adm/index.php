@@ -60,7 +60,7 @@ if ( $logged_in &&  $auth_in ) {
 		//$test->createButton(array('Edit'=>'editRecord','Удалить'=>'delRecord','Изменить пароль'=>'changePass'));
 		$test->createButton($mass_actions);
 		$vyvod=$test->outtitle('Пункты меню');
-		$vyvod.=$test->createOut($massTypField,'typmenu', '?'.$test->aliasTbl().'=');
+		$vyvod.=$test->createOut($massTypField,$tbl_select, '?'.$test->aliasTbl().'=');
 		$test->nameImgTbl();
 		$masj="{'table':'".$test->aliasTbl()."','kodmenu':0,'kodrasdel':0,'alias':'Меню: ".$alias."'}";
 		$vyvod.='<script>table_auto("menu",'.$masj.');</script>';
@@ -72,7 +72,7 @@ if ( $logged_in &&  $auth_in ) {
 					 if(preg_match("/^[0-9]+$/",$men)){
 		// debug_to_console('--');
 		require_once('mod/class/create_menu.php');
-		$menu= new createMenu(array('Создать раздел'=>'createSect','Создать статью'=>'createArticle'),$db);
+		$menu= new createMenu(array('Создать раздел'=>'createSect','Создать статью'=>'createArticle','Создать элемент'=>'createElem'),$db);
 		$menu->creatBreadSect($men,'rasdel','rasdel');
 		$alias=$menu->namemenu;
 		$bread=$menu->breadcrumb.$menu->menuout;	 
@@ -92,6 +92,7 @@ if ( $logged_in &&  $auth_in ) {
 		$vyvod.='<script>table_auto("section",'.$masj.');</script>';
 		
 		$tablic='news';
+         include('mod/class/variables.php');
 		$test=new RasdelTable($tablic,$db);
 		$test->outmasskey($userpunkt,$massAssoc);
 		$count=$test->countrec(" WHERE kodrasdel=".$men.' AND kodmenu='.$menu->menukod.' ');
@@ -103,7 +104,21 @@ if ( $logged_in &&  $auth_in ) {
 		$vyvod.=$test->createOut($massTypField,'', '?post=');
 		$masj="{'table':'".$test->aliasTbl()."','kodmenu':".$menu->menukod.",'kodrasdel':".$men.",'alias':'Статьи: ".$alias."'}";
 		$vyvod.='<script>table_auto("post",'.$masj.');</script>';
-		
+
+         $tablic='punkt';
+         include('mod/class/variables.php');
+         $test=new RasdelTable($tablic,$db);
+         $test->outmasskey($userpunkt,$massAssoc);
+         $count=$test->countrec(" WHERE kodrasdel=".$men.' AND kodmenu='.$menu->menukod.' ');
+         if ($count==0){$test->style='style="display:none"';}
+         else{$test->style='';$test->createButton($mass_actions);
+             $vyvod.=$test->outtitle('Пункты: '.$alias);}
+
+         $test->nameImgTbl();
+         $vyvod.=$test->createOut($massTypField,'', '?post=');
+         $masj="{'table':'".$test->aliasTbl()."','kodmenu':".$menu->menukod.",'kodrasdel':".$men.",'alias':'Пункты: ".$alias."'}";
+         $vyvod.='<script>table_auto("position",'.$masj.');</script>';
+
 	 }
 				
 				break;
@@ -145,7 +160,7 @@ if ( $logged_in &&  $auth_in ) {
 		$test->countrec("");
 		$test->createButton($mass_actions);
 		$vyvod=$test->outtitle('Пользователи');
-		$vyvod.=$test->createOut($massTypField,'typuser', '?'.$test->aliasTbl().'=');
+		$vyvod.=$test->createOut($massTypField,$tbl_select, '?'.$test->aliasTbl().'=');
 		$test->nameImgTbl();
 		$masj="{'table':'".$test->aliasTbl()."','kodmenu':0,'kodrasdel':0,'alias':'Меню: ".$alias."'}";
 		$vyvod.='<script>table_auto("users",'.$masj.');</script>';

@@ -72,8 +72,8 @@ class RecordEdit extends MenuTable{ // вывод редактируемых п�
 				$temp='<td name="'.$key.'" class="tabl'.$key.'"><div class="checkbox"> '. 
 								 '<input type="checkbox" value="" '.$t .' > </div></td>' ;break;
 			case 'href': $temp.='<td name="'.$key.'" class="tabl'.$key.'"><input type="text" value="[_VALUE]"></input></td>'; break;
-			case 'select':// $temp='<select class="form-control" name="'.$key.'" id="'.$key.'">'.$this->selectField($typmenu).'</select> '; 
-			$temp.='<td name="'.$key.'" class="tabl'.$key.'"><div class="selectcenter"><select class="form-control" name="'. $key.'" id="'. $key.'">'.$this->selectField($typmenu, $valcur).'</select></div></td>';break;
+			case 'select':// $temp='<select class="form-control" name="'.$key.'" id="'.$key.'">'.$this->selectField($typmenu).'</select> ';
+			$temp.='<td name="'.$key.'" class="tabl'.$key.'"><div class="selectcenter"><select class="form-control" name="'. $key.'" id="'. $key.'">'.$this->selectField($typmenu, $valcur,$key).'</select></div></td>';break;
 			case 'sort': $temp.='<td name="'.$key.'" class="tabl'.$key.'">[_VALUE]</td>';break;
 			case 'picture': $temp.='<td name="'.$key.'" class="tabl'.$key.'">'.$this->countpictur($rec).'</td>';;break;
 			default: $temp.='<td name="'.$key.'" class="tabl'.$key.'"><input type="text" value="[_VALUE]"></input></td>';break;
@@ -82,20 +82,27 @@ class RecordEdit extends MenuTable{ // вывод редактируемых п�
 	return $temp;
 	}
 	
-	private function selectField($typmenu, $valcur) { // формирование пункта select
-		$zapr=""; 
-		$connect=$this->db();
-		$sql ="SELECT * FROM ". $typmenu."";
-		$stmt = $connect->prepare($sql);
-		$stmt->execute();
-			if($sms=$stmt->fetchAll(PDO::FETCH_ASSOC)) {
-				//debug_to_console($sms);
-				foreach($sms as $row){
-					if($row['kod']==$valcur){$t='selected';}else {$t='';}
-				$zapr.='<option value="'.$row['kod'].'"'.$t.'>'.$row['type'].'</option>';
-				}
-			}
-		$stmt=null;	
+	private function selectField($typmenu, $valcur,$key) { // формирование пункта select
+       // debug_to_console($typmenu);
+        if(is_array($typmenu) && $typmenu[$key]) {
+            $zapr = "";
+            $connect = $this->db();
+            $sql = "SELECT * FROM " . $typmenu[$key] . "";
+            $stmt = $connect->prepare($sql);
+            $stmt->execute();
+            if ($sms = $stmt->fetchAll(PDO::FETCH_ASSOC)) {
+                //debug_to_console($sms);
+                foreach ($sms as $row) {
+                    if ($row['kod'] == $valcur) {
+                        $t = 'selected';
+                    } else {
+                        $t = '';
+                    }
+                    $zapr .= '<option value="' . $row['kod'] . '"' . $t . '>' . $row['type'] . '</option>';
+                }
+            }
+            $stmt = null;
+        } else{$zapr .='не определен Select';}
 	return $zapr;
 	}
 	
