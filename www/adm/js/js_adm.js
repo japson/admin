@@ -619,32 +619,47 @@ function changePage(elem, direct){
 		//console.log (listing);
 	//console.log(maspage.find('[style={opacity:1}]').attr('id'));
 }	
-	
+	// визуализация директории выбора -------------------------------------------
 	function visualDir() {
+		var put={};
+		if(arguments.length>0){put.put=arguments[0]; put.backput=arguments[1];} else{put.put='';}
         var param=document.getElementById('position').massiv;
         console.log(param);
         $.ajax({
-            type: "POST",   url: "mod/dirwatch.php",   data: "param="+JSON.stringify(param),
+            type: "POST",   url: "mod/dirwatch.php",   data: "param="+JSON.stringify(param)+'&put='+JSON.stringify(put),
             success: function(data){
-                  console.log( "Прибыли данные: " + data  ); //+ data
+                //  console.log( "Прибыли данные: " + data  ); //+ data
                 data= JSON.parse(data);
-               for(i=0;i<data.length;i++) {
-                   console.log(data[i]);
-               }
-				return false;
-                var mass=datPars(data);
-                if (mass[0]==0) { $("#errorsave").html(mass[1]);}
-                if (mass[0]==1) {$("#post").html(mass[1]);
-                    $('a[id="editArticle"]').replaceWith('<a href="#" id="viewArticle" onClick="viewArticle(); return false;">Посмотреть статью...</a>');
-                    editNew();
-                }
-                // location.reload();
+                myConfirm(data[0], '');
+                document.body.massiv=data[1];
+                console.log(data[1]);
             }// success
         });
     }
+
+	$(document).on('click', '.buttonselect',function(event) { var elem=event.target||event.srcElement; addClass(elem);	});
 	
-	
-	
+	function addClass(elem){
+        var id=$(elem).closest('tr').attr('id');
+		var tbl=$(elem).closest('table');
+		$(tbl).find(".tblcolorstr").each(function(index,element){if($(element).attr('id')!=id){$(element).removeClass('tblcolorstr');
+			$(element).find('.buttonselect').removeClass('select'); }});
+        id=id.replace('direct','');
+        $(elem).toggleClass('select');
+        $(elem).closest('tr').toggleClass('tblcolorstr');
+		console.log(id);
+	}
+
+	$(document).on('click', '.tbldirsel',function(event) { var elem=event.target||event.srcElement;
+        var data=document.body.massiv;
+        var id=$(elem).closest('tr').attr('id');
+        id=id.replace('direct','');
+        delOverley();
+        console.log(data['core'][2]+data['core'][1]+data[id][0]+'/');
+        visualDir(data['core'][2]+data['core'][1]+data[id][0]+'/',data['core'][2]+data['core'][1]);
+
+	});
+
 	
 		 
 /*var feilds=jQuery('.draggable');

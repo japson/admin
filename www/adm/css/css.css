@@ -65,6 +65,16 @@ td .selectcenter select{text-align:center; height:30px;}
 	cursor:pointer;
 	display:none; /* в oбычнoм сoстoянии её нет) */
 }
+.table.tblposition .tbldir{ text-align: left; color: #4626b4;  }
+.tbldir span{cursor: pointer;}
+.tbldir span:hover{text-decoration: underline; }
+.table.tblposition .tblfile{ text-align: left; color: #444444; max-width: 10em; white-space: nowrap; overflow-y: hidden;  }
+.tblcolorstr {background-color: #95c687 !important;}
+.allcenter{text-align: center;}
+.buttonselect{width:19px;height:19px; background-image: url(../img/minus.png); background-size: cover; margin: 0 0 0 30%;cursor: pointer;}
+.buttonselect.select{background-image: url(../img/ok.png);}
+.tbltitle span{margin: 0 10px; cursor: pointer;color: #4626b4;}
+
 .editpolesong{background:#eee; border: 1px solid #999; width:30%; margin-right:5px; padding-left:3px;}
 .editpolesong{width:100%;}
 /*-------------------------------------------------------*/
