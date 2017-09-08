@@ -165,7 +165,7 @@ function getMP3Params($filename, $put)
 	//echo $filename."<br>";
 //$filename=htmlspecialchars($filename);
  $result = Array(
-            'title'  => '<font color="red">Есть файл, нет информации.</font>',
+            'title'  => '<span color="red">Есть файл, нет информации.</span>',
             'artist' => '',
             'length' => '',
 			'year' =>'',

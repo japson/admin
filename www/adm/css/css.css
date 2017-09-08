@@ -42,7 +42,8 @@ td .selectcenter select{text-align:center; height:30px;}
 .Myconfirm { background-color:#FFF;  border: 1px solid #0b2fe0; 
 -webkit-border-radius: 9px;    -moz-border-radius: 9px;    border-radius: 9px; 
  vertical-align: middle;    min-width:500px; max-width: 600px;
- padding:10px; left:35%; top: 25%; position:fixed; z-index:90; text-align:center;;}	/*color:#0b2fe0;*/
+ padding:10px; left:35%; top: 25%; position:fixed; z-index:90; text-align:center;;
+ }	/*color:#0b2fe0;*/
 /*.Myconfirm input {width:100%;}*/
 .Myconfirm select { border: 1px solid #999; width:100%; margin-top:5px;}
 .Myconfirm select option{ margin:3px 0;}
@@ -65,10 +66,12 @@ td .selectcenter select{text-align:center; height:30px;}
 	cursor:pointer;
 	display:none; /* в oбычнoм сoстoянии её нет) */
 }
+.selectwindow {height: 300px; overflow-y: auto;}
+.inputbl input{margin: 5px 10px;}
 .table.tblposition .tbldir{ text-align: left; color: #4626b4;  }
 .tbldir span{cursor: pointer;}
 .tbldir span:hover{text-decoration: underline; }
-.table.tblposition .tblfile{ text-align: left; color: #444444; max-width: 10em; white-space: nowrap; overflow-y: hidden;  }
+.table.tblposition .tblfile{ text-align: left; color: #444444; max-width: 10em; white-space: nowrap; overflow-x: hidden;  }
 .tblcolorstr {background-color: #95c687 !important;}
 .allcenter{text-align: center;}
 .buttonselect{width:19px;height:19px; background-image: url(../img/minus.png); background-size: cover; margin: 0 0 0 30%;cursor: pointer;}

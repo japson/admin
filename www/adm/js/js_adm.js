@@ -624,15 +624,19 @@ function changePage(elem, direct){
 		var put={};
 		if(arguments.length>0){put.put=arguments[0]; put.backput=arguments[1];} else{put.put='';}
         var param=document.getElementById('position').massiv;
-        console.log(param);
+        console.log("param="+JSON.stringify(param)+'&put='+JSON.stringify(put));
         $.ajax({
-            type: "POST",   url: "mod/dirwatch.php",   data: "param="+JSON.stringify(param)+'&put='+JSON.stringify(put),
+            type: "POST",   url: "mod/dirwatch.php",   data: "param="+JSON.stringify(param)+
+			'&put='+encodeURIComponent(JSON.stringify(put)),
             success: function(data){
-                //  console.log( "Прибыли данные: " + data  ); //+ data
+                 // console.log( "Прибыли данные: " + data  ); //+ data
                 data= JSON.parse(data);
-                myConfirm(data[0], '');
+               // console.log(document.getElementsByClassName('Myconfirm')[0]);
+                if(document.getElementsByClassName('Myconfirm')[0]!=undefined){$('.Myconfirm').html('<p></p>'+data[0]);}
+                else{myConfirm(data[0], '');}
                 document.body.massiv=data[1];
                 console.log(data[1]);
+               // console.log(data[2]);
             }// success
         });
     }
@@ -654,13 +658,49 @@ function changePage(elem, direct){
         var data=document.body.massiv;
         var id=$(elem).closest('tr').attr('id');
         id=id.replace('direct','');
-        delOverley();
-        console.log(data['core'][2]+data['core'][1]+data[id][0]+'/');
+       // delOverley();
+        console.log('Iz obj: '+data['core'][2]+data['core'][1]+data[id][0]+'/');
         visualDir(data['core'][2]+data['core'][1]+data[id][0]+'/',data['core'][2]+data['core'][1]);
 
 	});
-
-	
+	$(document).on('click', '#direturn',function(event) { var elem=event.target||event.srcElement;
+        var data=document.body.massiv;
+       // delOverley();
+        var backput=(data['core'][2]+data['core'][1]).split('/');
+        var newput='';
+        for(var i=0;i<backput.length-3;i++) newput+=backput[i]+'/';
+        //console.log(newput);
+       // console.log(data['core'][3]);
+        //console.log('Iz obj: '+data['core'][2]+data['core'][1]+data[id][0]+'/');
+        visualDir(data['core'][3],newput);
+    });
+	function scanElement() {
+        var data=document.body.massiv;
+        var param=document.getElementById('position').massiv;
+        var prefix=data['core'][1];
+        var tbl=document.querySelector('table[id="tblposition"]');
+        var elem=$(tbl).find(".tblcolorstr");
+        var masselem=[];
+        if(elem.length){
+            elem.each(function(index,element){id=($(element).attr('id')).replace('direct','');masselem[index]=prefix+data[id][0];});
+            $.ajax({
+                type: "POST",   url: "mod/filewatch.php",   data: "param="+JSON.stringify(param)+
+                '&put='+encodeURIComponent(JSON.stringify(masselem)),
+                success: function(data){
+                     console.log( "Прибыли данные: " + data  ); //+ data
+					return false;
+                    data= JSON.parse(data);
+                    // console.log(document.getElementsByClassName('Myconfirm')[0]);
+                    if(document.getElementsByClassName('Myconfirm')[0]!=undefined){$('.Myconfirm').html('<p></p>'+data[0]);}
+                    else{myConfirm(data[0], '');}
+                    document.body.massiv=data[1];
+                    console.log(data[1]);
+                    // console.log(data[2]);
+                }// success
+            });
+		}
+        console.log(masselem);
+    }
 		 
 /*var feilds=jQuery('.draggable');
         	var data;

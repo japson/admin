@@ -8,13 +8,14 @@ $arc=UserCheck();
 if(isset($_COOKIE['auth_key'])  and $arc[0]['atribut']==1) {
     $data=json_decode($_POST['param']);
     $curput=json_decode(($_POST['put']));
-    //echo $_POST['param'];
+    echo $curput;
     include('class/var_alt.php');
     if(gettype($data)=='object') {
         if(strlen($data->table)){$tabl=$data->table;}
         if(strlen($data->kodmenu)){$kodmenu=$data->kodmenu;}
         if(strlen($data->kodrasdel)){$kodmenu=$data->kodrasdel;}
     }
+    return false;
     if(gettype($curput)=='object') {if(strlen($curput->put)){$putnext=$curput->put;$putback=$curput->backput;}else{$putnext='';}}
     $key=array_search($tabl, $massTablAlias);
         if(strlen($key)>0) {$tablic = $key;

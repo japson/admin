@@ -14,13 +14,14 @@ class DirWatch //анализ и вывод каталога
     public function __construct($put,$tablic) // получение запроса и вывод колва полей
     {       $mass=$this->checkStr($put);
             if($mass[2]==1){$temp=$this->conv8($put,0);}   else{$temp=$put;}
+       // $this->temper=strlen($temp).'==='.($put);
         //$temp=$put;
        // $temp=iconv('utf-8','cp1251', $put);
        // $temp=iconv('cp1251','utf-8', $temp);
         $this->put=$temp; //передаваемый путь
         $this->tabl=$tablic;
         $this->nodir=$this->classicPut();
-
+        //$this->temper=$this->put.'-'.$this->coredir;
     }
     public function comeback($put){ // путь для возврата
         $mass=$this->checkStr($put);
@@ -104,7 +105,7 @@ class DirWatch //анализ и вывод каталога
     }
     public function outDir(){ //вывод html директории
         $massiv=array();
-        $html='<table id="'.$this->aliastbl.'"class="table table-striped tblposition">';
+        $html='<table id="tbl'.$this->aliastbl.'"class="table table-striped tblposition">';
         $html.='<tr><th>№</th><th>Название</th><th>Тип</th><th>Выбрать</th></tr>';
         $dir=$this->alldir;
         $file=$this->allfile;
@@ -122,13 +123,14 @@ class DirWatch //анализ и вывод каталога
         $massiv['core']=array($this->conv8($this->put,1),$this->conv8($this->saveput,1),$this->coredir,$this->conv8($this->backput,1));
         $html.='</table>';
         $html=str_replace('[_ZAM]',$html,$this->title());
-        $this->temper=$html;
+        //$this->temper=$html;
         return array($html,$massiv);
     }
     private function title(){
         $put=iconv('cp1251','utf-8',$this->put);
-        $temp='<div class="tbltitle">'.$put.'<span id="direturn">Назад</span></div>[_ZAM]';
-        $temp.='<div class="col-sm-3 col-sm-offset-3"><button class="btn btn-success" onclick="{}">OK</button></div>';
+        $temp='<div class="tbltitle">'.$put.'<span id="direturn">Назад</span></div><div class="selectwindow">[_ZAM]'.'</div>';
+        $temp.='<div class="inputbl"><input type="text" id="nameart"><input type="text" id="nameson">';
+        $temp.='<div class="col-sm-3 col-sm-offset-3"><button class="btn btn-success" onclick="{scanElement();}">OK</button></div>';
         $temp.='<div class="col-sm-3"><button class="btn btn-warning" onclick="{delOverley();}">Отмена</button></div>';
         return $temp;
     }
