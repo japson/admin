@@ -66,8 +66,9 @@ td .selectcenter select{text-align:center; height:30px;}
 	cursor:pointer;
 	display:none; /* в oбычнoм сoстoянии её нет) */
 }
-.selectwindow {height: 300px; overflow-y: auto;}
-.inputbl input{margin: 5px 10px;}
+.selectwindow {height: 200px; overflow-y: auto;}
+.inputbl{overflow-y: auto; max-height: 120px;}
+.inputbl input{margin: 5px 10px; }
 .table.tblposition .tbldir{ text-align: left; color: #4626b4;  }
 .tbldir span{cursor: pointer;}
 .tbldir span:hover{text-decoration: underline; }

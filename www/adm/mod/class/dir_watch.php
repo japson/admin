@@ -11,9 +11,12 @@ class DirWatch //анализ и вывод каталога
     private $alldir =array();
     private $allfile=array();
     public $temper;
-    public function __construct($put,$tablic) // получение запроса и вывод колва полей
-    {       $mass=$this->checkStr($put);
+    public function __construct($put,$tablic) // получение запроса
+
+    {     //  echo '***'.$put;
+        $mass=$this->checkStr($put);
             if($mass[2]==1){$temp=$this->conv8($put,0);}   else{$temp=$put;}
+       // $temp=$put;
        // $this->temper=strlen($temp).'==='.($put);
         //$temp=$put;
        // $temp=iconv('utf-8','cp1251', $put);
@@ -90,7 +93,7 @@ class DirWatch //анализ и вывод каталога
             }
         return $newfile;*/
     }
-    private function checkStr($str){ // проверка строки на кодировку всех символов
+    public function checkStr($str){ // проверка строки на кодировку всех символов
             $len=strlen($str); $flag=0;
             $newstr=''; $newstrnorm = '';
             for($i=0;$i<$len;$i++){
@@ -135,9 +138,12 @@ class DirWatch //анализ и вывод каталога
         return $temp;
     }
 
-    private function conv8($perem,$t){
+    public function conv8($perem,$t){
         if($t) {return iconv('cp1251','utf-8',$perem);}
         else {return iconv('utf-8','cp1251',$perem);}
     }
+
+    public function coreDir() {return $this->coredir;}
+    public function Tablic() {return $this->tabl;}
 } // end class
 ?>

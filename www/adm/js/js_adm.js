@@ -688,8 +688,14 @@ function changePage(elem, direct){
                 '&put='+encodeURIComponent(JSON.stringify(masselem)),
                 success: function(data){
                      console.log( "Прибыли данные: " + data  ); //+ data
+                   // data= JSON.parse(data);
+					//if($('#tester') && $('#tester').html().length) {
+					if(document.getElementById('tester')){
+					$('#tester').html(data);} else {$('.Myconfirm').append('<div id="tester">'+data+'</div>');}
+
 					return false;
-                    data= JSON.parse(data);
+
+
                     // console.log(document.getElementsByClassName('Myconfirm')[0]);
                     if(document.getElementsByClassName('Myconfirm')[0]!=undefined){$('.Myconfirm').html('<p></p>'+data[0]);}
                     else{myConfirm(data[0], '');}
