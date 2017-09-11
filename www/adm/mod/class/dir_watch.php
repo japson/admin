@@ -1,7 +1,7 @@
 <?php
 class DirWatch //анализ и вывод каталога
 {
-    private $put;
+    public $put;
     private $tabl;
     private $aliastbl;
     private $coredir;
