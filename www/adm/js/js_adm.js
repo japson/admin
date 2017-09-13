@@ -688,10 +688,16 @@ function changePage(elem, direct){
                 '&put='+encodeURIComponent(JSON.stringify(masselem)),
                 success: function(data){
                      console.log( "Прибыли данные: " + data  ); //+ data
-                   // data= JSON.parse(data);
+                    var mass= JSON.parse(data);
+                    var out='';
+                    for(var i=0;i<mass.length;i++){
+                    	out+='<tr id="'+i+'"><td>'+mass[i]['artist']+'</td><td>'+mass[i]['title']+'</td><td>'+mass[i]['put']+'</td><td  class="button"><div>X</div></td></tr>';
+					}
+					out='<table class="previewtbl">'+out+'</table>';
+
 					//if($('#tester') && $('#tester').html().length) {
 					if(document.getElementById('tester')){
-					$('#tester').html(data);} else {$('.Myconfirm').append('<div id="tester">'+data+'</div>');}
+					$('#tester').html(out);} else {$('.Myconfirm').append('<div id="tester">'+out+'</div>');}
 
 					return false;
 

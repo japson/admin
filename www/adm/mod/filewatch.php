@@ -26,6 +26,7 @@ if(isset($_COOKIE['auth_key'])  and $arc[0]['atribut']==1) {
         include('class/file_watch.php');
         $newdir=new fileWatch($put,$tablic);
         if($newdir->nodir) {
+           // echo $curput[0];
             echo json_encode($newdir->checkFile($curput,$newdir->coreDir()));
         }
 

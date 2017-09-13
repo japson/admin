@@ -15,61 +15,36 @@ class fileWatch extends DirWatch// дочерний класс вывода фа
         //$core = $this->coreDir();
         if (is_array($put)) {
             foreach ($put as $value) {
-                $tt = $this->checkStr($value);
-                //echo ';;;'.$tt[2];
-                $putnew = $this->conv8( $value, 0);
-                // $putnew=$this->conv8($putnew,1);
-                // $putnew=$core.$value;
-                // $fileconv=urlencode($fileconv);
-                //   $putnew= htmlentities($putnew, ENT_QUOTES, 'utf-8');
-                //   $putnew= htmlentities($putnew, ENT_QUOTES, 'CP1251');
-                //   $stat = stat($putnew);
-               // echo filetype(($putnew)); //echo ($stat['size']);
+               // echo ';;;'.$putnew;
+                //$putnew = $this->conv8( $value, 0);
+                $putnew= $core.($value);
                 $info = pathinfo($putnew);
                 $exten= $info['extension'];
-                echo $exten;
-               // $dir=dir($putnew);
-               // $entry = $dir->read();
-                if (!strlen($exten)  && $dh = opendir($putnew)) { //!is_file($putnew)
+               // echo $exten;
+                if (!strlen($exten)  && $dh = opendir($this->conv8($putnew,0))) { //!is_file($putnew)
                     // echo ($dh);
                     while (($file = readdir($dh)) !== false) {
-                        $fileconv = $this->conv8($file, 1);
+                        $fileconv=$file;
+                        //$fileconv = $this->conv8($file, 1);
                         if ($fileconv == '.' || $fileconv == '..') continue;
-                     //   echo 'put:'.$file.' put2:'.$fileconv.' <br>';
-                       // $temp2=$this->checkRen($value.$file);
-                       // echo 'put2:'.$temp2[0].'<br>';
-                        // if(strlen($fileconv)==0){$fileconv=$this->conv8($file,1);
-                        //     $fileconv222222=urlencode($fileconv);}
-                        // echo '--core: '. $core.' --val: '.$value.'/ -- fil: '.$fileconv;
-                        $temp2=$this->checkRen($fileconv);
-                        $pieces = explode("/", $temp2[0]);
-                        $pieces[0]=$this->conv8( $pieces[0], 1);
-                        $newcat=implode('/',$pieces);//
-                        $newcat=$temp2[0];//
-                        //$newcat=$this->conv8( $newcat, 1);
-                       // echo 'put2:'.$core .'>'. $newcat . '/'. '>'. $fileconv.'<br>';
-                        $newput=str_replace('//','/',$core . $newcat . '/' . $fileconv);
-                        echo $newput.'<br>';
-                        //$newdir = new fileWatch($newput, $this->Tablic());
+                       // echo $fileconv.'<br>';
+                       // echo 'F->' .
+                        $this->checkFile(array( '/' . $this->conv8($fileconv,1)),$putnew);
 
-                     //   echo $core . $value . '/' . $fileconv . '-' . strlen($fileconv) . '+' . (is_file($putnew)) . '<br>';
-                        //echo '++'. $value.'/'.$this->conv8($fileconv,1);
-                        //  $this->zapmp3[] = $newdir->checkFile(array($value.'/'.$file));
-                        echo 'F->' . $this->checkFile(array($core . '/' . $fileconv),$core);
-                        //zapusk dir engine
                     }
                 } else {
-                     echo ('--else--'.$putnew);
-                    if (filetype($putnew) == 'file') {
+                    $shortput=str_replace($this->coreDir(),'',$putnew);
+                    // echo ('--else-- '.$shortput.'<br>');
+                   // if (filetype($putnew) == 'file') {
                         //zapusk file engine
-                        $temp = 'tt: ' . $this->processFile($putnew, $value);
-                    }
+                        $temp = $this->processFile($this->conv8($putnew,0), $shortput);
+                  //  }
                 }
             }
         }
 
 
-        //return $fileconv.'<br>';//$this->zapmp3;
+        return $this->zapmp3;
     }
 
     private function processFile($file, $value)
@@ -80,12 +55,17 @@ class fileWatch extends DirWatch// дочерний класс вывода фа
                 $this->zapmp3[] = $this->getMP3Params($file, $value);
                 break;
             case 'pdf':
-                echo "i равно 1";
+              //  echo "i равно 1";
                 break;
         }
         return $pocket[1];
     }
-
+    private function htmlent($str){ // сущности
+        $in=array('&','#','+');
+       // $out=array('%26','%23','%2B');
+        $out=array('&','#');
+        return str_replace($in,$out,$str);
+    }
     public function checkRen($str){ // проверка строки на кодировку всех символов
         $len=strlen($str); $flag=0;
         $newstr=''; $newstrnorm = '';

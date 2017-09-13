@@ -66,7 +66,7 @@ td .selectcenter select{text-align:center; height:30px;}
 	cursor:pointer;
 	display:none; /* в oбычнoм сoстoянии её нет) */
 }
-.selectwindow {height: 200px; overflow-y: auto;}
+.selectwindow {height: 300px; overflow-y: auto;}
 .inputbl{overflow-y: auto; max-height: 120px;}
 .inputbl input{margin: 5px 10px; }
 .table.tblposition .tbldir{ text-align: left; color: #4626b4;  }
@@ -78,6 +78,10 @@ td .selectcenter select{text-align:center; height:30px;}
 .buttonselect{width:19px;height:19px; background-image: url(../img/minus.png); background-size: cover; margin: 0 0 0 30%;cursor: pointer;}
 .buttonselect.select{background-image: url(../img/ok.png);}
 .tbltitle span{margin: 0 10px; cursor: pointer;color: #4626b4;}
+.previewtbl{font-size: 10px; margin-top: 10px; }
+.previewtbl td{border:solid 1px #c4c4c4;  }
+.previewtbl .button{background-color: #d78787; width: 20px;  }
+.previewtbl .button div{cursor: pointer;margin: 2px 0;}
 
 .editpolesong{background:#eee; border: 1px solid #999; width:30%; margin-right:5px; padding-left:3px;}
 .editpolesong{width:100%;}
