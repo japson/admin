@@ -431,13 +431,69 @@ $(document).on("click", "#pict_pencil", function(event){
 	var perem= new changePict(elem);
 	perem.init();
 	perem.formAction("<div class='col-sm-12'>Введите новую подпись под картинку: <input type='text' id='namepictxt' class='editpolesong' value='"+perem.tramv+"'></div>",1,'');
-	});			
+	});
+//- изменить превью картинки событие-----------------------------------
+$(document).on("click", "#pict_preview", function(event){
+    var elem=event.target||event.srcElement;
+    var perem= new changePict(elem);
+    perem.init();
+	var oldeditpict=$(elem).closest('table').find('.pict-up-thumbs').find('td#'+perem.id).children('a').attr('href');
+
+    editpict=oldeditpict+'?'+Math.random();
+	var coords='<input type="hidden" id="x" name="x" /> <input type="hidden" id="y" name="y" />        <input type="hidden" id="w" name="w" /> <input type="hidden" id="h" name="h" />';
+	var povorot='<div class="povorot"><div> Поворот:<br><input type="radio" name="povorot" value="-1"> -90°<br><input type="radio" name="povorot" value="0" checked> 0°<br><input type="radio" name="povorot" value="1"> +90°</div><button id="rotatepict" class="btn btn-success" onclick="rotatePict();">OK</button></div>';
+    perem.formAction("<div class='col-sm-12'>"+coords+"<div class='zagpreview'>Выбор новой областипревью и поворот картинки:</div><div class='makepreview'><img src='"+editpict+"' id='cropbox' > </div>"+povorot+"</div>",3,'');
+
+    //rasmbox=parseInt(rasmbox,10);
+    $('#cropbox').Jcrop({
+        aspectRatio: 1,
+        onSelect: updateCoords,
+        setSelect:   [ 0, 0, 300, 300 ]
+    });
+   // if($('#cropbox').height()>$('#cropbox').width()){var rasmbox=$('#cropbox').width();}else{rasmbox=$('#cropbox').height();}
+ //   console.log($('.jcrop-tracker').css('height'));
+    //$('#cropbox').attr('src',oldeditpict);
+});
+function rotatePict() {
+    var curr;
+    $("[name='povorot']").each(function (index,elem) {
+        if($(elem).prop('checked') )curr=($(elem).val());});
+     if(curr!=0)   {
+     	var tmp=document.getElementById('delpictconfirm').massiv;
+     	tmp.param=4;
+     	tmp.ugol=curr;
+        // console.log (tmp);
+         changePictName(1);
+     }
+
+}
+
+
+$(document).on("change", "[name='povorot2222']", function(event){
+    var curr;
+    $("[name='povorot']").each(function (index,elem) {
+		if($(elem).prop('checked') )curr=($(elem).val());
+    });
+	switch(curr){
+		case '-1': $('.makepreview').addClass('leftrotate').removeClass('rightrotate');
+		break;
+        case '1': $('.makepreview').addClass('rightrotate').removeClass('leftrotate'); break;
+        case '0': $('.makepreview').removeClass('rightrotate').removeClass('leftrotate'); break;
+	}
+	//console.log($("[name='povorot']").val());
+});
+function updateCoords(c)
+{
+    $('#x').val(c.x);
+    $('#y').val(c.y);
+    $('#w').val(c.w);
+    $('#h').val(c.h);
+};
 
 function changePict(elem) { // функция изменения картинок ----------------------------------
 	this.elem=elem;
 	 this.massconfirm;
 	 this.id; this.tramv; var idtbl; var idpos;
-	
 	this.init=function(){
 		this.id=$(this.elem).parent('td').attr('id');
 		idpos=$(this.elem).closest('tr').attr('id');
@@ -456,12 +512,20 @@ function changePict(elem) { // функция изменения картино�
 			$('#downformvvod').html(this.massconfirm);
 			table_auto("delpictconfirm",{id:this.id,param:param,text:txt,tbl:idtbl,kodpos:idpos});
 			$('.buttpictform').css('display','none');
-			//console.log (this.massconfirm);
+			console.log ({id:this.id,param:param,text:txt,tbl:idtbl,kodpos:idpos});
 	}
 	
 }
 
 function changePictName(param){ // --- функция изменения картинок АЯКС ---------------------------
+	var coords=[]; // добавляем координаты если есть блок превью
+	if($('.makepreview').length) {
+        var img = new Image();
+        img.src = $('#cropbox').attr('src');
+        var block={'width': $('.jcrop-holder').width(),'height': $('.jcrop-holder').height()};
+        var kff=block.width / img.width;
+        // console.log(kff);
+		coords=[ $('#x').val(), $('#y').val(), $('#w').val(), $('#h').val(),kff];}
 	var tmp=document.getElementById('reservdata').massiv;
 	//console.log (tmp);
 	if (param==0) {
@@ -469,16 +533,21 @@ function changePictName(param){ // --- функция изменения кар�
 	else{
 			tmp=document.getElementById('delpictconfirm').massiv;
 			var el=document.getElementById('namepictxt'); if(el) {tmp.text=$(el).val();}
+        tmp.coords=coords;
 		//console.log(JSON.stringify(tmp));
 		$.ajax({
 		type: "POST",   url: "mod/changephoto.php",   data: "data="+JSON.stringify(tmp),
  		 success: function(data){
-			// console.log( "Прибыли данные: " + (data)  );
+		//	 console.log( "Прибыли данные: " + (data)  );
 			 var mass=datPars(data);
 			// console.log(tmp.kodpos);
 			if (mass[0]==0) { $("#errform").html(mass[1]); }
   			 if (mass[0]==1) {
-	 		  $('.Myconfirm ').html(mass[1]); 
+	 		  $('.Myconfirm ').html(mass[1]);
+	 		  if(tmp.param==3) {
+                  var kart = $('.pict-up-thumbs').children('td#' + tmp.id).find('img');
+                  $(kart).attr('src', $(kart).attr('src') + '?' + Math.random());
+              }
 	   		//$('.Myconfirm .divtblpict').replaceWith(datAjax[0].text); 
    			//$('.Myconfirm #downformvvod').replaceWith(datAjax[0].text2);
    				if(tmp.param==2) {countpict(0,tmp.kodpos);}
@@ -713,7 +782,16 @@ function changePage(elem, direct){
 		}
         console.log(masselem);
     }
-		 
+
+
+
+
+	/*$(document).on('change', 'input#picture',function(event){
+        var tmp=$('input#picture').val();
+        $('.makepreview').html('<img src="'+tmp+'">');
+        console.log(tmp);
+	});*/
+
 /*var feilds=jQuery('.draggable');
         	var data;
         	data=new Object();

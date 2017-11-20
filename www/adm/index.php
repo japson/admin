@@ -218,7 +218,7 @@ if ( $logged_in &&  $auth_in ) {
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
 <link href="css/css.css" rel="stylesheet" media="screen">
-
+    <link rel="stylesheet" href="css/jquery.Jcrop.css" type="text/css" />
 <link rel="stylesheet" type="text/css" href="../fancy/jquery.fancybox.min.css">
 <script src="ckeditor/ckeditor.js" type="text/javascript"></script>
 <script src="js/auto.js"></script>
@@ -239,5 +239,6 @@ echo($vyvod);
 <script src="js/bootstrap.min.js"></script>
 <script src="js/jquery.mousewheel-3.0.6.pack.js"></script>
 <script src="js/js_adm.js"></script>
+<script src="js/jquery.Jcrop.js"></script>
 </body>
 </html>

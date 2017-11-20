@@ -11,11 +11,33 @@ class WindowSavePictur extends WindowInputPictur{ // сохранение кар
     }
 	
 	public function defaultValue(){ // задать параметры по умолчанию
-		$this->Wnewimg = 700;//Ширина нового изображение (дефолт 700px)
+        $dbl=$this->db();
+        $hprev=''; $wprev=''; $horig=''; $worig='';
+        $sql="SELECT  * FROM sets ;";
+        $stmt = $dbl->prepare($sql);
+        $stmt->execute();
+        if($sms=$stmt->fetchAll(PDO::FETCH_ASSOC)) {
+            //debug_to_console($sms);
+            foreach($sms as $row){
+                switch($row['parametr']){
+                    case 'heightpicturpreviewmax': $hprev=intval($row['value']);break;
+                    case 'weightpicturpreviewmax': $wprev=intval($row['value']);break;
+                    case 'heightpicturmax': $horig=intval($row['value']);break;
+                    case 'weightpicturmax': $worig=intval($row['value']);break;
+                }
+            }
+        }
+        $this->Wnewimg = ($worig ? $worig : 700);//Ширина нового изображение (дефолт 700px)
+        $this->Hnewimg = ($horig ? $horig : 700);//Высота нового изображение (дефолт 700px)
+        $this->Wnewminiimg = ($wprev ? $wprev : 150);//Ширина нового мини изображение (дефолт 150px)
+        $this->Hnewminiimg = ($hprev ? $hprev : 150);//Высота нового мини изображение (дефолт 150px)
+        $this->max_size_img = 10;//Максимально допустимый размер изображения (дефолт 10 мб)
+        // echo $this->Wnewminiimg.' '. $this->Wnewimg;
+		/*$this->Wnewimg = 700;//Ширина нового изображение (дефолт 700px)
 		$this->Hnewimg = 700;//Высота нового изображение (дефолт 700px)
 		$this->Wnewminiimg = 150;//Ширина нового мини изображение (дефолт 100px)
 		$this->Hnewminiimg = 150;//Высота нового мини изображение (дефолт 100px)
-		$this->max_size_img = 10;//Максимально допустимый размер изображения (дефолт 10 мб)
+		$this->max_size_img = 10;//Максимально допустимый размер изображения (дефолт 10 мб)*/
 	}
 	
 	public function testPictur($galeryfile,$nomer,$file){ // проверка картинки
@@ -158,8 +180,8 @@ class WindowSavePictur extends WindowInputPictur{ // сохранение кар
     imagecopyresampled($new_img,$instant,0,0,$obrez_w,$obrez_h,$w_new,$h_new,$w_up,$h_up);//создаем изображение
 	
 	switch ($t) {
-   case 1:  if($b_or_m == 0)imagegif($new_img, $this->putimg.$n_new.".jpg", 100);//записываем полученное изображение в папку /galery/mini/
-    		if($b_or_m == 1)imagegif($new_img, $this->putimg.$n_new.".jpg", 100);//записываем полученное изображение в папку /galery/big/
+   case 1:  if($b_or_m == 0)imagejpeg($new_img, $this->putimg.$n_new.".jpg", 100);//записываем полученное изображение в папку /galery/mini/
+    		if($b_or_m == 1)imagejpeg($new_img, $this->putimg.$n_new.".jpg", 100);//записываем полученное изображение в папку /galery/big/
 			break;
 	case 2: if($b_or_m == 0)imagegif($new_img, $this->putimg.$n_new.".gif", 100);//записываем полученное изображение в папку /galery/mini/
     		if($b_or_m == 1)imagegif($new_img, $this->putimg.$n_new.".gif", 100);//записываем полученное изображение в папку /galery/big/

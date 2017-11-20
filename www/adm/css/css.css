@@ -51,6 +51,14 @@ td .selectcenter select{text-align:center; height:30px;}
 .Myconfirm button {min-width:90px;}
 .errorcursiv { font-style:italic; font-weight:normal; color:#C60;}
 .zagform { margin:0 0 10px; }
+.makepreview img{max-width: 80%; max-height: 350px;	}
+.makepreview{margin-bottom: 10px; float: left;display:block}
+.povorot{float: right; width:80px;}
+.povorot div{text-align: left;}
+#rotatepict{min-width: 80%; margin-top: 10px;}
+/*.leftrotate {transform: rotate(-90deg);}
+.rightrotate {transform: rotate(90deg);}*/
+
 
 #overlay {
 	z-index:89; /* пoдлoжкa дoлжнa быть выше слoев элементoв сaйтa, нo ниже слoя мoдaльнoгo oкнa */
