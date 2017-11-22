@@ -133,8 +133,8 @@ class DirWatch //анализ и вывод каталога
         $put=iconv('cp1251','utf-8',$this->put);
         $temp='<div class="tbltitle">'.$put.'<span id="direturn">Назад</span></div><div class="selectwindow">[_ZAM]'.'</div>';
        // $temp.='<div class="inputbl"><input type="text" id="nameart"><input type="text" id="nameson">';
-        $temp.='<div class="col-sm-3 col-sm-offset-3"><button class="btn btn-info" onclick="{scanElement();}">OK</button></div>';
-        $temp.='<div class="col-sm-3"><button class="btn btn-success" onclick="{saveElements();}">Сохранить</button></div>';
+        $temp.='<div class="col-sm-3 col-sm-offset-3"><button class="btn btn-info" onclick="{scanElement();}">ВЫбрать</button></div>';
+        $temp.='<div class="col-sm-3"><button class="btn btn-success" onclick="{saveElements(\''.$this->aliastbl.'\');}">Сохранить</button></div>';
         $temp.='<div class="col-sm-3"><button class="btn btn-warning" onclick="{delOverley();}">Отмена</button></div>';
         return $temp;
     }

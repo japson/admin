@@ -124,7 +124,9 @@ function saveNew(tabl){
 	if(typeof(param)=='object'){massa='&keys='+ JSON.stringify(param); }
 var perem= new dataMyConfirm($('.Myconfirm'));
 var itog=perem._init();
-//console.log(itog);
+//if()
+console.log(itog);
+return false;
 if (itog[0].length>0){$("#errform").html('!!!'+itog[0]);}
 	else{$.ajax({
     	type: "POST",   url: "mod/winsave.php",   data: 'data='+ JSON.stringify(itog[1])+'&param='+tabl+massa,
@@ -758,16 +760,19 @@ function changePage(elem, direct){
                 success: function(data){
                      console.log( "Прибыли данные: " + data  ); //+ data
                     var mass= JSON.parse(data);
-                    var out='';
+                  /*  var out='';
                     for(var i=0;i<mass.length;i++){
-                    	out+='<tr id="'+i+'"><td>'+mass[i]['artist']+'</td><td>'+mass[i]['title']+'</td><td>'+mass[i]['put']+'</td><td  class="button"><div>X</div></td></tr>';
+                    	out+='<tr id="'+i+'"><td>'+mass[i]['artist']+'</td><td>'+mass[i]['title']+'</td><td>'+mass[i]['put']+'</td><td  class="button" name="delsong"><div>X</div></td></tr>';
 					}
-					out='<table class="previewtbl">'+out+'</table>';
+					out='<table class="previewtbl">'+out+'</table>';*/
 
 					//if($('#tester') && $('#tester').html().length) {
 					if(document.getElementById('tester')){
-					$('#tester').html(out);} else {$('.Myconfirm').append('<div id="tester">'+out+'</div>');}
+					//$('#tester').html(out);
+					} else {$('.Myconfirm').append('<div id="tester">'+''+'</div>');}
 
+                    document.getElementById('tester').massiv=mass;
+                    createTester();
 					return false;
 
 
@@ -783,6 +788,30 @@ function changePage(elem, direct){
         console.log(masselem);
     }
 
+$(document).on('click', '.button[name="delsong"]',function(event){
+    var elem=event.target||event.srcElement;
+    var tr=$(elem).closest('tr').attr('id');
+    var tmp=document.getElementById('tester').massiv;
+    tmp.splice(tr, 1);
+    document.getElementById('tester').massiv=tmp;
+    createTester();
+    console.log(tmp);
+});
+	function createTester(){ // создание списка выбранный пунктов
+        var mass=document.getElementById('tester').massiv; var out='';
+        for(var i=0;i<mass.length;i++){
+            out+='<tr id="'+i+'"><td>'+mass[i]['track_number']+'</td><td>'+mass[i]['artist']+'</td><td>'+mass[i]['title']+'</td><td>'+mass[i]['put']+'</td><td  class="button" name="delsong"><div>X</div></td></tr>';
+        }
+        out='<table class="previewtbl">'+out+'</table>';
+        $('#tester').html(out);
+        document.getElementById('tester').massiv=mass;
+	}
+
+	function saveElements(tbl) {
+        saveNew(tbl);
+		//var tmp=document.getElementById('tester').massiv;
+		//console.log(tmp);
+	}
 
 
 

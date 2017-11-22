@@ -42,7 +42,7 @@ td .selectcenter select{text-align:center; height:30px;}
 .Myconfirm { background-color:#FFF;  border: 1px solid #0b2fe0; 
 -webkit-border-radius: 9px;    -moz-border-radius: 9px;    border-radius: 9px; 
  vertical-align: middle;    min-width:500px; max-width: 600px;
- padding:10px; left:35%; top: 25%; position:fixed; z-index:90; text-align:center;;
+ padding:10px; left:35%; top: 15%; position:fixed; z-index:90; text-align:center;;
  }	/*color:#0b2fe0;*/
 /*.Myconfirm input {width:100%;}*/
 .Myconfirm select { border: 1px solid #999; width:100%; margin-top:5px;}
@@ -86,7 +86,7 @@ td .selectcenter select{text-align:center; height:30px;}
 .buttonselect{width:19px;height:19px; background-image: url(../img/minus.png); background-size: cover; margin: 0 0 0 30%;cursor: pointer;}
 .buttonselect.select{background-image: url(../img/ok.png);}
 .tbltitle span{margin: 0 10px; cursor: pointer;color: #4626b4;}
-.previewtbl{font-size: 10px; margin-top: 10px; }
+.previewtbl{font-size: 10px; margin-top: 42px; width: 100%; }
 .previewtbl td{border:solid 1px #c4c4c4;  }
 .previewtbl .button{background-color: #d78787; width: 20px;  }
 .previewtbl .button div{cursor: pointer;margin: 2px 0;}

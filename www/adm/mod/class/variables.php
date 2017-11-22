@@ -1,9 +1,9 @@
 <?
 // массивы выводимых полей
-$massAssoc=array("login" => "Логин","rol" => "Роль","email" => "E-mail","sort" => "№","name" => "Название","nameurl" => "ЧПУ page", "vyvod" => "Вывод", "artist" => "Артист", "song" => "Название", "link" => "Ссылка", "length" => "Длина", 'note'=>'Описание',
-"href" => "Ссылка", "title" => "Title page", "pssw"=>"Пароль", "parametr"=>"Параметр", "value"=>"Значение","info"=>"Описание",'pictur'=>'Picture');
+$massAssoc=array("login" => "Логин","rol" => "Роль","email" => "E-mail","sort" => "№","name" => "Название","nameurl" => "ЧПУ page", "vyvod" => "Вывод", "artist" => "Артист", "title" => "Название", "link" => "Ссылка", "length" => "Длина", 'note'=>'Описание',
+"href" => "Ссылка", "titlepage" => "Title page", "pssw"=>"Пароль", "parametr"=>"Параметр", "value"=>"Значение","info"=>"Описание",'pictur'=>'Picture');
 $massTypField=array('vyvod'=>'checkbox','rol'=>'select', 'name'=>'href', 'kod'=>'kod', 'pssw'=>'password','pictur'=>'picture');
-$editAbles=array('login','email','name','nameurl','href','title','rol','vyvod','pictur','song','artist','note','length','link');
+$editAbles=array('login','email','name','nameurl','href','title','rol','vyvod','pictur','title','artist','note','length','link');
 
 
 switch($tablic) {
@@ -14,7 +14,7 @@ switch($tablic) {
 					 $mass_actions=array('Править'=>'editRecord','Удалить'=>'delRecord');
 					 break; 
 	
-	case 'mainmenu': $userpunkt =array('sort','name','nameurl','title','vyvod', 'rol'); 
+	case 'mainmenu': $userpunkt =array('sort','name','nameurl','titlepage','vyvod', 'rol');
 					 $inputpunkt =array('name','nameurl','title', 'rol');
 					 $tbl_select=array('rol'=>'typmenu');
 					 $mass_actions=array('Править'=>'editRecord','Удалить'=>'delRecord');
@@ -30,8 +30,8 @@ switch($tablic) {
 					$tbl_select=array('rol'=>'typmenu');
 					$mass_actions=array('Править'=>'editRecord','Удалить'=>'delRecord');
 					break;
-	case 'punkt': $userpunkt =array('sort','artist','song','length', 'note','pictur');
-					$inputpunkt =array('artist','song','link');
+	case 'punkt': $userpunkt =array('sort','artist','title','length', 'note','pictur');
+					$inputpunkt =array('artist','title','link');
 					$tbl_select='';
 					$mass_actions=array('Править'=>'editRecord','Удалить'=>'delRecord');
 					break;
