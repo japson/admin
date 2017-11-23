@@ -123,23 +123,16 @@ function saveNew(tabl){
 	var param=document.getElementById(tabl).massiv;
 	if(typeof(param)=='object'){massa='&keys='+ JSON.stringify(param); }
 var perem= new dataMyConfirm($('.Myconfirm'));
-<<<<<<< HEAD
 var itog=perem._init(); itog[1]=Array(itog[1]);
 if(arguments[1]) itog[1]=arguments[1];
 console.log(itog);console.log(massa);
 console.log(itog[1].length);
 //return false ;
-=======
-var itog=perem._init();
-//if()
-console.log(itog);
-return false;
->>>>>>> parent of ed99199... my test ide
 if (itog[0].length>0){$("#errform").html('!!!'+itog[0]);}
 	else{$.ajax({
     	type: "POST",   url: "mod/winsave.php",   data: 'data='+ JSON.stringify(itog[1])+'&param='+tabl+massa,
 		  success: function(data){
-		// console.log( "Прибыли данные: " + data );
+		 console.log( "Прибыли данные: " + data );
 		// $("#errorsave").html(data);
 	 	var mass=datPars(data);
 	 	if (mass[0]==1) { location.reload(); }
@@ -228,6 +221,7 @@ edRec.prototype={
 		this.field.find(this.poisk).each(function(indx,element){ var attr=$(element).attr(self.atribut);
 		
 			switch (attr){
+				case 'external':;
 			case 'vyvod': tmp=$(element).find('input').prop("checked"); if(tmp){self.out[attr]=1;}else{self.out[attr]=0;}  ;break;
 			case 'rol': self.out[attr]=$(element).find('option:selected').val();  ;break;
 			default: tmp=$(element).find('input'); if(tmp.length>0) {self.out[attr]=$(element).find('input').val();  } 
@@ -803,7 +797,7 @@ $(document).on('click', '.button[name="delsong"]',function(event){
     tmp.splice(tr, 1);
     document.getElementById('tester').massiv=tmp;
     createTester();
-    console.log(tmp);
+  //  console.log(tmp);
 });
 	function createTester(){ // создание списка выбранный пунктов
         var mass=document.getElementById('tester').massiv; var out='';
@@ -816,9 +810,14 @@ $(document).on('click', '.button[name="delsong"]',function(event){
 	}
 
 	function saveElements(tbl) {
-        saveNew(tbl);
+        var tmp=document.getElementById('tester').massiv;
+        var newmas=[];
+      //  var newtmp={'title':tmp.title,'artist'}
+		for(var i=0;i<tmp.length;i++) {var newtmp={'title':tmp[i].title,'artist':tmp[i].artist, 'length':tmp[i]['length'],'put':tmp[i].put}; newmas[i]=newtmp;}
+
+        saveNew(tbl,newmas);
 		//var tmp=document.getElementById('tester').massiv;
-		//console.log(tmp);
+		//console.log(newmas);
 	}
 
 

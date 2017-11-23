@@ -7,14 +7,19 @@ $arc=UserCheck();
 
 if(isset($_COOKIE['auth_key'])  and $arc[0]['atribut']==1)	{
 	$data=json_decode($_POST['data']);
+
 	$wheresort=array();
 	$tabl=$_POST['param'];
 	$keystbl=$_POST['keys'];
 		if(strlen($keystbl)>0) {
 			$keysobj=json_decode($keystbl);	
 			if(gettype($keysobj)=='object') {
-				if(strlen($keysobj->kodrasdel)){ $data->kodrasdel = $keysobj->kodrasdel;   }
-				if(strlen($keysobj->kodmenu)){$data->kodmenu=$keysobj->kodmenu;}
+				if(strlen($keysobj->kodrasdel)){
+                    for($i=0;$i<count($data);$i++) {$data[$i]->kodrasdel = $keysobj->kodrasdel;}
+				}
+				if(strlen($keysobj->kodmenu)){
+                    for($i=0;$i<count($data);$i++) {$data[$i]->kodmenu=$keysobj->kodmenu;}
+				}
 				$wheresort=' WHERE kodrasdel='.$keysobj->kodrasdel.' AND kodmenu='.$keysobj->kodmenu.' ';
 			}
 		}
@@ -28,10 +33,13 @@ if(isset($_COOKIE['auth_key'])  and $arc[0]['atribut']==1)	{
 	$fields=$windsave->allmasskey();
 	
 	//debug_to_console($data);
-	$corrfields=$windsave->findfields($data);
+	$corrfields=$windsave->findfields($data[0]);
 		if(strlen($corrfields)==0){
 		$sorty=$windsave->maxval('sort', $wheresort)+1;
-		$windsave->saver($data,$sorty);
+		for($i=0;$i<count($data);$i++) {
+            $windsave->saver($data[$i], $sorty);
+            $sorty=$sorty+1;
+        }
 		$mass[0]['atribut']=1;$mass[0]['text']="OK.";
 		//debug_to_console($sorty);		
 		}else {$mass[0]['atribut']=0;$mass[0]['text']="Извините, проблемы с полями.".$corrfields;}
