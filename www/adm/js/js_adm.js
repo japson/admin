@@ -127,7 +127,7 @@ var itog=perem._init(); itog[1]=Array(itog[1]);
 if(arguments[1]) itog[1]=arguments[1];
 console.log(itog);console.log(massa);
 console.log(itog[1].length);
-//return false;
+//return false ;
 if (itog[0].length>0){$("#errform").html('!!!'+itog[0]);}
 	else{$.ajax({
     	type: "POST",   url: "mod/winsave.php",   data: 'data='+ JSON.stringify(itog[1])+'&param='+tabl+massa,
