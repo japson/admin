@@ -2,9 +2,9 @@
 /* CSS Document */
 
 .table {font-size:1em;}
-.tablcentr, .tablvyvod, .tablrol, .tablpictur{ text-align:center;}
+.tablcentr, .tablvyvod, .tablrol, .tablpictur, .tablexternal{ text-align:center;}
 .tablpictur div { margin:0 10px; cursor:pointer;}
-.tablvyvod {width:30px;}
+.tablvyvod, .tablexternal {width:30px;}
 .tablsort, .sorty{width: 30px;}
 .tablrol {width:120px;}
 /*td.action, td.buttons { max-width:20em;}*/
