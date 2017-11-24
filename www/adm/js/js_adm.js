@@ -125,20 +125,36 @@ function saveNew(tabl){
 var perem= new dataMyConfirm($('.Myconfirm'));
 var itog=perem._init(); itog[1]=Array(itog[1]);
 if(arguments[1]) itog[1]=arguments[1];
-console.log(itog);console.log(massa);
-console.log(itog[1].length);
+console.log(itog);console.log(param);
+
+    /*var data2 = new FormData();
+    data2.append("keys", JSON.stringify(param));
+    data2.append("param", 'tabl');
+    data2.append("data", JSON.stringify(itog[1]));*/
+	data3={keys:param,param:tabl,data:itog[1]};
+
+console.log(data2.getAll('data'));
 //return false ;
 if (itog[0].length>0){$("#errform").html('!!!'+itog[0]);}
-	else{$.ajax({
-    	type: "POST",   url: "mod/winsave.php",   data: 'data='+ JSON.stringify(itog[1])+'&param='+tabl+massa,
-		  success: function(data){
-		 console.log( "Прибыли данные: " + data );
-		// $("#errorsave").html(data);
-	 	var mass=datPars(data);
-	 	if (mass[0]==1) { location.reload(); }
-	 	if (mass[0]==0) { $("#errform").html(mass[1]); }
-  		}
-		});	}
+	else{
+  //  var jqxhr = $.post( "mod/winsave.php", data3,  function() {
+   //     alert( "success" );    })
+				$.ajax({
+					type: "POST",   url: "mod/winsave.php",
+				//data: 'data='+ encodeURI(JSON.stringify(itog[1]))+'&param='+tabl+massa,
+				data: data3,
+				//cache: false,
+				//dataType: 'json',
+
+					  success: function(data){
+					 console.log( "Прибыли данные: " + data );
+					// $("#errorsave").html(data);
+					var mass=datPars(data);
+					if (mass[0]==1) { location.reload(); }
+					if (mass[0]==0) { $("#errform").html(mass[1]); }
+					}
+					});
+		}
 	}	
 
 dataMyConfirm	= function( element) {this.$el = $( element );}
@@ -237,7 +253,8 @@ var elem=event.target||event.srcElement;
 	var perem=new edRec(elem,'tr','td','name');
 	var tbl=$(elem).closest('table').attr('id');
 	perem._recievedat();
-	var data='tbl='+tbl+'&record='+perem.idnom+'&data='+JSON.stringify(perem.out);
+	//var data='tbl='+tbl+'&record='+perem.idnom+'&data='+JSON.stringify(perem.out);
+    var data={tbl:tbl,record:perem.idnom,data:perem.out};
 	$.ajax({
     	type: "POST",   url: "mod/recordsave.php",   data: data,
 		  success: function(data){
@@ -821,12 +838,16 @@ $(document).on('click', '.button[name="delsong"]',function(event){
 	}
 
 
-
-	/*$(document).on('change', 'input#picture',function(event){
-        var tmp=$('input#picture').val();
-        $('.makepreview').html('<img src="'+tmp+'">');
-        console.log(tmp);
-	});*/
+function secToTime(sec) {
+    dt = new Date();
+    dt.setTime(sec * 1000);
+    return dt.getUTCHours() + ":" + dt.getUTCMinutes() + ":" + dt.getUTCSeconds();
+}
+/*$(document).on('change', 'input#picture',function(event){
+    var tmp=$('input#picture').val();
+    $('.makepreview').html('<img src="'+tmp+'">');
+    console.log(tmp);
+});*/
 
 /*var feilds=jQuery('.draggable');
         	var data;

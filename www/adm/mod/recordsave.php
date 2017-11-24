@@ -6,7 +6,7 @@ require_once('debug.php');
 $arc=UserCheck();
 
 if(isset($_COOKIE['auth_key'])  and $arc[0]['atribut']==1)	{
-	$data=json_decode($_POST['data']);
+	$data=($_POST['data']);
 	$tabl=$_POST['tbl'];
 	$record=$_POST['record'];
 	include('class/var_alt.php');

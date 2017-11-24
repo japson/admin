@@ -2,7 +2,7 @@
 // массивы выводимых полей
 $massAssoc=array("login" => "Логин","rol" => "Роль","email" => "E-mail","sort" => "№","name" => "Название","nameurl" => "ЧПУ page", "vyvod" => "Вывод", "artist" => "Артист", "title" => "Название", "put" => "Ссылка", "length" => "Длина", 'note'=>'Описание','external'=>'Внешняя',
 "href" => "Ссылка", "titlepage" => "Title page", "pssw"=>"Пароль", "parametr"=>"Параметр", "value"=>"Значение","info"=>"Описание",'pictur'=>'Picture');
-$massTypField=array('vyvod'=>'checkbox','rol'=>'select', 'name'=>'href', 'kod'=>'kod', 'pssw'=>'password','pictur'=>'picture','external'=>'checkbox');
+$massTypField=array('vyvod'=>'checkbox','rol'=>'select', 'name'=>'href', 'kod'=>'kod', 'pssw'=>'password','pictur'=>'picture','external'=>'checkbox','length'=>'times');
 $editAbles=array('login','email','name','nameurl','href','title','rol','vyvod','pictur','title','artist','note','length','put','external');
 
 

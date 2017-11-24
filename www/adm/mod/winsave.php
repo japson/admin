@@ -6,22 +6,24 @@ require_once('debug.php');
 $arc=UserCheck();
 
 if(isset($_COOKIE['auth_key'])  and $arc[0]['atribut']==1)	{
-	$data=json_decode($_POST['data']);
-
+	$data=($_POST['data']);
+   // debug_to_console(gettype($_POST['keys']));
+   // debug_to_console($_POST['keys']);
 	$wheresort=array();
 	$tabl=$_POST['param'];
-	$keystbl=$_POST['keys'];
-		if(strlen($keystbl)>0) {
-			$keysobj=json_decode($keystbl);	
-			if(gettype($keysobj)=='object') {
-				if(strlen($keysobj->kodrasdel)){
-                    for($i=0;$i<count($data);$i++) {$data[$i]->kodrasdel = $keysobj->kodrasdel;}
+	$keystbl=($_POST['keys']);
+   // debug_to_console($keystbl['table']);
+		if(count($keystbl)>0) {
+			$keysobj=($keystbl);
+			if(gettype($keysobj)=='array') {
+				if(strlen($keysobj['kodrasdel'])){
+                    for($i=0;$i<count($data);$i++) {$data[$i]['kodrasdel'] = $keysobj['kodrasdel'];}
 				}
-				if(strlen($keysobj->kodmenu)){
-                    for($i=0;$i<count($data);$i++) {$data[$i]->kodmenu=$keysobj->kodmenu;}
+				if(strlen($keysobj['kodmenu'])){
+                    for($i=0;$i<count($data);$i++) {$data[$i]['kodmenu']=$keysobj['kodmenu'];}
 				}
-				$wheresort=' WHERE kodrasdel='.$keysobj->kodrasdel.' AND kodmenu='.$keysobj->kodmenu.' ';
-			}
+				$wheresort=' WHERE kodrasdel='.$keysobj['kodrasdel'].' AND kodmenu='.$keysobj['kodmenu'].' ';
+			}  // debug_to_console($data);
 		}
 	include('class/var_alt.php');
 	$key=array_search($tabl, $massTablAlias);
@@ -32,7 +34,7 @@ if(isset($_COOKIE['auth_key'])  and $arc[0]['atribut']==1)	{
 	$windsave= new WindowSave($tablic,$db);
 	$fields=$windsave->allmasskey();
 	
-	//debug_to_console($data);
+	//debug_to_console($data[0]);
 	$corrfields=$windsave->findfields($data[0]);
 		if(strlen($corrfields)==0){
 		$sorty=$windsave->maxval('sort', $wheresort)+1;

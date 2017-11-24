@@ -110,6 +110,8 @@ public $style='';
 							$temp.='<td name="'.$key.'" class="tabl'.$key.'">'.$this->countpictur($kodnom).'</td>';
 							//debug_to_console($kodnom); 
 							break;
+                            case 'times':$temp.='<td name="'.$key.'" class="tabl'.$key.'">'.$this->time($value).'</td>';
+                                break;
 							}
 					}else{
 					
@@ -141,5 +143,15 @@ public $style='';
 	$this->tbl_img=$picturTbl[$this->nametabl()];
 	//debug_to_console($this->tbl_img); 
 	}
+    private function time($value)
+    {
+        $hh = floor($value / 3600);
+        $min = floor(($value - $hh * 3600) / 60);
+        $sec = $value - $hh * 3600 - $min * 60;
+        if($hh==0){$hour='';}else{$hour=sprintf('%02d', $hh) . ':' ;}
+        $l = $hour. sprintf('%02d', $min) . ':' . sprintf('%02d', $sec);
+
+        return $l;
+    }
 }
 ?>

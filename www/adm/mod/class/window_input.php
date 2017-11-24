@@ -78,6 +78,8 @@ class WindowInput extends InitTable{ // окно ввода полей
 			}
 	return $temp;	
 	}
-}
+
+
+    }
 
 ?>
