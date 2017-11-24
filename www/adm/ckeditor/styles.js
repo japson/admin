@@ -44,7 +44,15 @@ CKEDITOR.stylesSet.add( 'default', [
 			border: '1px solid #ccc'
 		}
 	},
-
+	{
+		name: 'По центру заголовок',
+		element: 'div',
+		styles: {
+			'text-align': 'center',
+			'font-style': 'bold',
+			'font-size': '1.1em'
+		}
+	},
 	/* Inline styles */
 
 	// These are core styles available as toolbar buttons. You may opt enabling

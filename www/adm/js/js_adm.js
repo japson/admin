@@ -133,7 +133,7 @@ console.log(itog);console.log(param);
     data2.append("data", JSON.stringify(itog[1]));*/
 	data3={keys:param,param:tabl,data:itog[1]};
 
-console.log(data2.getAll('data'));
+//console.log(data2.getAll('data'));
 //return false ;
 if (itog[0].length>0){$("#errform").html('!!!'+itog[0]);}
 	else{

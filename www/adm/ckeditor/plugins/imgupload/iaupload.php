@@ -11,9 +11,9 @@ $upload_dir = array(
 
 // HERE PERMISSIONS FOR IMAGE
 $imgset = array(
- 'maxsize' => 2000,     // maximum file size, in KiloBytes (2 MB)
- 'maxwidth' => 900,     // maximum allowed width, in pixels
- 'maxheight' => 800,    // maximum allowed height, in pixels
+ 'maxsize' => 7000,     // maximum file size, in KiloBytes (2 MB)
+ 'maxwidth' => 1500,     // maximum allowed width, in pixels
+ 'maxheight' => 1500,    // maximum allowed height, in pixels
  'minwidth' => 10,      // minimum allowed width, in pixels
  'minheight' => 10,     // minimum allowed height, in pixels
  'type' => array('bmp', 'gif', 'jpg', 'jpe', 'png'),  // allowed extensions

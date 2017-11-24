@@ -71,9 +71,9 @@
 				styles: this.cssClassName ? null : 'text-align',
 				classes: this.cssClassName || null
 			}
-				//
+				console.log(this.cssClassName);
 		};
-console.log(this.cssClassName);
+
 		// In enter mode BR we need to allow here for div, because when non other
 		// feature allows div justify is the only plugin that uses it.
 		if ( editor.config.enterMode == CKEDITOR.ENTER_BR )

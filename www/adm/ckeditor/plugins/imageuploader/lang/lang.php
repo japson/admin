@@ -9,7 +9,7 @@ if(isset($_COOKIE['sy_lang'])) {
             $lang_name = "English";
             break;
         case "pl":
-            $lang_name = "Russian";
+            $lang_name = "Polish";
             break;
     }
 } else {
@@ -24,7 +24,7 @@ switch ($load_lang_code) {
         require(__DIR__ . '/en.php');
         break;
     case "pl":
-        require(__DIR__ . '/ru.php');
+        require(__DIR__ . '/pl.php');
         break;
 }
 ?>

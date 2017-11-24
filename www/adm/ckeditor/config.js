@@ -22,9 +22,11 @@ CKEDITOR.editorConfig = function( config ) {
 	// { name: 'alignment', items : [ 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock' ] },	
 	{ name: 'basicstyles', groups: [ 'basicstyles', 'cleanup' ] },
 		{ name: 'paragraph',   groups: [ 'list', 'indent', 'blocks', 'align', 'bidi' ] },
+		//{ name: 'CreateDiv' },
 		{ name: 'styles' },
 		{ name: 'colors' },
 		{ name: 'about' },
+       // { name: 'Span' },
 		{ name: 'Playlist' }
 	];
 
@@ -38,6 +40,10 @@ CKEDITOR.editorConfig = function( config ) {
 	// Simplify the dialog windows.
 	config.removeDialogTabs = 'image:advanced;link:advanced';
 	
-	config.extraPlugins = 'imageuploader,justify,playlist';
-	
+	config.extraPlugins = 'imageuploader,justify,playlist,div,spanmy';
+
+    config.allowedContent = true;
+    config.extraAllowedContent = 'p(*)[*]{*};div(*)[*]{*};li(*)[*]{*};span(*)[*]{*};ul(*)[*]{*}';
 };
+CKEDITOR.dtd.$removeEmpty['span'] = false;
+//config.protectedSource.push(/<(span)[^>]*>.*<\/span>/ig);

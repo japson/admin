@@ -24,10 +24,6 @@ require(__DIR__ . "/pluginconfig.php");
 $tmpusername = filter_input(INPUT_POST, 'username', FILTER_SANITIZE_STRING);
 $tmppassword = md5(filter_input(INPUT_POST, 'password', FILTER_SANITIZE_STRING));
 
- $_SESSION['username'] = $tmpusername;
-    header("Location: imgbrowser.php");
-
-
 if($tmpusername == $username and $password == $tmppassword) {
     $_SESSION['username'] = $tmpusername;
     header("Location: imgbrowser.php");

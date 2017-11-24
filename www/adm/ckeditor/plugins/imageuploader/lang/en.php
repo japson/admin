@@ -5,8 +5,8 @@ $imagebrowser2 = "In total:";
 $imagebrowser3 = "Images";
 $imagebrowser4 = "Drop your files here";
 
-$uploadpanel1 = "Выбери файл:";
-$uploadpanel2 = "Файл будет загружен в:";
+$uploadpanel1 = "Please select a file:";
+$uploadpanel2 = "The image will be uploaded to:";
 $uploadpanel3 = "The upload path can be changed in the settings";
 
 $panelsettings1 = "Upload path:";
@@ -34,13 +34,13 @@ $panelsettings22 = "Show news section";
 
 $newssection1 = "You can disable the news section in the settings panel.";
 
-$buttons1 = "Просмотр";
-$buttons2 = "Загрузить";
-$buttons3 = "Выбрать";
-$buttons4 = "Удалить";
-$buttons5 = "Отмена";
-$buttons6 = "Сохранить";
-$buttons7 = "Добавить";
+$buttons1 = "View";
+$buttons2 = "Download";
+$buttons3 = "Use";
+$buttons4 = "Delete";
+$buttons5 = "Cancel";
+$buttons6 = "Save";
+$buttons7 = "Upload";
 
 $alerts1 = "Thanks for choosing Image Uploader and Browser for CKEditor!";
 $alerts2 = "To use this plugin you need to set <b>CHMOD writable permission (0777)</b> to the <i>imageuploader</i> folder on your server.";

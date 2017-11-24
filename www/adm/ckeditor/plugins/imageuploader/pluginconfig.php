@@ -154,13 +154,10 @@ $browserfolder = pathinfo("$_SERVER[REQUEST_URI]");
 $browserfolder = ltrim($browserfolder["dirname"], '/');
 $usersiteroot = substr($_SERVER["SCRIPT_FILENAME"], 0, (stripos($_SERVER["SCRIPT_FILENAME"], $_SERVER["SCRIPT_NAME"])+1));
 
-$useruploadfolder = "$browserfolder/uploads";
+$browserfolder='/catalog/imgposts';
+//$useruploadfolder = "$browserfolder/uploads";
+$useruploadfolder = "$browserfolder";
+
 $useruploadpath = $usersiteroot."$useruploadfolder/";
 $foldershistory[] = $useruploadfolder;
 
-$username = "admin"; $password = '202cb962ac59075b964b07152d234b70';
-
-    $useruploadfolder = "/catalog/imgposts";
-    $useruploadpath = $usersiteroot."$useruploadfolder/";
-    $foldershistory[] = "/catalog/imgposts";
-     
