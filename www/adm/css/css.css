@@ -108,3 +108,5 @@ td .selectcenter select{text-align:center; height:30px;}
 .next_page {  float:right;}
 .nompage {float:right; font-size:0.9em;}
 .seones {width:900px; min-height:100px;}
+
+#mybar{display: block;min-height: 200px;overflow-y: visible;}

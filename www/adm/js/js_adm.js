@@ -837,12 +837,38 @@ $(document).on('click', '.button[name="delsong"]',function(event){
 		//console.log(newmas);
 	}
 
+	function findSongs() {
+		data={format:'position'};
+        $.ajax({
+            type: "POST",   url: "mod/dirpunkt.php",
+			 data: data,//"param="+JSON.stringify(param)+ '&put='+encodeURIComponent(JSON.stringify(put)),
+            success: function(data){
+                 console.log( "Прибыли данные: " + data  ); //+ data
+                data= JSON.parse(data);
+				$('#mybar').html(data.join(';'));
+				return false;
+
+                data= JSON.parse(data);
+                // console.log(document.getElementsByClassName('Myconfirm')[0]);
+                if(document.getElementsByClassName('Myconfirm')[0]!=undefined){$('.Myconfirm').html('<p></p>'+data[0]);}
+                else{myConfirm(data[0], '');}
+                document.body.massiv=data[1];
+                console.log(data[1]);
+                // console.log(data[2]);
+            }// success
+        });
+		console.log('yuyrty');
+
+    }
+
 
 function secToTime(sec) {
     dt = new Date();
     dt.setTime(sec * 1000);
     return dt.getUTCHours() + ":" + dt.getUTCMinutes() + ":" + dt.getUTCSeconds();
 }
+
+
 /*$(document).on('change', 'input#picture',function(event){
     var tmp=$('input#picture').val();
     $('.makepreview').html('<img src="'+tmp+'">');
