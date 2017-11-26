@@ -13,10 +13,16 @@ if(isset($_COOKIE['auth_key'])  and $arc[0]['atribut']==1)	{
         $tablic = $key;
         include('class/dir_punkt.php');
         $windrecord = new dirPunkt($tablic, $db);
-        $mass = $windrecord->havePunkt('mainmenu', 'kodmenu', '');
+        $massmenu = $windrecord->havePunkt('mainmenu', 'kodmenu', '');// menu
+        $massrasd = $windrecord->havePunkt('rasdel', 'kodrasdel', '');//rasdel have punkts
+        $mass2=$windrecord->buildPut($massmenu,$massrasd);//all dir in put
+        $windrecord->makeUrl();
+        $mass=$windrecord->allmakedir;
     }
-    //debug_to_console($mass);
-
+    //debug_to_console($massmenu);
+    $tmp=json_encode($mass);
+    $tmp2=json_encode($mass2);
+    $mass=$tmp; //[up, current]
 }
-echo json_encode($mass);
+echo ($mass);
 ?>

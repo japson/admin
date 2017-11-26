@@ -5,7 +5,7 @@ CKEDITOR.plugins.add('playlist', {
     command.canUndo = true;
 
     editor.ui.addButton('Playlist', {
-      label : 'Вставить playlist',
+      label : 'Вставить ссылку на песню',
       command : 'playlist',
       icon: 'plugins/playlist/images/cut.png'
     });

@@ -836,19 +836,22 @@ $(document).on('click', '.button[name="delsong"]',function(event){
 		//var tmp=document.getElementById('tester').massiv;
 		//console.log(newmas);
 	}
-
+var newDirOption;
 	function findSongs() {
 		data={format:'position'};
         $.ajax({
             type: "POST",   url: "mod/dirpunkt.php",
 			 data: data,//"param="+JSON.stringify(param)+ '&put='+encodeURIComponent(JSON.stringify(put)),
             success: function(data){
-                 console.log( "Прибыли данные: " + data  ); //+ data
+               //  console.log( "Прибыли данные: " + data  ); //+ data
                 data= JSON.parse(data);
-				$('#mybar').html(data.join(';'));
+               // console.log(data);
+				$('#mybar').html(data['0_0']);
+                newDirOption=createMaSong(data);
+                document.getElementsByTagName('actionmenu').massiv=data;
 				return false;
 
-                data= JSON.parse(data);
+               // data= JSON.parse(data);
                 // console.log(document.getElementsByClassName('Myconfirm')[0]);
                 if(document.getElementsByClassName('Myconfirm')[0]!=undefined){$('.Myconfirm').html('<p></p>'+data[0]);}
                 else{myConfirm(data[0], '');}
@@ -857,11 +860,44 @@ $(document).on('click', '.button[name="delsong"]',function(event){
                 // console.log(data[2]);
             }// success
         });
-		console.log('yuyrty');
-
     }
+	$(document).on('click', '.dirpunkt',function(event) {
+		var elem = event.target || event.srcElement;
+		var tmp={};
+		//tmp=document.getElementsByTagName('actionmenu').massiv;
+       // console.log(newDirOption);
+		var newzn=$(elem).attr('id');
+        var newtmp=newDirOption.punkt(newzn);
+        $('#mybar').html(newtmp);
+	});
 
+	$(document).on('click', '.buttonselectsong',function(event) {
+        var elem = event.target || event.srcElement; var makeurl='';
+        var tr=$(elem).closest('tr');
+        if($(tr).children('td').eq(1).text()=='file') {
+        	var kod=$(tr).children('td').eq(0).children('div').attr('id');
+        	var title=$(tr).children('td').eq(0).children('div').attr('title');
+        	 makeurl='<div id="'+kod+'" class="selectplay" title="'+title+'"></div> ...';
+            $('.cke_dialog_contents').find('input[type=text]').val(makeurl);
+        //<span class="selectplaynow"></span><span class="selectplayadd" ></span>
+           // console.log('ghg');
+		}
+    });
 
+function createMaSong(mass) {
+   // console.log(mass);
+	var temp='';
+    links = {};// var i=0;
+    links = mass;
+    function punkt(elem) {
+        var temp = '';
+        for (var key in  links) {
+        	if(key==elem) temp=links[key];
+		}
+      return temp;
+    }
+    return {punkt: punkt};
+}
 function secToTime(sec) {
     dt = new Date();
     dt.setTime(sec * 1000);

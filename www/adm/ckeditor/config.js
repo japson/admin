@@ -30,6 +30,12 @@ CKEDITOR.editorConfig = function( config ) {
 		{ name: 'Playlist' }
 	];
 
+
+	config.enterMode = CKEDITOR.ENTER_BR;  
+	config.entities = false;
+	config.basicEntities = false;
+	//config.fillEmptyBlocks = false;	
+
 	// Remove some buttons provided by the standard plugins, which are
 	// not needed in the Standard(s) toolbar.
 	config.removeButtons = 'Underline,Subscript,Superscript';
@@ -46,4 +52,22 @@ CKEDITOR.editorConfig = function( config ) {
     config.extraAllowedContent = 'p(*)[*]{*};div(*)[*]{*};li(*)[*]{*};span(*)[*]{*};ul(*)[*]{*}';
 };
 CKEDITOR.dtd.$removeEmpty['span'] = false;
+CKEDITOR.dtd.$removeEmpty['div'] = false;
+
+/*CKEDITOR.dtd.$removeEmpty['play'] = false;
+CKEDITOR.dtd['play']={};
+      CKEDITOR.dtd.$empty['play']=1;
+      CKEDITOR.dtd.$nonEditable['play']=1;
+      CKEDITOR.dtd.$object['play']=1;
+	   config.allowedContent = true;*/
+
 //config.protectedSource.push(/<(span)[^>]*>.*<\/span>/ig);
+/*
+// Вариант А
+config.enterMode = CKEDITOR.ENTER_P;   // вставит <p></p>
+// Вариант Б
+config.enterMode = CKEDITOR.ENTER_DIV; // вставит <div></div>
+// Вариант В
+config.enterMode = CKEDITOR.ENTER_BR;  // вставит <br/>
+
+*/
