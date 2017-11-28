@@ -309,9 +309,24 @@
 						label: editor.lang.common.cssClass,
 						'default': ''
 					}
-					
+
 					]
-				} ]
+				},
+
+                    /*{
+                        id: 'classvybor',
+                        type: 'html',
+                        //style: 'width: 100%;',
+                        //style: 'width: 150px;',
+                        html: '<div id="class_ckeditor">Выбери класс:' +
+                        '<div class="ckeditorselclass">' +
+                        '<span><input name="dzen" id="article_head_ck" type="radio" value="nedzen"> Заголовок</span><br>' +
+                        '<span><input name="dzen" id="article_citat_ck" type="radio" value="nedzen"> Цитата</span><br>' +
+                        '<span><input name="dzen" id="article_abzac_ck" type="radio" value="nedzen"> Абзац</span><br>' +
+                        '</div>' // Random text like 'xyz' will check if all are allowed.
+
+                    }*/
+				]
 			},
 			{
 				id: 'advanced',

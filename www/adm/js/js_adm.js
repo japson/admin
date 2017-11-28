@@ -680,6 +680,10 @@ changeNews=function(place){  //   методы изменения новости
 	};
 	
 }
+$(document).on("click", ".ckeditorselclass input", function(event) {
+    var elem = event.target || event.srcElement;
+    $('#cke_82_textInput').val($(elem).attr('id'));
+        });
 
 // перелистывание страниц в превью новости
 var listing=0;

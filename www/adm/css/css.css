@@ -119,3 +119,6 @@ td .selectcenter select{text-align:center; height:30px;}
 
 .selectplay{display: inline-block;}
 .selectplay {display: inline-block; background-image: url(../../img/mafonadmin2.png); background-size: contain; background-repeat: no-repeat; height:2.3em;width:3.3em; margin: -5px 5px;cursor: pointer;}
+
+div.cke_dialog_ui_input_select{display: block; width: 200px;}
+.ckeditorselclass input{min-height: 10px;}

@@ -1,0 +1,17 @@
+CKEDITOR.plugins.add('pagerasdel',{
+    init: function(editor){
+        var cmd = editor.addCommand('pagerasdel', {
+            exec:function(editor){
+                editor.insertHtml(editor.getSelection().getSelectedText()+'[_page]' );
+            }
+        });
+        cmd.modes = { wysiwyg : 1, source: 1 };
+        editor.ui.addButton('pagerasdel',{
+            label: 'вставить разделитель страницы',
+            command: 'pagerasdel',
+            icon:'plugins/pagerasdel/icons/page.png',
+            toolbar: 'blocks,52'
+        });
+    }
+
+});

@@ -26,14 +26,14 @@ CKEDITOR.editorConfig = function( config ) {
 		{ name: 'styles' },
 		{ name: 'colors' },
 		{ name: 'about' },
-       // { name: 'Span' },
+        { name: 'pagerasdel' },
 		{ name: 'Playlist' }
 	];
 
 
 	config.enterMode = CKEDITOR.ENTER_BR;  
 	config.entities = false;
-//	config.basicEntities = false;
+	config.basicEntities = false;
 	//config.fillEmptyBlocks = false;	
 
 	// Remove some buttons provided by the standard plugins, which are
@@ -46,7 +46,7 @@ CKEDITOR.editorConfig = function( config ) {
 	// Simplify the dialog windows.
 	config.removeDialogTabs = 'image:advanced;link:advanced';
 	
-	config.extraPlugins = 'imageuploader,justify,playlist,div,spanmy';
+	config.extraPlugins = 'imageuploader,justify,playlist,spanmy,pagerasdel,divmy';
 
     config.allowedContent = true;
     config.extraAllowedContent = 'p(*)[*]{*};div(*)[*]{*};li(*)[*]{*};span(*)[*]{*};ul(*)[*]{*}';

@@ -26,7 +26,7 @@ CKEDITOR.editorConfig = function( config ) {
 		{ name: 'styles' },
 		{ name: 'colors' },
 		{ name: 'about' },
-       // { name: 'Span' },
+        { name: 'pagerasdel' },
 		{ name: 'Playlist' }
 	];
 
@@ -46,7 +46,7 @@ CKEDITOR.editorConfig = function( config ) {
 	// Simplify the dialog windows.
 	config.removeDialogTabs = 'image:advanced;link:advanced';
 	
-	config.extraPlugins = 'imageuploader,justify,playlist,div,spanmy';
+	config.extraPlugins = 'imageuploader,justify,playlist,div,spanmy,pagerasdel,divmy';
 
     config.allowedContent = true;
     config.extraAllowedContent = 'p(*)[*]{*};div(*)[*]{*};li(*)[*]{*};span(*)[*]{*};ul(*)[*]{*}';
