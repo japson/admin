@@ -8,7 +8,7 @@ if ($sost==1) {
 	$classpiv='pivoimg';
 	$classchai='chaiimg';
 	$piven=" cursor";
-	
+
 	}
 else  {
 	$modern="style='opacity: 1; display: block;'";
