@@ -50,7 +50,7 @@ function savcook(perem) {
 
 }
 
-$('.bumcenter').mouseenter( function() { 
+$('#menlast').mouseenter( function() {
 $('.bumimg').each(function(index, element) {$(element).addClass('povor'+index);});
 //$('.bumimg').children('div').each(function(index, element) {$(element).addClass('cursor');});
 // alert(); 
@@ -139,6 +139,62 @@ function beginSong(event){  // перемотка на начало песни
 	//console.log(elem);
 	
 	}
+	//------------------среднее меню
+$(function() {
+    /**
+     * for each menu element, on mouseenter,
+     * we enlarge the image, and show both sdt_active span and
+     * sdt_wrap span. If the element has a sub menu (sdt_box),
+     * then we slide it - if the element is the last one in the menu
+     * we slide it to the left, otherwise to the right
+     */
+    $('#sdt_menu > li').bind('mouseenter',function(){
+        var $elem = $(this);
+        $elem.find('img')
+            .stop(true)
+            .animate({
+                'width':'130px',
+                'height':'130px',
+                'top':'0px',
+                'left':'0px'
+            },600,'easeOutBack')
+            .addBack()
+            .find('.sdt_wrap')
+            .stop(true)
+            .animate({'top':'170px'},900,'easeOutBack')
+            .addBack()
+            .find('.sdt_active')
+            .stop(true)
+            .animate({'height':'170px'},500,function(){
+                var $sub_menu = $elem.find('.sdt_box');
+                if($sub_menu.length){
+                    var left = '130px';
+                    if($elem.parent().children().length == $elem.index()+1)
+                        left = '-170px';
+                    $sub_menu.show().animate({'left':left},250);
+                }
+            });
+    }).bind('mouseleave',function(){
+        var $elem = $(this);
+        var $sub_menu = $elem.find('.sdt_box');
+        if($sub_menu.length)
+            $sub_menu.hide().css('left','0px');
+
+        $elem.find('.sdt_active')
+            .stop(true)
+            .animate({'height':'0px'},300)
+            .addBack().find('img')
+            .stop(true)
+            .animate({
+                'width':'0px',
+                'height':'0px',
+                'left':'85px'},400)
+            .addBack()
+            .find('.sdt_wrap')
+            .stop(true)
+            .animate({'top':'25px'},500);
+    });
+});
 
 //----------------------- переворот страниц
 var listing=0;

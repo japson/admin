@@ -29,7 +29,7 @@ include('mod/create_menu.php');
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 
-<script src="js/jquery-3.1.1.min.js"></script>
+<script src="js/jquery-3.2.1.min.js"></script>
 <link rel="stylesheet" type="text/css" href="css/animbkv/normalize.css" />
 		<!--<link rel="stylesheet" type="text/css" href="css/animbkv/component.css" />-->
 		<script src="css/animbkv/modernizr.custom.js"></script>
@@ -38,7 +38,8 @@ include('mod/create_menu.php');
 <link rel="stylesheet" type="text/css" href="css/knobKnob.css" />
 <link rel="stylesheet" type="text/css" href="css/css_maf.css"/>
 <link rel="stylesheet" type="text/css" href="css/button.css"/>
-<link rel="stylesheet" type="text/css" href="css/css.css"/>
+<link rel="stylesheet" type="text/css" href="css/std_menu.css"/>
+    <link rel="stylesheet" type="text/css" href="css/css.css"/>
 
 <link href="css/fonts/comfortaa.css" rel="stylesheet"/>
 
@@ -98,7 +99,56 @@ include('mod/create_menu.php');
    
 </div>
 
-<div class='midblock '> 
+<div class='midblock '>
+    <div class="beforemidmenu">
+    <div class="middlemenu">
+        <ul id="sdt_menu" class="sdt_menu">
+            <li>
+                <a href="#">
+                    <img src="img/2.jpg" alt=""/>
+                    <span class="sdt_active"></span>
+                    <span class="sdt_wrap">
+							<span class="sdt_link">About me</span>
+							<span class="sdt_descr">Get to know me</span>
+						</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="img/1.jpg" alt=""/>
+                    <span class="sdt_active"></span>
+                    <span class="sdt_wrap">
+							<span class="sdt_link">Portfolio</span>
+							<span class="sdt_descr">My work</span>
+						</span>
+                </a>
+                <div class="sdt_box">
+                    <a href="#">Websites</a>
+                    <a href="#">Illustrations</a>
+                    <a href="#">Photography</a>
+                </div>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="img/1.jpg" alt=""/>
+                    <span class="sdt_active"></span>
+                    <span class="sdt_wrap">
+							<span class="sdt_link">Portfolio</span>
+							<span class="sdt_descr">My work</span>
+						</span>
+                </a>
+                <div class="sdt_box">
+                    <a href="#">Websites</a>
+                    <a href="#">Illustrations</a>
+                    <a href="#">Photography</a>
+                </div>
+            </li>
+           <!-- <li class="toendli"><div class="toend"></div></li>-->
+        </ul>
+
+    </div>
+    <!--<div class="middlemenuafter"></div>-->
+    </div>
 		<div class='pagecurrent'> <img class="blocknot" src="img/blocknot2.png">
         
        			<div id="mainpages" class="mainpages">
@@ -140,11 +190,13 @@ include('mod/create_menu.php');
 			
 </div><!-- /container -->
 <!--bodpivo -->
+
 <script type="text/javascript" src="js/transform.js"></script>
 <script type="text/javascript" src="js/knobKnob.jquery.js"></script>
 <script type="text/javascript" src="js/jquery.cassette.js"></script>
 <script type="text/javascript" src="js/container.js"></script>
 <script type="text/javascript" src="js/jquery.simplemarquee.js"></script>
+<script type="text/javascript" src="js/jquery.easing.1.3.js"></script>
 <script src="js/js_effect.js"></script>
 </body>
 </html>
