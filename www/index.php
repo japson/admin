@@ -18,7 +18,8 @@ else  {
 	$chaen=" cursor";
 	}
 include('mod/mafon.php');
-
+//echo $_SERVER["HTTP_HOST"] ;
+include('mod/create_menu.php');
 ?>
 
 <!DOCTYPE html>
@@ -47,7 +48,7 @@ include('mod/mafon.php');
 <title>Документ без названия</title>
 
 </head>
-
+<? debug_to_console($menumodern); ?>
 <body class="bodpivo">
 <ul class="cb-slideshow new" <? echo $slide; ?>>
     <li> <span>Image 01</span></li>
@@ -56,25 +57,25 @@ include('mod/mafon.php');
 <div style=" width:100%; height:1px; clear:both;"> </div>
 <div class='leftblock '>  
 			
-            <div class="menu "<? echo $sovok; ?> >
+            <!--<div class="menu "<?/* echo $sovok;  */?> >
 				<ul class="grid">
 					<li class="ot-letter-bottom"><span data-letter="Партия">Статьи</span></li>
                     <li class="ot-letter-bottom"><span data-letter=" – Наш">&nbsp;&nbsp;Фото&nbsp;</span></li>
                      <li class="ot-letter-bottom"><span data-letter="Рулевой!">Музыка</span></li>
-                    <!--<li class="ot-letter-right"><span data-letter="Партия">Музыка</span></li>-->
+
                    </ul>
             </div>
            
-            <div class="menu menu2"<? echo $sovok; ?> >       
+            <div class="menu menu2"<?/* echo $sovok; */?> >
                    <ul class="grid">
 					<li class="ot-letter-bottom"><span data-letter="Космос">Стихи&nbsp;</span></li>
                     <li class="ot-letter-bottom"><span data-letter=" – Детям!">&nbsp;&nbsp;&nbsp;Japson&nbsp;</span></li>
                      
-                    <!--<li class="ot-letter-right"><span data-letter="Партия">Музыка</span></li>-->
+
                    </ul>
-			</div>
+			</div>-->
             
-            <div class='bumenu' <? echo $modern; ?>>
+            <!--<div class='bumenu' <?/* echo $modern; */?>>
              <div class='bumimg' id="men1"> 	<img src='img/klok1.png'> <div>Музыка</div></div>
             <div class='bumimg'  id="men2"> 	<img src='img/klok2.png'><div>Стихи</div> 	</div>
              <div class='bumimg'  id="men3"> 	<img src='img/klok3.png'> <div>Фото</div>	</div>
@@ -82,8 +83,8 @@ include('mod/mafon.php');
              <div class='bumimg'  id="men5"> 	<img src='img/klok5.png'> <div>Japson</div>	</div>
              <div class='bumimg'  id="men6"> 	<img src='img/klok6.png'> <div>Меню</div>	</div>
               <div class='bumcenter'> </div>
-            </div>
-            
+            </div>-->
+    <? echo($menumodern); ?>
                      
 	<div class='pivo'>
 	<div class=" piven piventer <? echo $piven; ?> "> 	</div>

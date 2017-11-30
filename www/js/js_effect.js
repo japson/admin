@@ -14,9 +14,9 @@ $(document).on("click",'.piven',function(){
 	//$('.cb-slideshow').css("background-image",'url("../img/kultura_empty.jpg")');	
 	//$('.cb-slideshow').animate({opacity:'1'},600);
 		});
-		$('.bumenu').css('opacity',0).css('display','block');
-		$('.bumenu').animate({opacity:'1'},700,function(){});
-		$('.menu').animate({opacity:'0'},700,function(){$('.menu').css('display','none');});
+		//$('.bumenu').css('opacity',0).css('display','block');
+	//	$('.bumenu').animate({opacity:'1'},700,function(){});
+	//	$('.menu').animate({opacity:'0'},700,function(){$('.menu').css('display','none');});
 		savcook(2);
 	}
 	//tango(0); return false;
@@ -29,9 +29,9 @@ $(document).on("click",'.chaien',function(){
 		$('.chaien').each(function(index, element) {$(element).removeClass('cursor');   });
 		$('.piven').each(function(index, element) {$(element).addClass('cursor');   });
 		$('.cb-slideshow').animate({opacity:'1'},900, function(){	});
-		$('.menu').css('opacity',0).css('display','block');
-		$('.menu').animate({opacity:'1'},700,function(){});
-		$('.bumenu').animate({opacity:'0'},700,function(){$('.bumenu').css('display','none');});
+	//	$('.menu').css('opacity',0).css('display','block');
+	//	$('.menu').animate({opacity:'1'},700,function(){});
+		//$('.bumenu').animate({opacity:'0'},700,function(){$('.bumenu').css('display','none');});
 		savcook(1);
 		}else {}
 	
