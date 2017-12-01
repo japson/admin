@@ -2,9 +2,9 @@
 /* CSS Document */
 
 .table {font-size:1em;}
-.tablcentr, .tablvyvod, .tablrol, .tablpictur, .tablexternal{ text-align:center;}
-.tablpictur div { margin:0 10px; cursor:pointer;}
-.tablvyvod, .tablexternal, .tabllength {width:30px;}
+.tablcentr, .tablvyvod, .tablrol, .tablpictur, .tablexternal, .tablredirect{ text-align:center;}
+.tablpictur div, .tablredirect div{ margin:0 10px; cursor:pointer;}
+.tablvyvod, .tablexternal, .tabllength, .tablredirect {width:30px;}
 .tablsort, .sorty{width: 30px;}
 .tablrol {width:120px;}
 /*td.action, td.buttons { max-width:20em;}*/
@@ -115,7 +115,7 @@ td .selectcenter select{text-align:center; height:30px;}
 #mybar .dirpunkt{cursor: pointer;}
 #mybar .dirpunkt:hover{text-decoration: underline;}
 #mybar .filepunkt{max-width: 300px; overflow: hidden}
-#mybar .buttonselectsong{width:19px;height:19px; background-image: url(../img/plus.png); background-size: cover; margin: 0 0 0 30%;cursor: pointer;}
+#mybar .buttonselectsong, #mybar .buttonselectdir{width:19px;height:19px; background-image: url(../img/plus.png); background-size: cover; margin: 0 0 0 30%;cursor: pointer;}
 
 .selectplay{display: inline-block;}
 .selectplay {display: inline-block; background-image: url(../../img/mafonadmin2.png); background-size: contain; background-repeat: no-repeat; height:2.3em;width:3.3em; margin: -5px 5px;cursor: pointer;}

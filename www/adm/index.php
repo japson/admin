@@ -28,7 +28,7 @@ if ( $logged_in &&  $auth_in ) {
 		$test->createButton($mass_actions);
 		$vyvod=$test->outtitle('Разделы: '.$alias);
 		$test->nameImgTbl();
-		$vyvod.=$test->createOut($massTypField,'', '?section=');
+		$vyvod.=$test->createOut($massTypField,$tbl_select, '?section=');
 		$masj="{'table':'".$test->aliasTbl()."','kodrasdel':0,'kodmenu':".$men.",'alias':'Разделы: ".$alias."'}";
 		$vyvod.='<script >table_auto("section",'.$masj.');</script >';
 		
@@ -87,7 +87,7 @@ if ( $logged_in &&  $auth_in ) {
 		$test->createButton($mass_actions);
 		$vyvod=$test->outtitle('Разделы: '.$alias);
 		$test->nameImgTbl();
-		$vyvod.=$test->createOut($massTypField,'', '?section=');
+		$vyvod.=$test->createOut($massTypField,$tbl_select, '?section=');
 		$masj="{'table':'".$test->aliasTbl()."','kodmenu':".$menu->menukod.",'kodrasdel':".$men.",'alias':'Разделы: ".$alias."'}";
 		$vyvod.='<script>table_auto("section",'.$masj.');</script>';
 		

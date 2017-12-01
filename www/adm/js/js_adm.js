@@ -1,4 +1,6 @@
 // JavaScript Document
+var newDirOption;
+
 function datPars(data){ //проверка ajax поступления22   
 	var result=0;
 	var answer='Problem on the server. Its not answer.';
@@ -79,7 +81,7 @@ function createParam(){
 	var men=new createWindow(''); 	men.wincreate(param);	}
 function createSect(){
 	var param=document.getElementById('section').massiv;
-	var men=new createWindow(''); 	men.wincreate(param);	
+	var men=new createWindow('typmenu'); 	men.wincreate(param);
 	}	
 function createArticle(){
 	var param=document.getElementById('post').massiv;
@@ -238,6 +240,7 @@ edRec.prototype={
 		
 			switch (attr){
 				case 'external':;
+               // case 'redirect':;
 			case 'vyvod': tmp=$(element).find('input').prop("checked"); if(tmp){self.out[attr]=1;}else{self.out[attr]=0;}  ;break;
 			case 'rol': self.out[attr]=$(element).find('option:selected').val();  ;break;
 			default: tmp=$(element).find('input'); if(tmp.length>0) {self.out[attr]=$(element).find('input').val();  } 
@@ -349,6 +352,34 @@ function sorty (elem,direct){
 		});
 	
 }
+// -- работа с redirect------------------------
+$(document).on("click", ".tablredirect div", function(event){ var elem=event.target||event.srcElement;
+    var tbl=$(elem).closest('table').attr('id');
+    var param=document.getElementById(tbl).massiv;
+    tbl=$(elem).closest('tr').attr('id'); // номер
+   // var men=new createWinPict(tbl); 	men.wincreate(param);
+    console.log(param);
+    var data={param:param,id:tbl};
+    $.ajax({
+        type: "POST",   url: "mod/dirall.php",
+        data: data,//"param="+JSON.stringify(param)+ '&put='+encodeURIComponent(JSON.stringify(put)),
+        success: function(data){
+              console.log( "Прибыли данные: " + data  ); //+ data
+
+            data= JSON.parse(data);
+             console.log(data);
+
+            myConfirm('<div id="mybar" >'+data['0_0']+'</div>'+data['outbutton'], '');
+           // $('#mybar').html(data['0_0']);
+            newDirOption=createMaSong(data);
+           // document.getElementsByTagName('actionmenu').massiv=data;
+            return false;
+        }// success
+    });
+
+});
+
+
 // -- работа с картинками------------------------
 $(document).on("click", ".tablpictur div", function(event){ var elem=event.target||event.srcElement; 
 				var tbl=$(elem).closest('table').attr('id');
@@ -503,6 +534,7 @@ $(document).on("change", "[name='povorot2222']", function(event){
 	}
 	//console.log($("[name='povorot']").val());
 });
+
 function updateCoords(c)
 {
     $('#x').val(c.x);
@@ -840,7 +872,7 @@ $(document).on('click', '.button[name="delsong"]',function(event){
 		//var tmp=document.getElementById('tester').massiv;
 		//console.log(newmas);
 	}
-var newDirOption;
+
 	function findSongs() {
 		data={format:'position'};
         $.ajax({
@@ -869,7 +901,7 @@ var newDirOption;
 		var elem = event.target || event.srcElement;
 		var tmp={};
 		//tmp=document.getElementsByTagName('actionmenu').massiv;
-       // console.log(newDirOption);
+        console.log(newDirOption);
 		var newzn=$(elem).attr('id');
         var newtmp=newDirOption.punkt(newzn);
         $('#mybar').html(newtmp);

@@ -112,6 +112,12 @@ public $style='';
 							break;
                             case 'times':$temp.='<td name="'.$key.'" class="tabl'.$key.'">'.$this->time($value).'</td>';
                                 break;
+                            case 'redirect':
+                                if($value>0) {$redir='Есть';} else{$redir='Нет';}
+                                $temp.='<td name="'.$key.'" class="tabl'.$key.'"><div>'.$redir.'</div></td>';
+                                //debug_to_console($kodnom);
+                                break;
+
 							}
 					}else{
 					

@@ -1,9 +1,9 @@
 <?
 // массивы выводимых полей
-$massAssoc=array("login" => "Логин","rol" => "Роль","email" => "E-mail","sort" => "№","name" => "Название","nameurl" => "ЧПУ page", "vyvod" => "Вывод", "artist" => "Артист", "title" => "Название", "put" => "Ссылка", "length" => "Длина", 'note'=>'Описание','external'=>'Внешняя',
+$massAssoc=array("login" => "Логин","rol" => "Роль","email" => "E-mail","sort" => "№","name" => "Название","nameurl" => "ЧПУ page", "vyvod" => "Вывод", "artist" => "Артист", "title" => "Название", "put" => "Ссылка", "length" => "Длина", 'note'=>'Описание','external'=>'Внешняя', 'redirect'=>'InnerUrl',
 "href" => "Ссылка", "titlepage" => "Title page", "pssw"=>"Пароль", "parametr"=>"Параметр", "value"=>"Значение","info"=>"Описание",'pictur'=>'Picture');
-$massTypField=array('vyvod'=>'checkbox','rol'=>'select', 'name'=>'href', 'kod'=>'kod', 'pssw'=>'password','pictur'=>'picture','external'=>'checkbox','length'=>'times');
-$editAbles=array('login','email','name','nameurl','href','title','rol','vyvod','pictur','title','artist','note','length','put','external');
+$massTypField=array('vyvod'=>'checkbox','rol'=>'select', 'name'=>'href', 'kod'=>'kod', 'pssw'=>'password','pictur'=>'picture','external'=>'checkbox','redirect'=>'redirect','length'=>'times');
+$editAbles=array('login','email','name','nameurl','href','title','rol','vyvod','pictur','title','artist','note','length','put','external', 'redirect');
 
 
 switch($tablic) {
@@ -25,8 +25,8 @@ switch($tablic) {
 					$mass_actions=array('Править'=>'editRecord','Удалить'=>'delRecord','Изменить пароль'=>'changePass'); 
 					break;
 					
-	case 'rasdel': $userpunkt =array('sort','name','nameurl','vyvod', 'rol','pictur'); 
-					$inputpunkt =array('name','nameurl');
+	case 'rasdel': $userpunkt =array('sort','name','nameurl', 'redirect','rol', 'vyvod','pictur');
+					$inputpunkt =array('name','nameurl','rol');
 					$tbl_select=array('rol'=>'typmenu');
 					$mass_actions=array('Править'=>'editRecord','Удалить'=>'delRecord');
 					break;

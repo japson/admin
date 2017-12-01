@@ -76,6 +76,9 @@ class RecordEdit extends MenuTable{ // вывод редактируемых п�
 			$temp.='<td name="'.$key.'" class="tabl'.$key.'"><div class="selectcenter"><select class="form-control" name="'. $key.'" id="'. $key.'">'.$this->selectField($typmenu, $valcur,$key).'</select></div></td>';break;
 			case 'sort': $temp.='<td name="'.$key.'" class="tabl'.$key.'">[_VALUE]</td>';break;
 			case 'picture': $temp.='<td name="'.$key.'" class="tabl'.$key.'">'.$this->countpictur($rec).'</td>';;break;
+            case 'redirect':
+                if($valcur>0) {$redir='Есть';} else{$redir='Нет';}
+                $temp.='<td name="'.$key.'" class="tabl'.$key.'"><div>'.$redir.'</div></td>';;break;
 			default: $temp.='<td name="'.$key.'" class="tabl'.$key.'"><input type="text" value="[_VALUE]"></input></td>';break;
 		}
 		//debug_to_console($temp);
