@@ -51,7 +51,7 @@ function savcook(perem) {
 }
 
 $('#menlast').mouseenter( function() {
-$('.bumimg').each(function(index, element) {$(element).addClass('povor'+index);});
+$('.bumimg').each(function(index, element) {if($(element).attr('id')!='menlast'){$(element).addClass('povor'+index);}});
 //$('.bumimg').children('div').each(function(index, element) {$(element).addClass('cursor');});
 // alert(); 
  });
