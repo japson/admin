@@ -49,7 +49,6 @@ include('mod/create_menu.php');
 <title>Документ без названия</title>
 
 </head>
-<? debug_to_console($menumodern); ?>
 <body class="bodpivo">
 <ul class="cb-slideshow new" <? echo $slide; ?>>
     <li> <span>Image 01</span></li>
@@ -85,8 +84,9 @@ include('mod/create_menu.php');
              <div class='bumimg'  id="men6"> 	<img src='img/klok6.png'> <div>Меню</div>	</div>
               <div class='bumcenter'> </div>
             </div>-->
+    <nav>
     <? echo($menumodern); ?>
-                     
+    </nav>>
 	<div class='pivo'>
 	<div class=" piven piventer <? echo $piven; ?> "> 	</div>
     <div class="piven piventer2 <? echo $piven; ?>"> 	</div>
@@ -198,5 +198,6 @@ include('mod/create_menu.php');
 <script type="text/javascript" src="js/jquery.simplemarquee.js"></script>
 <script type="text/javascript" src="js/jquery.easing.1.3.js"></script>
 <script src="js/js_effect.js"></script>
+<script src="js/js.js"></script>
 </body>
 </html>
