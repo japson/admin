@@ -17,9 +17,10 @@ else  {
 	$classchai='chaiimg chai_rot';
 	$chaen=" cursor";
 	}
+include('mod/create_menu.php');
 include('mod/mafon.php');
 //echo $_SERVER["HTTP_HOST"] ;
-include('mod/create_menu.php');
+
 ?>
 
 <!DOCTYPE html>
@@ -28,19 +29,20 @@ include('mod/create_menu.php');
 
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <link rel="stylesheet" type="text/css" href="css/css_eff.css"/>
+    <link rel="stylesheet" type="text/css" href="css/css.css"/>
+    <link rel="stylesheet" type="text/css" href="css/css_maf.css"/>
 
-<script src="js/jquery-3.2.1.min.js"></script>
+    <script src="js/jquery-3.2.1.min.js"></script>
 <link rel="stylesheet" type="text/css" href="css/animbkv/normalize.css" />
 		<!--<link rel="stylesheet" type="text/css" href="css/animbkv/component.css" />-->
 		<script src="css/animbkv/modernizr.custom.js"></script>
 
-<link rel="stylesheet" type="text/css" href="css/css_eff.css"/>
+
 <link rel="stylesheet" type="text/css" href="css/knobKnob.css" />
-<link rel="stylesheet" type="text/css" href="css/css_maf.css"/>
+
 <link rel="stylesheet" type="text/css" href="css/button.css"/>
 <link rel="stylesheet" type="text/css" href="css/std_menu.css"/>
-    <link rel="stylesheet" type="text/css" href="css/css.css"/>
-
 <link href="css/fonts/comfortaa.css" rel="stylesheet"/>
 
 
@@ -51,8 +53,8 @@ include('mod/create_menu.php');
 </head>
 <body class="bodpivo">
 <ul class="cb-slideshow new" <? echo $slide; ?>>
-    <li> <span>Image 01</span></li>
-    <li> <span>Image 021</span></li>
+   <!-- <li> <span>Image 01</span></li>
+    <li> <span>Image 021</span></li>-->
 </ul>
 <div style=" width:100%; height:1px; clear:both;"> </div>
 <div class='leftblock '>  
@@ -101,9 +103,9 @@ include('mod/create_menu.php');
 
 <div class='midblock '>
     <div class="beforemidmenu">
-    <div class="middlemenu">
+    <div class="middlemenu" id="middle_menu">
         <ul id="sdt_menu" class="sdt_menu">
-            <li>
+            <!--<li>
                 <a href="#">
                     <img src="img/2.jpg" alt=""/>
                     <span class="sdt_active"></span>
@@ -142,7 +144,7 @@ include('mod/create_menu.php');
                     <a href="#">Illustrations</a>
                     <a href="#">Photography</a>
                 </div>
-            </li>
+            </li>-->
            <!-- <li class="toendli"><div class="toend"></div></li>-->
         </ul>
 

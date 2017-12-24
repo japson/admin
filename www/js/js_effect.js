@@ -63,7 +63,7 @@ $('.bumimg').each(function(index, element) {$(element).removeClass('povor'+index
 
 
 
-}); // $( document ).ready(function() {
+}); // $( document ).ready(function()
 
 
 
@@ -140,7 +140,7 @@ function beginSong(event){  // перемотка на начало песни
 	
 	}
 	//------------------среднее меню
-$(function() {
+var middlmen=function() {
     /**
      * for each menu element, on mouseenter,
      * we enlarge the image, and show both sdt_active span and
@@ -194,7 +194,7 @@ $(function() {
             .stop(true)
             .animate({'top':'25px'},500);
     });
-});
+};
 
 //----------------------- переворот страниц
 var listing=0;
