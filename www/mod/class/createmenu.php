@@ -73,12 +73,45 @@ class createMenu{
     }
 
     private function CMP($row,$name){ // nameurl translation
-        if(strlen($row['nameurl'])){$nameurl=($row['nameurl']); }
-        else{$nameurl=translit($row[$name]); }
+        if(strlen($row['nameurl'])){$nameurl=$this->translit($row['nameurl']); }
+        else{$nameurl=$this->translit($row[$name]); }
         //$temp=array('nameurl'=>$nameurl,'rol'=>$row['rol'],'name'=>$row['name'],'kodmenu'=>$kodmenu,'rasdel'=>$row['kodrasdel'],'table'=>$nmtbl,'kod'=>$row['kod']);
        // debug_to_console($sms);
         return $nameurl;
     }
+
+    public function currentArticle($tbl,$where){
+        $dbl=$this->db;
+        $sql = "SELECT * FROM ".$tbl." ".$where."  ORDER by sort";
+        $stmt = $dbl->prepare($sql);
+        $stmt->execute();
+        $temp=''; $key='';
+        if ($sms = $stmt->fetchAll(PDO::FETCH_ASSOC)) {
+
+            if(count($sms)>0){} //обработать комплект статей
+            if(count($sms)==1) { //обработать одну статей
+                if($redirect=$sms[0]['$redirect']) {} //обработать редирект
+                $temp=$this->makeArticle($sms[0]);
+            }
+            if(count($sms)==0){} //обработать нет статей
+        }
+         return $temp;
+    }
+
+    private function makeArticle($sms){
+        $tmp=htmlspecialchars_decode($sms['post']); $book='';
+        $key=htmlspecialchars_decode($sms['keywords']);
+        $pieces = explode("[_page]", $tmp);
+        for($i=0;$i<count($pieces);$i++) {
+            if($i==0){$styl='current ';} else {$styl='';}
+            $book.='<div id="page'.($i+1).'" class="secstr  '.$styl.'">'.
+                '<img class="blokpage" src="img/blokpage.jpg">'.
+                '<div class="txt_block_head">'.$sms['name'].'</div>'.
+                '<div class="txt_block">'.  $pieces[$i].'</div></div>';
+        }
+        return array($book,$key);
+    }
+
 
     private function translit($s) {
         $s = (string) $s; // преобразуем в строковое значение

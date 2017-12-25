@@ -206,10 +206,12 @@
 .povor555:hover{transform: translate(120px,-50px) rotate(-15deg); z-index:10;  transition:  1.5s; }
 
 /* page -------------------------------*/
+.mainpages{font-family: "Myriad Pro", "Trebuchet MS", sans-serif;}
 .pagecurrent { border: #30F none 2px; text-align:center;  position:relative; margin:0 auto 0; width:90%; min-height:600px; z-index: 9; top:10px;  }
 .blocknot { position:relative; z-index:10; }
 .blokpage { position:absolute; left:0px; top:0px; z-index:12;}
-.txt_block {position:absolute; left:75px; top:50px; z-index:12; color:#006;}
+.txt_block {position:absolute; left:15px; top:50px; z-index:12; color:#006; width: 96%;}
+.txt_block_head {text-align: center; font-size: 1.4em; font-weight: bold; color:#6e3414; z-index:12;position: relative;text-transform: uppercase;  }
 .next_page { width:40px; height:40px; background-color:#0F0;  bottom:20px; right:60px;position:absolute; z-index:25;}
 .prev_page { width:40px; height:40px; background-color:#0F0;  bottom:20px; left:60px;position:absolute; z-index:25;}
 .mainpages { width: 542px; height:734px; position:absolute; z-index:9; top:38px; left:60px;}

@@ -35,7 +35,7 @@ switch($tablic) {
 					$tbl_select='';
 					$mass_actions=array('Править'=>'editRecord','Удалить'=>'delRecord');
 					break;
-    case 'news': $userpunkt =array('sort','name','nameurl','vyvod', 'pictur');
+    case 'news': $userpunkt =array('sort','name','nameurl','redirect','vyvod', 'pictur');
                 $inputpunkt =array('name','nameurl');
                 $tbl_select='';
                 $mass_actions=array('Править'=>'editRecord','Удалить'=>'delRecord');

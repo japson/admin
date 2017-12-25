@@ -10,7 +10,7 @@ function currentState(){
 };
 var curState=currentState();
 
-function goUrl(event){
+function goUrl(event){ // главное
     var elem=event.target||event.srcElement;
     var men=$(elem).closest('div').parent('div').attr('name');
     var mass=men.split('_');
@@ -33,11 +33,14 @@ var makerMenu=function(mass,id,callback){
     $.ajax({
         type: "POST",   url: "mod/hormenu.php",   data: data3,
         success: function(data){
-            // console.log( "Прибыли данные: " + data  ); //+ data
+           //  console.log( "Прибыли данные: " + data  ); //+ data
             data= JSON.parse(data);
-            $('#'+id).html(data);
+            $('#'+id).html(data[0]);
+          //  console.log(data[1][0]);
+            $('#mainpages').html(data[1][0]);
             callback();
             return false;
+
             // console.log(document.getElementsByClassName('Myconfirm')[0]);
             if(document.getElementsByClassName('Myconfirm')[0]!=undefined){$('.Myconfirm').html('<p></p>'+data[0]);}
             else{myConfirm(data[0], '');}

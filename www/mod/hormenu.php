@@ -18,7 +18,9 @@ include('class/makemenu.php');
         $menu->massivRasdel($where,1);
         //echo json_encode($menu->mainmenu);
         $menuhoriz=$menu->makeHorMenu();
-        echo json_encode($menuhoriz);
+        $massart=$menu->currentArticle('news',$where);
+
+        echo json_encode(array($menuhoriz,$massart));
     }
 
 
