@@ -20,10 +20,14 @@ if(isset($_COOKIE['auth_key'])  and $arc[0]['atribut']==1)	{
         $massrasd = $windrecord->selectName('rasdel', 'kodrasdel', '');//rasdel
        // $mass2=$windrecord->buildPut($massmenu,$massrasd);//all dir in put
         $windrecord->buildPutMini($massmenu,$massrasd);
-        $windrecord->actselect='redirSelect();';
+        $windrecord->actselect='redirSelect(event);';
         $windrecord->makeUrl();
+        $link=$windrecord->testLink(str_replace('nom','',$id));
+        //debug_to_console($link);
+        $link='<div class="oldput">Линк: '.$link.'</div>';
         $mass=$windrecord->allmakedir;
-        $mass['outbutton']=$windrecord->outAction('redirSelect') ;
+        $mass['outbutton']=$link.$windrecord->outAction('redirSave') ;
+        $mass['record']=$id.'_'.$data['table'];
     }
     //debug_to_console($massrasd);
     //debug_to_console($mass2);

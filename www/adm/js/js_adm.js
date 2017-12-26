@@ -364,10 +364,10 @@ $(document).on("click", ".tablredirect div", function(event){ var elem=event.tar
         type: "POST",   url: "mod/dirall.php",
         data: data,//"param="+JSON.stringify(param)+ '&put='+encodeURIComponent(JSON.stringify(put)),
         success: function(data){
-              console.log( "Прибыли данные: " + data  ); //+ data
+            //  console.log( "Прибыли данные: " + data  ); //+ data
 
             data= JSON.parse(data);
-             console.log(data);
+             //console.log(data);
 
             myConfirm('<div id="mybar" >'+data['0_0']+'</div>'+data['outbutton'], '');
            // $('#mybar').html(data['0_0']);
@@ -378,6 +378,30 @@ $(document).on("click", ".tablredirect div", function(event){ var elem=event.tar
     });
 
 });
+
+function redirSelect(event){    var elem=event.target||event.srcElement; addClass(elem);}
+
+function redirSave () {
+	var nam=$('tr.tblcolorstr').children('td').eq(0).children('div').attr('name');
+	if(nam) {
+		var param=newDirOption.punkt('record').split('_');
+        var data={param:param,save:{redirect : nam}};
+        $.ajax({
+            type: "POST",   url: "mod/dirallsave.php",
+            data: data,
+            success: function(data){
+                // console.log( "Прибыли данные: " + data  ); //+ data
+				if(data) {
+					var tmp=$('table#'+param[1]).find('tr#'+param[0]).children('.tablredirect').children('div').html('Есть');
+                    //console.log(tmp);
+				}
+            }// success
+        });
+        delOverley();
+	}
+ //   console.log(newDirOption.punkt('record'));
+
+}
 
 
 // -- работа с картинками------------------------

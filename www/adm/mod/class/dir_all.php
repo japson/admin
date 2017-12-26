@@ -98,7 +98,7 @@ class dirPunkt{
             $mass[]='<tr><td><div class="dirpunkt" id="'.'[_UPZAM]'.'">'.'...'.'</div></td><td></td><td></td></tr>';
                 foreach ($this->allrasdel as $row){
                     if($row[2]==$kodmenu and $row[3]==$kodrasdel){
-                        $mass[]='<tr><td><div class="dirpunkt" id="'.$row[2].'_'.$row[0].'"  name="'.$row[0].'_'.$tblalias.'">'.$row[1].'</div></td><td>DIR</td><td><div class="buttonselectdir" onclick="{'.$this->actselect.'}"></div></td></tr>';
+                        $mass[]='<tr id="__'.$row[2].'_'.$row[0].'"><td><div class="dirpunkt" id="'.$row[2].'_'.$row[0].'"  name="'.$row[0].'_'.$tblalias.'">'.$row[1].'</div></td><td>DIR</td><td><div class="buttonselectdir" onclick="{'.$this->actselect.'}"></div></td></tr>';
                        // $return=array($row[2].'_'.$row[0],$row[2].'_'.$row[3]);
                         $this->makeRasdel($kodmenu,$row[0]);
                     }
@@ -139,9 +139,9 @@ class dirPunkt{
                     if($sms=$stmt->fetchAll(PDO::FETCH_ASSOC)) {
                         foreach ($sms as $row) {
                             if($tbl=='punkt') {
-                                $mass .= '<tr><td><div class="filepunkt" id="' . $row['kod'] . '" title="' . $row['artist'] . ' - ' . $row['title'] . '" name="'.$row['kod'].'_'.$tblalias.'">' . $row['artist'] . ' - ' . $row['title'] . '</div></td><td>file</td><td><div class="buttonselectdir" onclick="{' . $this->actselect . '}"></div></td></td>';
+                                $mass .= '<tr id="' . $row['kod'] . '"><td><div class="filepunkt"  title="' . $row['artist'] . ' - ' . $row['title'] . '" name="'.$row['kod'].'_'.$tblalias.'">' . $row['artist'] . ' - ' . $row['title'] . '</div></td><td>file</td><td><div class="buttonselectdir" onclick="{' . $this->actselect . '}"></div></td></td>';
                             } else{
-                                $mass .= '<tr><td><div class="postpunkt" id="' . $row['kod'] . '" title="' . $row['name'] . '" name="'.$row['kod'].'_'.$tblalias.'">' . $row['name'] .  '</div></td><td>news</td><td><div class="buttonselectdir" onclick="{' . $this->actselect . '}"></div></td></td>';
+                                $mass .= '<tr id="' . $row['kod'] . '"><td><div class="postpunkt"  title="' . $row['name'] . '" name="'.$row['kod'].'_'.$tblalias.'">' . $row['name'] .  '</div></td><td>news</td><td><div class="buttonselectdir" onclick="{' . $this->actselect . '}"></div></td></td>';
                             }
 
                         }
@@ -159,9 +159,9 @@ class dirPunkt{
                     if($sms=$stmt->fetchAll(PDO::FETCH_ASSOC)) {
                         foreach ($sms as $row) {
                             if($tbl=='punkt') {
-                                $mass .= '<tr><td><div class="filepunkt" id="' . $row['kod'] . '" title="' . $row['artist'] . ' - ' . $row['title'] . '" name="'.$row['kod'].'_'.$tblalias.'">' . $row['artist'] . ' - ' . $row['title'] . '</div></td><td>file</td><td><div class="buttonselectdir" onclick="{' . $this->actselect . '}"></div></td></td>';
+                                $mass .= '<tr id="' . $row['kod'] . '"><td><div class="filepunkt"  title="' . $row['artist'] . ' - ' . $row['title'] . '" name="'.$row['kod'].'_'.$tblalias.'">' . $row['artist'] . ' - ' . $row['title'] . '</div></td><td>file</td><td><div class="buttonselectdir" onclick="{' . $this->actselect . '}"></div></td></td>';
                             } else{
-                                $mass .= '<tr><td><div class="postpunkt" id="' . $row['kod'] . '" title="' . $row['name'] . '" name="'.$row['kod'].'_'.$tblalias.'">' . $row['name'] .  '</div></td><td>news</td><td><div class="buttonselectdir" onclick="{' . $this->actselect . '}"></div></td></td>';
+                                $mass .= '<tr id="' . $row['kod'] . '"><td><div class="postpunkt"  title="' . $row['name'] . '" name="'.$row['kod'].'_'.$tblalias.'">' . $row['name'] .  '</div></td><td>news</td><td><div class="buttonselectdir" onclick="{' . $this->actselect . '}"></div></td></td>';
                             }
 
                         }
@@ -209,6 +209,64 @@ public function outAction($action){ //вывод функции действия
         }
         //debug_to_console($massTablAlias );
         return $aliastabl;
+    }
+
+    public function testLink($id){  // создание пути к текущему редиректу
+        $dbh=$this->db; $temp='';
+        $sql='SELECT * FROM '.$this->nametabl.' Where kod=?';
+        $stmt = $dbh->prepare($sql);
+        $stmt->execute(array($id));
+        if ($sms = $stmt->fetchAll(PDO::FETCH_ASSOC)) {
+            $redir=explode('_',$sms[0]['redirect']);
+            include('var_alt.php');
+            $key=array_search($redir[1], $massTablAlias);
+            if(strlen($key)>0) {
+                $tablic = $key;
+                $sql='SELECT * FROM '.$tablic.' Where kod='.$redir[0];
+                $stmt = $dbh->prepare($sql);
+                $stmt->execute();
+                if ($sms = $stmt->fetchAll(PDO::FETCH_ASSOC)) {
+                    if($tablic=='punkt'){$nam='title';} else{$nam='name';}
+                    $name = $sms[0][$nam];
+                    $kodrasdel = $this->kodRasd($sms[0]['kodrasdel'], 'rasdel');
+                    $kodmenu = $this->kodMenu($sms[0]['kodmenu'], 'mainmenu');
+                }
+            }
+        }
+        return $kodmenu.$kodrasdel.$name.'('.$redir[1].')';
+    }
+
+    private function kodRasd($kod,$tbl){
+        $dbh=$this->db; $tmp='';
+        $sql='SELECT * FROM '.$tbl.' Where kod='.$kod;
+        $stmt = $dbh->prepare($sql);
+        $stmt->execute();
+      //  debug_to_console($sql );
+        if ($sms = $stmt->fetchAll(PDO::FETCH_ASSOC)) {
+            if($sms[0]['kodrasdel']==0){ $tmp=$sms[0]['name'].'/';}
+            else{
+                $tmp=$this->kodRasd($sms[0]['kodrasdel'],'rasdel').$sms[0]['name'].'/';
+            }
+        }
+        return $tmp;
+    }
+    private function kodMenu($kod,$tbl){
+        $dbh=$this->db; $tmp='';
+        $sql='SELECT * FROM '.$tbl.' Where kod='.$kod;
+        $stmt = $dbh->prepare($sql);
+        $stmt->execute();
+        //  debug_to_console($sql );
+        if ($sms = $stmt->fetchAll(PDO::FETCH_ASSOC)) {
+            $tmp=$sms[0]['name'].'/';
+                    }
+        return $tmp;
+    }
+
+    public function saver($vvodata,$znach){
+        $dbh=$this->db;
+        $sql=' UPDATE '.$this->nametabl.' SET '.$vvodata.' WHERE kod=?';
+        $stmt = $dbh->prepare($sql);
+        $stmt->execute($znach);
     }
 }
 ?>
