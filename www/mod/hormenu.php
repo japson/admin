@@ -23,5 +23,27 @@ include('class/makemenu.php');
         echo json_encode(array($menuhoriz,$massart));
     }
 
+    if($what=='hmr') { //только меню
+        $needtbl='rasdel';
+        $needkm=$kod; $needkr=0;
+        $menu = new makeMenu($needtbl,$db);
+        $where=' WHERE kodmenu='.$needkm. ' and kodrasdel='.$needkr. ' and vyvod=1 ';
+        $menu->initRasdMen($needkr,$needkm,$itogname);
+        $menu->massivRasdel($where,1);
+        //echo json_encode($menu->mainmenu);
+        $menuhoriz=$menu->makeHorMenu();
+        $massart='';
 
+        echo json_encode(array($menuhoriz,$massart));
+
+    }
+    if($what=='ma') {
+        $needtbl='rasdel';
+        $needkm=$kod; $needkr=0;
+        $menu = new makeMenu($needtbl,$db);
+        $where=' WHERE kodmenu='.$needkm. ' and kodrasdel='.$needkr. ' and vyvod=1 ';
+        $massart=$menu->currentArticle('news',$where);
+
+        echo json_encode(array($massart,''));
+    }
 ?>

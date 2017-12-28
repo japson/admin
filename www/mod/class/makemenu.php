@@ -27,7 +27,7 @@ class makeMenu extends createMenu{
         $mass=array(); $i=1;
         foreach ($this->mainmenu as $row){
             $mass[]=' <li>
-                <a href="/'.$this->urlmenu.'/'.$row['nameurl'].'" name="'.$row['kod'].'_'.$row['kodmenu'].'_'.$row['kodrasdel'].'">
+                <a href="/'.$this->urlmenu.'/'.$row['nameurl'].'" name="'.$row['kod'].'_'.$row['kodmenu'].'_'.$row['kodrasdel'].'" onclick="{goRasd(event);return false;}">
                     <img src="'.$row['pictur'].'" alt=""/>
                     <span class="sdt_active"></span>
                     <span class="sdt_wrap">
