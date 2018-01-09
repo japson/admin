@@ -974,8 +974,8 @@
 		_init				: function() {
 		
 			this.sources	= {
-				mp3	: 'songs/' + this.name + '.mp3',
-				ogg	: 'songs/' + this.name + '.ogg'
+				mp3	: '/songs/' + this.name + '.mp3',
+				ogg	: '/songs/' + this.name + '.ogg'
 			};
 		
 		},
@@ -1036,7 +1036,7 @@
 		},
 		getSource			: function( type ) {
 
-			return 'sounds/' + this.action + '.' + type;
+			return '/sounds/' + this.action + '.' + type;
 		
 		},
 		play				: function( action, loop ) {

@@ -58,7 +58,7 @@ $('.bumimg').each(function(index, element) {if($(element).attr('id')!='menlast')
 $('.bumenu').mouseleave( function() { 
 $('.bumimg').each(function(index, element) {$(element).removeClass('povor'+index);});
 // alert(); 
- }); 
+ });
 
 
 
@@ -200,9 +200,9 @@ var middlmen=function() {
 var listing=0;
         $(document).on("click",'#pusk',function(){
 			var countPages=$('.mainpages').children('.secstr');
-			var curPage='page1';
+			var curPage='page_1';
 			countPages.each(function(index, element) {if($(element).hasClass('current')){curPage=$(element).attr('id');}});
-			curPage=curPage.replace('page','');
+			curPage=curPage.replace('page_','');
 			maxPage=countPages.length;
 			//console.log(curPage);
 			//console.log(countPages);
@@ -211,9 +211,9 @@ var listing=0;
 			
 		$(document).on("click",'#downn',function(){
 			var countPages=$('.mainpages').children('.secstr');
-			var curPage='page1';
+			var curPage='page_1';
 			countPages.each(function(index, element) {if($(element).hasClass('current')){curPage=$(element).attr('id');}});
-			curPage=curPage.replace('page','');
+			curPage=curPage.replace('page_','');
 			maxPage=countPages.length;
 			//console.log(listing);
 			//console.log(countPages);
@@ -240,8 +240,8 @@ var goPage=function(curPage,maxPage,direct){
 		var countPages=$('.mainpages');
 		
 		
-		newPage=countPages.children('.secstr[id="page'+newPage+'"]');
-		curPage=countPages.children('.secstr[id="page'+curPage+'"]');
+		newPage=countPages.children('.secstr[id="page_'+newPage+'"]');
+		curPage=countPages.children('.secstr[id="page_'+curPage+'"]');
 		
 if(direct==1) {			
 	curPage.css('z-index','11').addClass(trans);

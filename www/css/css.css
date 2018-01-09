@@ -12,8 +12,8 @@ color:#fff; z-index:auto;
 
 
 .bodpivo2 ----   /*{background: fixed; 	position: fixed; 	background-size: cover; }*/
-	{ display:block; background: url('../img/kultur.jpg') top left no-repeat #DBC1A0;  transition:  1.5s; z-index:1; width:100%; height:100%;}
-.bodchai---{ background: url('../img/kultura_empty.jpg') top left no-repeat #DBC1A0;  transition:  1.5s;}
+	{ display:block; background: url(../img/kultur.jpg) top left no-repeat #DBC1A0;  transition:  1.5s; z-index:1; width:100%; height:100%;}
+.bodchai---{ background: url(../img/kultura_empty.jpg) top left no-repeat #DBC1A0;  transition:  1.5s;}
 
 
 /*.menu { display: none; position:relative; float:left; top: 280px; left:50px; width:1000px; z-index:8;}*/

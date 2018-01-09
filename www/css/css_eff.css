@@ -206,9 +206,13 @@
 .povor555:hover{transform: translate(120px,-50px) rotate(-15deg); z-index:10;  transition:  1.5s; }
 
 /* page -------------------------------*/
-.mainpages{font-family: "Myriad Pro", "Trebuchet MS", sans-serif;}
+.mainpages{font-family: "Myriad Pro", "Trebuchet MS", sans-serif; word-spacing: 0.15em; letter-spacing:0.03em;}
+.tablnews{text-align: left; vertical-align: top; margin-bottom: 5px; }
+.tablnews .description {padding-left: 5px;}
+.dalee a {text-decoration: none; color: #545fb3;}
+.dalee a:hover {text-decoration: underline;}
 .pagecurrent { border: #30F none 2px; text-align:center;  position:relative; margin:0 auto 0; width:90%; min-height:600px; z-index: 9; top:10px;  }
-.blocknot { position:relative; z-index:10; }
+.blocknot { position:relative; /*z-index:10; */}
 .blokpage { position:absolute; left:0px; top:0px; z-index:12;}
 .txt_block {position:absolute; left:15px; top:50px; z-index:12; color:#006; width: 96%;}
 .txt_block_head {text-align: center; font-size: 1.4em; font-weight: bold; color:#6e3414; z-index:12;position: relative;text-transform: uppercase;  }
