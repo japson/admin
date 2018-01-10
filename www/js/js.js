@@ -100,7 +100,7 @@ function makerMenu(mass,id,men,callback){
 
 window.addEventListener('popstate', function(e){
     // console.log(e.target.location.pathname);
-    console.log(e);
+   // console.log(e);
     remakeMenu(e.state);
     var path=e.target.location.pathname.substr(1);
      console.log(':: '+decodeURIComponent(path));
@@ -122,13 +122,13 @@ function remakeMenu(state){
     if(oldmid!=state.middle) {
         mass=state.middle.split('_');
         if(mass[1]>0) {var swtch='ra';} else{swtch='ma';}
-       // if(mass[2]>0) {var swtch='ra';} else{swtch='ma';}
+        if(mass[2]>0) {var swtch='oa';}
         newmas=[mass[0],'',mass[1],mass[2],swtch];
-        console.log('remakeMenu '+state.middle);
+       // console.log('remakeMenu '+state.middle);
         makerMenu(newmas,'mainpages',state.middle,noner);
         curState.set('middle',state.middle);
     }
-
+    console.log(curState.getall());
 }
 function initcurState(){
     var men=$('#sdt_menu').attr('name') || '0_0_0';

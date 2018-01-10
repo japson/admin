@@ -109,6 +109,7 @@ class createMenu{
                 $this->namerasdel=$sms[0]['name'];
             }
         }
+       // debug_to_console($tmp);
         return $this->typrasdel[$tmp];
     }
 
@@ -173,7 +174,7 @@ class createMenu{
             $url=$this->makeUrlArt($id).'/'.$this->CMP($row,'name');
             $tmp='<tr class="tablnews" name="'.$id.'">';
             $tmp.='<td><a class="linkarticle" href="'.$url.'"><img src="'.$putimg.$namepict.'"></a></td>';
-            $tmp.='<td><div class="description">'.$row[$pole].'<div class="dalee"><a class="linkarticle" href="'.$url.'">Далее...</a></div></div></td></tr>';
+            $tmp.='<td><span class="dalee"><a class="linkarticle" href="'.$url.'">'.$row['name'].'.</a> </span> <div class="description">'.$row[$pole].'</div></td></tr>';
             $masstr[]=$tmp;
         } //debug_to_console($masstr);
             $kolPage=$this->kolOnPage; $cont=0; $tmp='';
@@ -213,6 +214,7 @@ class createMenu{
         $menu=0; $rasd=0; $article=0;
         if(count($mass)>1) { $menu=$this->findMenu($mass[1],$tbl,0,0);}
         if(count($mass)>2) { $rasd=$this->findMenu($mass[2],'rasdel',$menu,0);}
+        if(count($mass)>3) { $article=$this->findMenu($mass[3],'news',$menu,$rasd);}
 
         return array($menu,$rasd,$article);
     }

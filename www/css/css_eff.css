@@ -208,8 +208,8 @@
 /* page -------------------------------*/
 .mainpages{font-family: "Myriad Pro", "Trebuchet MS", sans-serif; word-spacing: 0.15em; letter-spacing:0.03em;}
 .tablnews{text-align: left; vertical-align: top; margin-bottom: 5px; }
-.tablnews .description {padding-left: 5px;}
-.dalee a {text-decoration: none; color: #545fb3;}
+.tablnews .description {padding-left: 5px; color: #006; /*display: inline;*/}
+.dalee a {text-decoration: none; color: #4a70cb; text-transform: uppercase; padding-left: 12px;}
 .dalee a:hover {text-decoration: underline;}
 .pagecurrent { border: #30F none 2px; text-align:center;  position:relative; margin:0 auto 0; width:90%; min-height:600px; z-index: 9; top:10px;  }
 .blocknot { position:relative; /*z-index:10; */}
