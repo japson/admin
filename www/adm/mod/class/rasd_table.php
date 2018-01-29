@@ -29,9 +29,9 @@ class RasdelTable extends MenuTable{ // вывод редактируемых п
 	public function changeText($action) {
 		$dbl=$this->db(); $ok='';
 		if($action==1 or $action==2){  // запись новости
-			$sql="UPDATE ".$this->nametabl()." SET post =?, description=?, keywords=?  WHERE kod = ?";
+			$sql="UPDATE ".$this->nametabl()." SET post =?, description=?, keywords=?, data=?  WHERE kod = ?";
 			$stmt = $dbl->prepare($sql);
-			$stmt->execute(array(htmlspecialchars($this->text),htmlspecialchars($this->description),htmlspecialchars($this->keysword),$this->kodarticle));
+			$stmt->execute(array(htmlspecialchars($this->text),htmlspecialchars($this->description),htmlspecialchars($this->keysword), date('Y-m-d H:i:s'), $this->kodarticle ));
 		}
 		if($action==2){  // вывод новости новости
 			$sql ="SELECT * FROM ". $this->nametabl().' WHERE kod = ?';

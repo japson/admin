@@ -2,7 +2,7 @@
  * Created by RARETA on 05.12.2017.
  */
 function currentState(){
-    var state={menu:'',middle:'',right:'',left:''};
+    var state={menu:'',middle:'',right:'',left:'',cofmen:'',cofrasd:''};
     var set=function(name,val){state[name]=val; };
     var get=function(name){return state[name];};
     var getall=function(){return state;};
@@ -16,6 +16,12 @@ middlmen();
 initcurState();
 console.log(curState.getall());
 
+var coffUrl=function(menu,rasdel){
+    if(menu) $('#cofemenUP').text(menu.toUpperCase());
+    if(rasdel) {$('#cofemenu').text(rasdel.toUpperCase());}
+    else {$('#cofemenu').text('');}
+}
+
 function goUrl(event){ // главное
     event.preventDefault();
     var elem=event.target||event.srcElement;
@@ -26,9 +32,12 @@ function goUrl(event){ // главное
     // console.log('::'+decodeURIComponent(path));
    // path=decodeURIComponent(path);
     makerMenu(newmas,'middle_menu',men,middlmen);
+    coffUrl($(elem).text(),'');
   //  middlmen();
     var newhref=$(elem).attr('href');
    // console.log(window.history.state);
+    curState.set('cofmen',$(elem).text());
+    curState.set('cofrasd','');
     curState.set('menu',men);
     curState.set('middle',men);
    // console.log(newhref);
@@ -49,6 +58,9 @@ function goUrl(event){ // главное
    // curState.set('menu',men);
     curState.set('middle',men);
        makerMenu(newmas,'mainpages',men,noner);
+       var urlrasd=$(elem).closest('a').find('.sdt_link').text();
+       coffUrl('',urlrasd);
+       curState.set('cofrasd',urlrasd);
     //   console.log(window.history.length);
     //   console.log(window.history.state);
        var peremsost=curState.getall();
@@ -82,9 +94,11 @@ function makerMenu(mass,id,men,callback){
         success: function(dat){
          // console.log( "Прибыли данные: " + dat  ); //+ data
             var data= JSON.parse(dat);
-            $('#'+id).html(data[0]);
-           // console.log(data[0]);
+
+           // console.log(data[1]);
+            if(mass[4]=='hm' || mass[4]=='hmr') $('#'+id).html(data[0]);
             if(mass[4]=='hm') $('#mainpages').html(data[1][0]).attr('name',men);
+            if(mass[4]=='ma') $('#mainpages').html(data[1][0]).attr('name',men);
             if(mass[4]=='ra') $('#mainpages').html(data[1][0]).attr('name',men);
             if(mass[4]=='oa') $('#mainpages').html(data[1][0]).attr('name',men);
             callback();
@@ -113,6 +127,8 @@ function remakeMenu(state){
     var oldmenu=curState.get('menu');
     var oldmid=curState.get('middle');
    // var oldmid=$('#mainpages').attr('name');
+    //console.log(state.kofmen);
+    coffUrl(state.cofmen,state.cofrasd);
     if(oldmenu!=state.menu) {
         var mass=state.menu.split('_');
         var newmas=[mass[0],'',mass[1],mass[2],'hmr'];
@@ -124,7 +140,7 @@ function remakeMenu(state){
         if(mass[1]>0) {var swtch='ra';} else{swtch='ma';}
         if(mass[2]>0) {var swtch='oa';}
         newmas=[mass[0],'',mass[1],mass[2],swtch];
-       // console.log('remakeMenu '+state.middle);
+        console.log('remakeMenu '+state.middle);
         makerMenu(newmas,'mainpages',state.middle,noner);
         curState.set('middle',state.middle);
     }

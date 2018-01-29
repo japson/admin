@@ -45,7 +45,7 @@ include('class/makemenu.php');
         $menu->initRasdMenOnly($needkr,$needkm, $itogname);
         $massart=$menu->currentArticle('news',$where,$itogname);
 
-        echo json_encode(array($massart,''));
+        echo json_encode(array('',$massart));
     }
 
     if($what=='ra') { // статьи раздела
@@ -59,7 +59,7 @@ include('class/makemenu.php');
       //  $menu->massivRasdel($where,0);
         $massart=$menu->currentArticle('news',$where,$itogname);
       //  debug_to_console($massart);
-        echo json_encode(array($massart,''));
+        echo json_encode(array('',$massart));
     }
 
     if($what=='oa') { // статьи раздела
@@ -69,6 +69,6 @@ include('class/makemenu.php');
         $where=' WHERE kod='.$kod. ' and vyvod=1 ';
         $menu->initRasdMenOnly($needkr,$needkm, $itogname);
         $massart=$menu->currentArticle('news',$where,$itogname);
-        echo json_encode(array($massart,''));
+        echo json_encode(array('',$massart));
     }
 ?>

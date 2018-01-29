@@ -216,6 +216,10 @@
 .blokpage { position:absolute; left:0px; top:0px; z-index:12;}
 .txt_block {position:absolute; left:15px; top:50px; z-index:12; color:#006; width: 96%;}
 .txt_block_head {text-align: center; font-size: 1.4em; font-weight: bold; color:#6e3414; z-index:12;position: relative;text-transform: uppercase;  }
+.txt_block_str{position: absolute; 	color: #000066; 	z-index: 12; 	bottom: 5px;	text-align: center;
+	width: 100%; }
+.nompagecurrent, .nompagelink{margin: 0 4px;}
+.nompagelink{cursor: pointer; text-decoration: underline;}
 .next_page { width:40px; height:40px; background-color:#0F0;  bottom:20px; right:60px;position:absolute; z-index:25;}
 .prev_page { width:40px; height:40px; background-color:#0F0;  bottom:20px; left:60px;position:absolute; z-index:25;}
 .mainpages { width: 542px; height:734px; position:absolute; z-index:9; top:38px; left:60px;}

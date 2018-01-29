@@ -26,96 +26,52 @@ include('/mod/mafon.php');
 <!DOCTYPE html>
 <html>
 <head>
-
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-    <link rel="stylesheet" type="text/css" href="/css/css_eff.css"/>
-    <link rel="stylesheet" type="text/css" href="/css/css.css"/>
-    <link rel="stylesheet" type="text/css" href="/css/css_maf.css"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <link rel="stylesheet" type="text/css" href="/css_n/font/comfortaa.css"/>
+    <link rel="stylesheet" type="text/css" href="/css_n/normalize.css" />
+    <link rel="stylesheet" type="text/css" href="/css_n/std_menu.css"/>
+    <link rel="stylesheet" type="text/css" href="/css_n/grid.css"/>
 
     <script src="/js/jquery-3.2.1.min.js"></script>
-<link rel="stylesheet" type="text/css" href="/css/animbkv/normalize.css" />
-		<!--<link rel="stylesheet" type="text/css" href="css/animbkv/component.css" />-->
-		<script src="/css/animbkv/modernizr.custom.js"></script>
 
-
-<link rel="stylesheet" type="text/css" href="/css/knobKnob.css" />
-
-<link rel="stylesheet" type="text/css" href="/css/button.css"/>
-<link rel="stylesheet" type="text/css" href="/css/std_menu.css"/>
-<link href="/css/fonts/comfortaa.css" rel="stylesheet"/>
-
-
-
-
-<title>Документ без названия</title>
-
+    <title>Документ без названия</title>
 </head>
-<body class="bodpivo">
-<ul class="cb-slideshow new" <? echo $slide; ?>>
-   <!-- <li> <span>Image 01</span></li>
-    <li> <span>Image 021</span></li>-->
-</ul>
-<div style=" width:100%; height:1px; clear:both;"> </div>
-<div class='leftblock '>  
-			
-
-    <nav>
-    <? echo($menumodern); ?>
-    </nav>
-	<div class='pivo'>
-	<div class=" piven piventer <? echo $piven; ?> "> 	</div>
-    <div class="piven piventer2 <? echo $piven; ?>"> 	</div>
-    <div class=' <? echo $classpiv; ?>'> 	<img src='/img/pivo.png'> 	</div>
-    <div class='<? echo $classchai; ?>'> 	<img src='/img/chai.png'> 	</div>
-    <div class="chaien chaienter2 <? echo $chaen; ?>"> 	</div>
-    <div class="chaien chaienter <? echo $chaen; ?>"> 	</div>
-	
-	</div>
-   
+<body class="gridbody">
+<div class="grid-element header">
+           <nav class="navmenu">
+            <? echo($menumodern); ?>
+        </nav>
 </div>
+<div class="coffee"><div class="cofimg"><img src="/img_n/kofe.png"></div> <div class="cofemenUP" id="cofemenUP"><? echo($page->cofmen); ?></div><div class="cofemenu" id="cofemenu"><? echo($page->cofrasd); ?></div></div>
+<div class="grid-element main">
 
-<div class='midblock '>
-    <div class="beforemidmenu">
-    <div class="middlemenu" id="middle_menu">
-        <? echo($menuhoriz); ?>
-
+    <div class="main_grid">
+        <div class="beforemidmenu">
+        <div class="middlemenu" id="middle_menu">
+            <? echo($menuhoriz); ?>
+        </div>
+        </div>
+        <div class="podfon">     </div>
+        <div class="podfon_paper">   </div>
+        <div class="podfon_paper_txt">  </div>
+        <div class="podfon_paper_down">    </div>
+        <div id="mainpages" class="mainpages">
+            <? echo($massart[0]); ?></div>
+       <div class="pages_go">
+           <div class='prev_page' id="downn"></div>           <div class='next_page'  id="pusk"></div>
+       </div>
     </div>
-    <!--<div class="middlemenuafter"></div>-->
-    </div>
-		<div class='pagecurrent'> <img class="blocknot" src="/img/blocknot2.png">
-        
-       			<div id="mainpages" class="mainpages">
-                    <? echo($massart[0]); ?>
-
-                        
-        		</div>
-<div class='prev_page' id="downn"></div>           <div class='next_page'  id="pusk"></div>        
-        </div> <!--pagecurrent-->
-        
-</div> <!--midblock-->
-
-<div class='rightblock '> 
-<div id="main-container" class="main-container">
-<div class="switch demo1" onclick="provCheck();"> <input type="checkbox" ><label></label></div>
-<? echo $mafon; ?>
-</div>   
 </div>
+<!--<div class="grid-element main">Main Content</div>-->
+<div class="grid-element extra">Extra Info</div>
 
-<div style=" width:100%; height:1px; clear:both;"> </div>
-
-
-<div class="___container">
-			
-			
-</div><!-- /container -->
-<!--bodpivo -->
-
+<!--<div class="grid-element footer">Footer</div>-->
 <script type="text/javascript" src="/js/transform.js"></script>
-<script type="text/javascript" src="/js/knobKnob.jquery.js"></script>
+<!--<script type="text/javascript" src="/js/knobKnob.jquery.js"></script>-->
 <script type="text/javascript" src="/js/jquery.cassette.js"></script>
-<script type="text/javascript" src="/js/container.js"></script>
-<script type="text/javascript" src="/js/jquery.simplemarquee.js"></script>
+<!--<script type="text/javascript" src="/js/container.js"></script>-->
+<!--<script type="text/javascript" src="/js/jquery.simplemarquee.js"></script>-->
 <script type="text/javascript" src="/js/jquery.easing.1.3.js"></script>
 <script src="/js/js_effect.js"></script>
 <script src="/js/js.js"></script>

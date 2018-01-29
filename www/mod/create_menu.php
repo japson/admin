@@ -35,7 +35,7 @@ if ($needart){
         $where=' WHERE kodmenu='.$needkm. ' and kodrasdel='.$needkr. ' and vyvod=1 ';}
         //$itogname=$needkr.'_'.$needkm.'_0';
 
-//debug_to_console($itogname);
+//debug_to_console($page->cofmen);
 $page->initRasdMenOnly($needkr,$needkm, $itogname);
 $massart=$page->currentArticle('news',$where,$itogname);
 //($massart);

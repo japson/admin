@@ -9,7 +9,8 @@ class createMenu{
     public $urlrasdel; public $urlmenu;
     public $itogname;
     private $typrasdel=array('3'=>'articles','5'=>'playlist','6'=>'galery','0'=>'articles');
-    private $kolOnPage=2;
+    private $kolOnPage=4;
+    public $cofmen=''; public $cofrasd='';
 
     public function __construct($nmtbl,$dbh) {
         // $this->sql ="SELECT * FROM ".$nametabl."";
@@ -121,6 +122,7 @@ class createMenu{
         $stmt = $dbl->prepare($sql);
         $stmt->execute();
         $temp=''; $key='';
+          //  debug_to_console($this->typeRasdel());
         if ($sms = $stmt->fetchAll(PDO::FETCH_ASSOC)) {
 
             switch($this->typeRasdel()){
@@ -144,11 +146,13 @@ class createMenu{
         $pieces = explode("[_page]", $tmp);
        // debug_to_console($pieces);
         for($i=0;$i<count($pieces);$i++) {
-            if($i==0){$styl='current ';} else {$styl='';}
+            if($i==0){$styl='current '; $date = date_create($sms['data']);} else {$styl='';}
             $book.='<div id="page_'.($i+1).'" class="secstr  '.$styl.'" name="'.$itogname.'">'.
-                '<img class="blokpage" src="/img/blokpage.jpg">'.
+               /* '<img class="blokpage" src="/img/blokpage.jpg">'.*/
                 '<div class="txt_block_head">'.$sms['name'].'</div>'.
-                '<div class="txt_block">'.  $pieces[$i].'</div></div>';
+                '<div class="txt_block_date">'.date_format($date,'d-m-Y').'</div>'.
+                '<div class="txt_block">'.  $pieces[$i].'</div>'.
+                '<div class="txt_block_str">'.($i+1).' из '.count($pieces).'</div></div>';
         }
        // $book='<div id="mainpages" class="mainpages" name="'.'">'.$book.'</div>';
         return array($book,$key);
@@ -168,7 +172,7 @@ class createMenu{
         foreach ($sms as $row){
             $stmt->execute(array($row['kod']));
             if ($sms2 = $stmt->fetchAll(PDO::FETCH_ASSOC)) {$namepict=$sms2[0]['name_small'];}
-            else {$namepict='/img/nopict.jpg';}
+            else {$namepict='/nopict.jpg';}
             $id=$row['kod'].'_'.$row['kodmenu'].'_'.$row['kodrasdel'];
 
             $url=$this->makeUrlArt($id).'/'.$this->CMP($row,'name');
@@ -187,14 +191,22 @@ class createMenu{
         for($i=0;$i<count($masspage);$i++) {
             if($i==0){$styl='current ';} else {$styl='';}
             $book.='<div id="page_'.($i+1).'" class="secstr  '.$styl.'" name="'.$itogname.'">'.
-                '<img class="blokpage" src="/img/blokpage.jpg">'.
+               /* '<img class="blokpage" src="/img/blokpage.jpg">'.*/
                 '<div class="txt_block_head">'.$this->namerasdel.'</div>'.
-                '<div class="txt_block">'.  $masspage[$i].'</div></div>';
+                '<div class="txt_block">'.  $masspage[$i].'</div>'.
+                '<div class="txt_block_str">'.$this->makeStr($i,count($masspage)).'</div></div>';
         }
         return array($book,$key);
     }
 
-
+    private function makeStr($nomer, $all){
+        $temp = '';
+        for($i=0;$i<$all;$i++){
+            if($i==$nomer){$temp.='<span id="page_'.$i.'" class="nompagecurrent">'. ($i+1) .'</span>';}
+            else{$temp.='<span id="page_go_'.$i.'" class="nompagelink">'.($i+1).'</span>';}
+        }
+        return $temp;
+    }
 
     private function translit($s) {
         $s = (string) $s; // преобразуем в строковое значение
@@ -226,7 +238,12 @@ class createMenu{
         if ($sms = $stmt->fetchAll(PDO::FETCH_ASSOC)) {
             foreach ($sms as $row) {
                 $tmp=$this->CMP($row,'name');
-                if ($tmp==$namemenu) {$kod=$row['kod'];}
+                if ($tmp==$namemenu) {$kod=$row['kod'];
+                    switch ($tbl) {
+                        case 'mainmenu': $this->cofmen=$row['name']; break;
+                        case 'rasdel': $this->cofrasd=$row['name']; break;
+                    }
+                }
             }
 
         }

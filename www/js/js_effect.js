@@ -153,8 +153,8 @@ var middlmen=function() {
         $elem.find('img')
             .stop(true)
             .animate({
-                'width':'130px',
-                'height':'130px',
+                'width':'134px',
+                'height':'134px',
                 'top':'0px',
                 'left':'0px'
             },600,'easeOutBack')
@@ -192,7 +192,7 @@ var middlmen=function() {
             .addBack()
             .find('.sdt_wrap')
             .stop(true)
-            .animate({'top':'25px'},500);
+            .animate({'top':'17px'},500);
     });
 };
 
@@ -205,7 +205,7 @@ var listing=0;
 			curPage=curPage.replace('page_','');
 			maxPage=countPages.length;
 			//console.log(curPage);
-			//console.log(countPages);
+			//console.log(maxPage);
 			if(listing==0) {goPage(curPage,maxPage,1)}
 			});
 			
@@ -221,11 +221,12 @@ var listing=0;
 			});	
 			
 var goPage=function(curPage,maxPage,direct){
-	var scrol=$('body').css('overflow-y');
+	//var scrol=$('body').css('overflow-y');
 	//console.log(document.documentElement.clientHeight); console.log(document.documentElement.scrollHeight);
 	if(document.documentElement.clientHeight >= document.documentElement.scrollHeight)
 	 {$('body').css('overflow-y','hidden');}
 	listing=1;
+   // console.log('::'+direct);
 	if(direct==1) {
 		var newPage=parseInt(curPage,10)+1;
 		var trans='transfU';
@@ -242,30 +243,41 @@ var goPage=function(curPage,maxPage,direct){
 		
 		newPage=countPages.children('.secstr[id="page_'+newPage+'"]');
 		curPage=countPages.children('.secstr[id="page_'+curPage+'"]');
+   // console.log(newPage);
+   // console.log(curPage);
 		
-if(direct==1) {			
+/*if(direct==1) {	*/
 	curPage.css('z-index','11').addClass(trans);
-	newPage.css('display','block');
-	curPage.addClass(anim).animate(   {    opacity : '0'  }, 1700);
-	newPage.animate(   {    opacity : '1'  }, 200);
-	setTimeout(function() { curPage.css("display","none") 
+	//newPage.css('display','block');
+	curPage.addClass(anim).animate(   {    opacity : '0'  }, 300);
+    newPage.animate(   {    opacity : '1'  }, 300);
+   // newPage.css("display","block");newPage.css("opacity","0");
+    newPage.addClass('current');
+    curPage.removeClass('current').removeClass(trans).removeClass(anim).css('z-index','10');
+
+    listing=0;
+	/*setTimeout(function() { curPage.css("display","none")
+
 	newPage.addClass('current');
-	curPage.removeClass('current').removeClass(trans).removeClass(anim).css('z-index','10');;
+	curPage.removeClass('current').removeClass(trans).removeClass(anim).css('z-index','10');
 	listing=0;
-	$('body').css('overflow-y',scrol);
-	}, 1500);
-} else {
-	newPage.css('display','block').css('z-index','11');
-	newPage.addClass('transfD');
-	newPage.addClass(anim).animate(   {    opacity : '1'  }, 1000);
-	//curPage.animate(   {    opacity : '0'  }, 3000);
-	setTimeout(function() { curPage.css("display","none"); 
-	newPage.addClass('current').removeClass(trans).removeClass(anim).css('z-index','10');
-	curPage.removeClass('current').css('opacity','0');
-	listing=0;
-	$('body').css('overflow-y',scrol);
-	}, 1500);
-}
+	//$('body').css('overflow-y',scrol);
+	}, 200);*/
+	/*} else {
+    newPage.css('display','block').css('z-index','11');
+    //newPage.addClass('transfD');
+    newPage.addClass(anim).animate(   {    opacity : '1'  }, 300);
+    newPage.addClass('current').removeClass(trans).removeClass(anim).css('z-index','10');
+    curPage.removeClass('current').css('opacity','0');
+    listing=0;
+    //curPage.animate(   {    opacity : '0'  }, 3000);
+    setTimeout(function() { curPage.css("display","none");
+        newPage.addClass('current').removeClass(trans).removeClass(anim).css('z-index','10');
+        curPage.removeClass('current').css('opacity','0');
+        listing=0;
+        //$('body').css('overflow-y',scrol);
+    }, 1500);
+}*/
 	
 	
 	//console.log(newPage);
