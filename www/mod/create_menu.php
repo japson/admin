@@ -11,6 +11,7 @@ $menu = new makeMenu('mainmenu',$db);
 $menumodern=$menu->makemodernMenu();
 
 $cur_url=$_SERVER['REQUEST_URI'];
+//debug_to_console($_SERVER["QUERY_STRING"] );
 $cur_url=explode('/',$cur_url);
 $page=new makeMenu('rasdel',$db);
 $masskod=$page->getKodes($cur_url,'mainmenu');

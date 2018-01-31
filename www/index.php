@@ -39,13 +39,16 @@ include('/mod/mafon.php');
 </head>
 <body class="gridbody">
 <div class="grid-element header">
-           <nav class="navmenu">
+          <nav class="navmenu">
             <? echo($menumodern); ?>
         </nav>
 </div>
-<div class="coffee"><div class="cofimg"><img src="/img_n/kofe.png"></div> <div class="cofemenUP" id="cofemenUP"><? echo($page->cofmen); ?></div><div class="cofemenu" id="cofemenu"><? echo($page->cofrasd); ?></div></div>
-<div class="grid-element main">
+<div class="logo"></div>
+<div class="coffee"><div class="cofimg"><img src="/img_n/kofe.png"></div>
+    <div class="cofparent"><div class="cofemenUP" id="cofemenUP"><? echo($page->cofmen); ?></div></div>
+    <div class="cofemenu" id="cofemenu"><? echo($page->cofrasd); ?></div></div>
 
+<div class="grid-element main">
     <div class="main_grid">
         <div class="beforemidmenu">
         <div class="middlemenu" id="middle_menu">

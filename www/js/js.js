@@ -2,7 +2,7 @@
  * Created by RARETA on 05.12.2017.
  */
 function currentState(){
-    var state={menu:'',middle:'',right:'',left:'',cofmen:'',cofrasd:''};
+    var state={menu:'',middle:'',yakor:'',right:'',left:'',cofmen:'',cofrasd:''};
     var set=function(name,val){state[name]=val; };
     var get=function(name){return state[name];};
     var getall=function(){return state;};
@@ -13,6 +13,7 @@ function currentState(){
 function noner(){return false;}
 var curState=currentState();
 middlmen();
+var goActPage=goPageObj();
 initcurState();
 console.log(curState.getall());
 
@@ -40,6 +41,7 @@ function goUrl(event){ // главное
     curState.set('cofrasd','');
     curState.set('menu',men);
     curState.set('middle',men);
+    curState.set('yakor','#1');
    // console.log(newhref);
     history.pushState(curState.getall(), 'namepage', newhref);
    // console.log(window.location.toString());
@@ -57,6 +59,7 @@ function goUrl(event){ // главное
     //   console.log(newhref);
    // curState.set('menu',men);
     curState.set('middle',men);
+       curState.set('yakor','#1');
        makerMenu(newmas,'mainpages',men,noner);
        var urlrasd=$(elem).closest('a').find('.sdt_link').text();
        coffUrl('',urlrasd);
@@ -79,6 +82,7 @@ $(document).on("click", "a.linkarticle", function(event){
     var newhref=$(elem).closest('a').attr('href');
     console.log(newhref);
     curState.set('middle',men);
+    curState.set('yakor','#1');
     makerMenu(newmas,'mainpages',men,noner);
     var peremsost=curState.getall();
     history.pushState(peremsost, null, newhref);
@@ -144,6 +148,7 @@ function remakeMenu(state){
         makerMenu(newmas,'mainpages',state.middle,noner);
         curState.set('middle',state.middle);
     }
+    if(state.yakor) {goActPage.init();goActPage.goPage(1,state.yakor.replace('#','')); }
     console.log(curState.getall());
 }
 function initcurState(){
@@ -152,4 +157,16 @@ function initcurState(){
     $('#mainpages').attr('name',mid);
     curState.set('middle',mid);
     curState.set('menu',men);
+    curState.set('cofmen',$('#cofemenUP').text());
+    curState.set('cofrasd',$('#cofemenu').text());
+    initmakeUrl();
+    console.log(curState.getall());
+}
+
+function initmakeUrl(){
+    var path=window.location;
+    var pathArray=path.toString().split('/');
+    var elem_last=pathArray[pathArray.length-1];
+    if(elem_last.charAt(0)=='#') {goActPage.init();goActPage.goPage(1,elem_last.replace('#',''));
+        curState.set('yakor',elem_last); }
 }

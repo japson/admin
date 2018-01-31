@@ -17,8 +17,8 @@ ul.sdt_menu{
 	margin:0;
 	padding:0;
 	list-style: none;
-	font-family:"Myriad Pro", "Trebuchet MS", sans-serif;
-	font-size:14px;
+	font-family:"Rubik", "Ubuntu", sans-serif;
+	font-size:12px;
 	/*width:1020px;*/
 }
 ul.sdt_menu a{
@@ -28,7 +28,7 @@ ul.sdt_menu a{
 ul.sdt_menu li{
 	float:left;
 	width:var(--middle-menu-width);
-	height:85px;
+	height:55px;
 	position:relative;
 	cursor:pointer;
 }
@@ -65,14 +65,14 @@ ul.sdt_menu li span.sdt_wrap{
 	top:17px;
 	left:0px;
 	width:var(--middle-menu-width);
-	height:60px;
+	height:40px;
 	text-align: center;
 	z-index:15;
 }
 ul.sdt_menu li span.sdt_active{
 	position:absolute;
 	background: #823335;
-	top:85px;
+	top:55px;
 	width:var(--middle-menu-width);
 	height:0px;
 	left:0px;
@@ -90,7 +90,7 @@ ul.sdt_menu li div.sdt_box a{
 }
 ul.sdt_menu li span span.sdt_link{
 	color: #fad7d6;
-	font-size:20px;
+	font-size:17px;
 	line-height: 1em;
 	/*float:left;*/
 	clear:both;

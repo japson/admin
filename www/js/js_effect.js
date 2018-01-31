@@ -1,6 +1,8 @@
 // JavaScript Document
 $( document ).ready(function() {
 	console.log('test');
+
+
 //$('.piven').each(function(index, element) {$(element).addClass('cursor');   });	
 	
 $(document).on("click",'.piven',function(){
@@ -161,11 +163,11 @@ var middlmen=function() {
             .addBack()
             .find('.sdt_wrap')
             .stop(true)
-            .animate({'top':'170px'},900,'easeOutBack')
+            .animate({'top':'175px'},900,'easeOutBack')
             .addBack()
             .find('.sdt_active')
             .stop(true)
-            .animate({'height':'170px'},500,function(){
+            .animate({'height':'190px'},500,function(){
                 var $sub_menu = $elem.find('.sdt_box');
                 if($sub_menu.length){
                     var left = '130px';
@@ -197,8 +199,58 @@ var middlmen=function() {
 };
 
 //----------------------- переворот страниц
-var listing=0;
-        $(document).on("click",'#pusk',function(){
+
+$(document).on("click",'#pusk',function(){goActPage.init(); goActPage.goPage(1); goActPage.makeUrl();});
+
+$(document).on("click",'#downn',function(){goActPage.init(); goActPage.goPage(0); goActPage.makeUrl();});
+
+
+function goPageObj(){
+    var listing=0; var maxPage; var curPage='page_1'; var newPage;
+	var init=function()
+			{var countPages=$('.mainpages').children('.secstr');
+			 curPage='page_1';
+                countPages.each(function(index, element) {if($(element).hasClass('current')){curPage=$(element).attr('id');}});
+                curPage=curPage.replace('page_','');
+                maxPage=countPages.length;
+              };
+	//var setNewPage=function (znach) { newPage= znach;  }
+	var goPage=function(direct){ listing=1;
+        if(direct==1) {newPage=parseInt(curPage,10)+1;        }
+        else {newPage=parseInt(curPage,10)-1;         }
+        if(arguments.length>1) newPage=arguments[1];
+        if(newPage>maxPage){newPage=1;}
+        if(newPage==0){newPage=maxPage;}
+        var countPages=$('.mainpages');
+        var newPageObj=countPages.children('.secstr[id="page_'+newPage+'"]');
+        curPage=countPages.children('.secstr[id="page_'+curPage+'"]');
+        curPage.css('z-index','11');
+        curPage.animate(   {    opacity : '0'  }, 300);
+        newPageObj.animate(   {    opacity : '1'  }, 300);
+        newPageObj.addClass('current');
+        curPage.removeClass('current').css('z-index','10');
+
+        listing=0;
+						}
+	var makeUrl=function(){
+        var path=window.location;
+        var pathArray=path.toString().split('/');
+		var elem_last=pathArray[pathArray.length-1];
+        if(elem_last.charAt(0)=='#') pathArray.pop();
+        pathArray.push('#'+newPage);
+        var newhref=pathArray.join('/');
+        curState.set('yakor','#'+newPage);
+        history.pushState(curState.getall(), 'namepage', newhref);
+        //console.log(pathArray);
+	}
+    var out=function() {console.log(curPage);}
+	return{init:init, out:out,goPage:goPage,makeUrl:makeUrl}
+}
+
+
+//-------------------------------------------------------------------------
+//var listing=0;
+        $(document).on("click",'#pusk-----',function(){
 			var countPages=$('.mainpages').children('.secstr');
 			var curPage='page_1';
 			countPages.each(function(index, element) {if($(element).hasClass('current')){curPage=$(element).attr('id');}});
@@ -209,7 +261,7 @@ var listing=0;
 			if(listing==0) {goPage(curPage,maxPage,1)}
 			});
 			
-		$(document).on("click",'#downn',function(){
+		$(document).on("click",'#downn---',function(){
 			var countPages=$('.mainpages').children('.secstr');
 			var curPage='page_1';
 			countPages.each(function(index, element) {if($(element).hasClass('current')){curPage=$(element).attr('id');}});

@@ -223,11 +223,13 @@ class createMenu{
     }
 
     public function getKodes($mass,$tbl){
-        $menu=0; $rasd=0; $article=0;
+        $menu=0; $rasd=0; $article=0; $yakor=0;
         if(count($mass)>1) { $menu=$this->findMenu($mass[1],$tbl,0,0);}
         if(count($mass)>2) { $rasd=$this->findMenu($mass[2],'rasdel',$menu,0);}
         if(count($mass)>3) { $article=$this->findMenu($mass[3],'news',$menu,$rasd);}
-
+      //  debug_to_console($mass);
+      //  $temp=$mass[count($mass)-1];
+      //  if(substr($temp,0)=='#') {$yakor=substr($temp,1,3);}
         return array($menu,$rasd,$article);
     }
     private function findMenu($namemenu,$tbl,$kodmenu,$kodrasdel){
