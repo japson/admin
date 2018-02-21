@@ -11,6 +11,7 @@ class createMenu{
     private $typrasdel=array('3'=>'articles','5'=>'playlist','6'=>'galery','0'=>'articles');
     private $kolOnPage=4;
     public $cofmen=''; public $cofrasd='';
+    public $opengraph=array();
 
     public function __construct($nmtbl,$dbh) {
         // $this->sql ="SELECT * FROM ".$nametabl."";
@@ -18,6 +19,8 @@ class createMenu{
         $this->prefix='http://'.$_SERVER["HTTP_HOST"].'/';
 
     }
+    public function renameTabl($new){$this->nametabl=$new;}
+
     public function initRasdMen($kodrasdel,$kodmenu,$itogname){
         $this->kodmenu=$kodmenu; $this->itogname=$itogname;
         $this->kodrasdel=$kodrasdel; $this->urlmenu='';$this->urlrasdel='';
@@ -54,9 +57,9 @@ class createMenu{
         $stmt = $dbl->prepare($sql);
         $stmt->execute();
         if ($sms = $stmt->fetchAll(PDO::FETCH_ASSOC)) {
-            //debug_to_console($sms);
+           // debug_to_console($sms);
             foreach ($sms as $row) { $url='';
-                if($pictur){$url=$this->pictUrl($row['kod']);}
+                if($pictur){$url=$this->pictUrl($row['kod']);}else {$url='/img/nopict.jpg';}
                 $mass[]=array('kod'=>$row['kod'], 'name'=>$row['name'],'nameurl'=>$this->CMP($row,'name'),'titlepage'=>$row['titlepage'],'rol'=>$row['rol'],'pictur'=>$url,'kodrasdel'=>$this->kodrasdel,'kodmenu'=>$this->kodmenu);
             }
         }
@@ -142,7 +145,6 @@ class createMenu{
 
     private function makeArticle($sms,$itogname){
         $tmp=htmlspecialchars_decode($sms['post']); $book='';
-        $key=htmlspecialchars_decode($sms['keywords']);
         $pieces = explode("[_page]", $tmp);
        // debug_to_console($pieces);
         for($i=0;$i<count($pieces);$i++) {
@@ -155,10 +157,16 @@ class createMenu{
                 '<div class="txt_block_str">'.($i+1).' из '.count($pieces).'</div></div>';
         }
        // $book='<div id="mainpages" class="mainpages" name="'.'">'.$book.'</div>';
-        return array($book,$key);
+        $this->opengraph['keyw']=htmlspecialchars_decode($sms['keywords']);
+        $this->opengraph['image']=$this->makeOpenGraphImg($sms,'news');
+        $this->opengraph['title']=$sms['name'];
+        $this->opengraph['description']=$sms['description'];
+        //$this->opengraph['url']='http://'.$_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'];
+        $this->opengraph['site_name']='Japson\'s Undeground';
+        return array($book,$this->opengraph);
     }
     private function makeArticleAll($sms,$itogname,$tbl,$pole){
-        $tmp=''; $masstr=array(); $masspage=array(); $key='';
+        $tmp=''; $masstr=array(); $masspage=array();
         if(file_exists('../adm/mod/class/var_alt.php')) {$put='../adm/mod/class/var_alt.php';}
         else{$put='./adm/mod/class/var_alt.php';}
         include ($put);
@@ -169,12 +177,21 @@ class createMenu{
         $where=' WHERE kodrasdel=? ';
         $sql = "SELECT * FROM ".$tblimg." ".$where."  ORDER by sort";
         $stmt = $dbl->prepare($sql);
+        $opengr=1;
         foreach ($sms as $row){
             $stmt->execute(array($row['kod']));
             if ($sms2 = $stmt->fetchAll(PDO::FETCH_ASSOC)) {$namepict=$sms2[0]['name_small'];}
             else {$namepict='/nopict.jpg';}
             $id=$row['kod'].'_'.$row['kodmenu'].'_'.$row['kodrasdel'];
-
+                if($opengr){
+                    $this->opengraph['keyw']=htmlspecialchars_decode($row['keywords']);
+                    $this->opengraph['image']='http://'.$_SERVER['SERVER_NAME'].$putimg.$namepict;
+                    $this->opengraph['title']='Каталог';//$row['name'];
+                    $this->opengraph['description']=$row['description'];
+                    //$this->opengraph['url']='http://'.$_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'];
+                    $this->opengraph['site_name']='Japson\'s Undeground';
+                    $opengr=0;
+                }
             $url=$this->makeUrlArt($id).'/'.$this->CMP($row,'name');
             $tmp='<tr class="tablnews" name="'.$id.'">';
             $tmp.='<td><a class="linkarticle" href="'.$url.'"><img src="'.$putimg.$namepict.'"></a></td>';
@@ -196,7 +213,7 @@ class createMenu{
                 '<div class="txt_block">'.  $masspage[$i].'</div>'.
                 '<div class="txt_block_str">'.$this->makeStr($i,count($masspage)).'</div></div>';
         }
-        return array($book,$key);
+        return array($book,$this->opengraph);
     }
 
     private function makeStr($nomer, $all){
@@ -206,6 +223,21 @@ class createMenu{
             else{$temp.='<span id="page_go_'.$i.'" class="nompagelink">'.($i+1).'</span>';}
         }
         return $temp;
+    }
+
+    private function makeOpenGraphImg($sms,$tbl){
+        if(file_exists('../adm/mod/class/var_alt.php')) {$put='../adm/mod/class/var_alt.php';}
+        else{$put='./adm/mod/class/var_alt.php';}
+        include ($put);
+        $dbl=$this->db; $tblimg=$picturTbl[$tbl];
+        $putimg=str_replace('../..','',$picturKat[$tbl]);
+        $where=' WHERE kodrasdel=? ';
+        $sql = "SELECT * FROM ".$tblimg." ".$where."  ORDER by sort";
+        $stmt = $dbl->prepare($sql);
+        $stmt->execute(array($sms['kod']));
+        if ($row = $stmt->fetchAll(PDO::FETCH_ASSOC)) {$namepict=$row[0]['name_small'];}
+        else {$namepict='/nopict.jpg';}
+        return  'http://'.$_SERVER['SERVER_NAME'].$putimg.$namepict;
     }
 
     private function translit($s) {
@@ -223,6 +255,7 @@ class createMenu{
     }
 
     public function getKodes($mass,$tbl){
+        if(count($mass)==0){return array(0,0,0);}
         $menu=0; $rasd=0; $article=0; $yakor=0;
         if(count($mass)>1) { $menu=$this->findMenu($mass[1],$tbl,0,0);}
         if(count($mass)>2) { $rasd=$this->findMenu($mass[2],'rasdel',$menu,0);}

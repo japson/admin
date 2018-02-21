@@ -23,8 +23,11 @@ $itogname=$needkm.'_0_0'; // код для среднего меню
 $where=' WHERE kodmenu='.$needkm. ' and kodrasdel='. 0 . ' and vyvod=1 ';
 debug_to_console($itogname);
 $page->initRasdMen(0,$needkm,$itogname);
-$page->massivRasdel($where,1);
-//debug_to_console($menu->mainmenu);
+$pictsearch=1;
+//debug_to_console($needkm);
+if($needkm==0) {$page->renameTabl('mainmenu');$pictsearch=0;}
+$page->massivRasdel($where,$pictsearch);
+//debug_to_console($page->allrasdel);
 $menuhoriz=$page->makeHorMenu();
 //$page->initRasdMen($needkr,$needkm,$itogname);
 
@@ -38,7 +41,9 @@ if ($needart){
 
 //debug_to_console($page->cofmen);
 $page->initRasdMenOnly($needkr,$needkm, $itogname);
+$page->opengraph['url']='http://'.$_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'];
 $massart=$page->currentArticle('news',$where,$itogname);
+$page->opengraph=$menu->checkOpenGraph($massart[1]);
 //($massart);
 //echo json_encode(array($menuhoriz,$massart));
 

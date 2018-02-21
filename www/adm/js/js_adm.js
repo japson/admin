@@ -931,13 +931,14 @@ $(document).on('click', '.button[name="delsong"]',function(event){
         $('#mybar').html(newtmp);
 	});
 
-	$(document).on('click', '.buttonselectsong',function(event) {
+	$(document).on('click', '.buttonselectsong',function(event) { // выбрать ссылку песни и вставить в поле текст ссылки
         var elem = event.target || event.srcElement; var makeurl='';
         var tr=$(elem).closest('tr');
         if($(tr).children('td').eq(1).text()=='file') {
         	var kod=$(tr).children('td').eq(0).children('div').attr('id');
         	var title=$(tr).children('td').eq(0).children('div').attr('title');
-        	 makeurl='<div id="'+kod+'" class="selectplay" title="'+title+'"></div> ...';
+        	// makeurl='<div id="'+kod+'" class="selectplay" title="'+title+'"></div> ...';
+            makeurl='<div id="'+kod+'" class="selectplay" title="'+title+'"><span class="songplay"></span><span class="songtitle">'+title+'</span><span class="songadd"></span></div> ...';
             $('.cke_dialog_contents').find('input[type=text]').val(makeurl);
         //<span class="selectplaynow"></span><span class="selectplayadd" ></span>
            // console.log('ghg');

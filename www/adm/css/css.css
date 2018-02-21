@@ -117,8 +117,10 @@ td .selectcenter select{text-align:center; height:30px;}
 #mybar .filepunkt{max-width: 300px; overflow: hidden}
 #mybar .buttonselectsong, #mybar .buttonselectdir{width:19px;height:19px; background-image: url(../img/plus.png); background-size: cover; margin: 0 0 0 30%;cursor: pointer;}
 
-.selectplay{display: inline-block;}
-.selectplay {display: inline-block; background-image: url(../../img/mafonadmin2.png); background-size: contain; background-repeat: no-repeat; height:2.3em;width:3.3em; margin: -5px 5px;cursor: pointer;}
+.selectplay{display: inline-flex; border: solid 1px ; border-color: rgba(0,0,0,0.3); background-color: #393c41;  height:20px; color: #FCFFFE;}
+.selectplay .songplay{width:20px; margin-right: 5px; display: block; background-image: url(../../img_n/play.svg);cursor: pointer;}
+.selectplay .songtitle{ display: block;}
+.selectplay .songadd{ display: block;width:20px;margin-left: 5px;background-image: url(../../img_n/add.svg);cursor: pointer;}
 
 div.cke_dialog_ui_input_select{display: block; width: 200px;}
 .ckeditorselclass input{min-height: 10px;}

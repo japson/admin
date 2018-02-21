@@ -47,13 +47,14 @@ if ( $logged_in &&  $auth_in ) {
 		
 	 }else{	 
 		require_once('mod/class/create_menu.php');
-		$menu= new createMenu(array('Создать пункт'=>'createMenu'),$db);
+		$menu= new createMenu(array('Создать пункт'=>'createMenu','Создать статью'=>'createArticle'),$db);
 		$menu->creatBread(2,'Menu');
 		$bread=$menu->breadcrumb.$menu->menuout;
 		$tablic='mainmenu';
 		include('mod/class/variables.php');
 		include('mod/class/init_table.php');
 		include('mod/class/menu_table.php');
+         include('mod/class/rasd_table.php');
 		$test=new MenuTable($tablic,$db);
 		$test->outmasskey($userpunkt,$massAssoc);
 		$test->countrec("");
@@ -64,6 +65,19 @@ if ( $logged_in &&  $auth_in ) {
 		$test->nameImgTbl();
 		$masj="{'table':'".$test->aliasTbl()."','kodmenu':0,'kodrasdel':0,'alias':'Меню: ".$alias."'}";
 		$vyvod.='<script>table_auto("menu",'.$masj.');</script>';
+
+         $tablic='news';
+         $test=new RasdelTable($tablic,$db);
+         $test->outmasskey($userpunkt,$massAssoc);
+         $count=$test->countrec('  WHERE kodmenu=0 AND kodrasdel=0  ');
+         if ($count==0){$test->style='style="display:none"';}
+         else{$test->style='';$test->createButton($mass_actions);
+             $vyvod.=$test->outtitle('Статьи: '.$alias);}
+
+         $test->nameImgTbl();
+         $vyvod.=$test->createOut($massTypField,'', '?post=');
+         $masj="{'table':'".$test->aliasTbl()."','kodmenu':0,'kodrasdel':0,'alias':'Статьи: ".$alias."'}";
+         $vyvod.='<script>table_auto("post",'.$masj.');</script>';
 	 }
 				
 				break;

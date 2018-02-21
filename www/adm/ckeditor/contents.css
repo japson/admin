@@ -206,5 +206,9 @@ a > img {
 	max-height: 1080px;
 	margin:0 auto;
 }
-.selectplay{display: inline;}
-.selectplay {display: inline-block; background-image: url(../../img/mafonadmin2.png); background-size: contain; background-repeat: no-repeat; height:2.3em;width:3.3em; margin: -5px 2px; cursor: pointer;}
+.selectplay{display: inline-flex; border: solid 1px ; border-color: rgba(0,0,0,0.3); background-color: #393c41;  height:20px; color: #FCFFFE;}
+.selectplay .songplay{width:20px; margin-right: 5px; display: block; background-image: url(../../img_n/play.svg);cursor: pointer;}
+.selectplay .songtitle{ display: block;}
+.selectplay .songadd{ display: block;width:20px;margin-left: 5px;background-image: url(../../img_n/add.svg);cursor: pointer;}
+/*
+.selectplay {display: inline-block; background-image: url(../../img/mafonadmin2.png); background-size: contain; background-repeat: no-repeat; height:2.3em;width:3.3em; margin: -5px 2px; cursor: pointer;}*/

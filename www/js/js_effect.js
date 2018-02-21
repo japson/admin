@@ -97,7 +97,7 @@ function marqueRun(){ //Запуск скоролинга
             });*/
             $('.marque').simplemarquee();	
 }
-
+$('#main-container').animate(   {    width : '580px'  }, 200);
 function provCheck(){ // кнопка включения мафона
 var per=$( '.switch.demo1' ).find('input:checked').length;
 if (per==1){ $('#main-container').animate(   {    width : '580px'  }, 2000);
@@ -223,13 +223,17 @@ function goPageObj(){
         if(newPage==0){newPage=maxPage;}
         var countPages=$('.mainpages');
         var newPageObj=countPages.children('.secstr[id="page_'+newPage+'"]');
-        curPage=countPages.children('.secstr[id="page_'+curPage+'"]');
-        curPage.css('z-index','11');
-        curPage.animate(   {    opacity : '0'  }, 300);
-        newPageObj.animate(   {    opacity : '1'  }, 300);
-        newPageObj.addClass('current');
-        curPage.removeClass('current').css('z-index','10');
-
+       // console.log(newPageObj);
+        if(newPage!=curPage) {
+            newPageObj.css('display', 'block');
+            curPage = countPages.children('.secstr[id="page_' + curPage + '"]');
+            curPage.css('z-index', '11');
+            curPage.animate({opacity: '0'}, 300);
+            newPageObj.animate({opacity: '1'}, 300);
+            newPageObj.addClass('current');
+            curPage.removeClass('current').css('z-index', '10');
+            curPage.css('display', 'none');
+        }
         listing=0;
 						}
 	var makeUrl=function(){
@@ -272,7 +276,7 @@ function goPageObj(){
 			if(listing==0) {goPage(curPage,maxPage,0)}
 			});	
 			
-var goPage=function(curPage,maxPage,direct){
+var goPa3ge=function(curPage,maxPage,direct){
 	//var scrol=$('body').css('overflow-y');
 	//console.log(document.documentElement.clientHeight); console.log(document.documentElement.scrollHeight);
 	if(document.documentElement.clientHeight >= document.documentElement.scrollHeight)

@@ -1,4 +1,4 @@
-// бегущая строка
+
 !(function (root, factory) {
 
     'use strict';
