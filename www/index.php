@@ -1,5 +1,7 @@
 <?
+session_start();
 include("mod/cook_check.php");
+
 $sost=cook_check(0);
 $sovok=""; $modern=""; $slide=""; $chaen=''; $piven='';
 if ($sost==1) {
@@ -17,8 +19,11 @@ else  {
 	$classchai='chaiimg chai_rot';
 	$chaen=" cursor";
 	}
-
 include('/mod/create_menu.php');
+include('/mod/social.php');
+include('/mod/comment.php');
+
+
 include('/mod/mafon.php');
 $opgraph=$page->opengraph;
 //echo $_SERVER["HTTP_HOST"] ;
@@ -42,6 +47,8 @@ $opgraph=$page->opengraph;
     <meta property="og:image" content="<? echo $opgraph['image']; ?>">
     <meta property="og:image:width" content="100">
     <meta property="og:image:height" content="100">
+
+    <script src="https://yastatic.net/share2/share.js" ></script>
 
     <link rel="stylesheet" type="text/css" href="/css_n/font/comfortaa.css"/>
     <link rel="stylesheet" type="text/css" href="/css_n/normalize.css" />
@@ -80,17 +87,48 @@ $opgraph=$page->opengraph;
         <div id="mainpages" class="mainpages">
             <? echo($massart[0]); ?></div>
        <div class="pages_go">
-           <div class='prev_page' id="downn"></div>           <div class='next_page'  id="pusk"></div>
+           <div class='prev_page' id="downn"></div>
+           <div class='social' id="social">
+               <div class="ya-share2" id="share2" data-services="vkontakte,facebook,odnoklassniki,gplus,twitter,reddit,tumblr,telegram" data-counter=""></div>
+           </div>
+           <div class='next_page'  id="pusk"></div>
        </div>
     </div>
 </div>
 <!--<div class="grid-element main">Main Content</div>-->
-<div class="grid-element extra">
+    <div class="grid-element comment">
+        <div class="pencul">
+            <div class="pensilmaf">
+            <button class="pen_list maficon" title="Магнитофон"></button>
+            </div>
+            <div class="penculinside <? if(strlen($nextart)==0){echo ' hidden';} ?> ">
+            <button class="pen_list vpered" title="Следующая статья" <? echo($nextart); ?> ></button>
+            <button class="pen_list list" title="Вернуться к списку" <? echo($listart); ?> ></button>
+            <button class="pen_list nasad" title="Предыдущая статья" <? echo($prevart); ?> ></button>
+            </div>
+        </div>
+       <!-- <div class="switch demo1 demo1no" onclick="provCheck();"> <input type="checkbox" ><label></label></div>-->
+         <div class="comminside">
+             <div class="">
+             <script src="//ulogin.ru/js/ulogin.js"></script>
+          <div class="socialstatus">
+           <? echo $outssesion; ?>
+          </div>
+           <div class="entercomment">
+              <!-- < ? echo $outcomment; ?>-->
+           </div>
+             <div class="listcomment">
+
+             </div>
+    </div>
+    </div>
+<div class="grid-element extra closed">
     <div id="main-container" class="main-container">
         <div class="switch demo1" onclick="provCheck();"> <input type="checkbox" ><label></label></div>
         <? echo $mafon; ?>
     </div>
 </div>
+
 
 <!--<div class="grid-element footer">Footer</div>-->
 <script type="text/javascript" src="/js/transform.js"></script>
@@ -99,6 +137,9 @@ $opgraph=$page->opengraph;
 <script type="text/javascript" src="/js/container.js"></script>
 <script type="text/javascript" src="/js/jquery.simplemarquee.js"></script>
 <script type="text/javascript" src="/js/jquery.easing.1.3.js"></script>
+<script type="text/javascript" src="/js/jquery.nicescroll.min.js"></script>
+
+
 <script src="/js/js_effect.js"></script>
 <script src="/js/js.js"></script>
 </body>

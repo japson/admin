@@ -10,6 +10,7 @@ if(isset($_COOKIE['auth_key'])  and $arc[0]['atribut']==1) {
     $curput=json_decode(($_POST['put']));
     //echo $_POST['param'];
     include('class/var_alt.php');
+   // debug_to_console($data);
     if(gettype($data)=='object') {
         if(strlen($data->table)){$tabl=$data->table;}
         if(strlen($data->kodmenu)){$kodmenu=$data->kodmenu;}
@@ -17,6 +18,7 @@ if(isset($_COOKIE['auth_key'])  and $arc[0]['atribut']==1) {
     }
     if(gettype($curput)=='object') {if(strlen($curput->put)){$putnext=$curput->put;$putback=$curput->backput;}else{$putnext='';}}
     $key=array_search($tabl, $massTablAlias);
+   // debug_to_console($tabl);
         if(strlen($key)>0) {$tablic = $key;
          $put=$massElements[$tablic];
             if(strlen($put)>0) { //ветка с файлами
@@ -33,7 +35,7 @@ if(isset($_COOKIE['auth_key'])  and $arc[0]['atribut']==1) {
                     $newdir->temper=$curput;
                    // array_push($temp,$_POST['put']);
                     //array_push($temp,$newdir->temper);
-                    //debug_to_console($newdir->temper);
+                   // debug_to_console($newdir->temper);
                 } else{echo json_encode('no dir');}
             } else{} // ветка без файлов просто каталог
         }

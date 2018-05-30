@@ -1,6 +1,12 @@
 /**
  * Created by RARETA on 05.12.2017.
  */
+socialButton();
+var curState=currentState();
+middlmen();
+var goActPage=goPageObj();
+initcurState();
+
 function currentState(){
     var state={menu:'',middle:'',yakor:'',right:'',left:'',cofmen:'',cofrasd:''};
     var set=function(name,val){state[name]=val; };
@@ -9,12 +15,20 @@ function currentState(){
     return {set:set, get:get,getall:getall};
 }
 
+//document.getElementById('social').innerHTML = VK.Share.button({noparse :false},{type: 'round',text : 'Поделиться' });
+function socialButton() {
+        Ya.share2('share2', {
+        content: {
+            url: document.head.querySelector("[property='og:url']").content,
+            title: document.head.querySelector("[property='og:title']").content,
+            description: document.head.querySelector("[property='og:description']").content,
+            image: document.head.querySelector("[property='og:image']").content
+        }
+    });
+}
 
 function noner(){return false;}
-var curState=currentState();
-middlmen();
-var goActPage=goPageObj();
-initcurState();
+
 //console.log(curState.getall());
 
 var coffUrl=function(menu,rasdel){
@@ -64,73 +78,114 @@ function goUrl2(event){
 
 }
 //$(document).on("click", "a.hmenuhref", function(event){
-   function goRasd(event) {var elem=event.target||event.srcElement;
+   function goRasd(event) {let elem=event.target||event.srcElement;
        event.preventDefault();
-    var men=$(elem).closest('a').attr('name');
-    console.log(men);
-    var mass=men.split('_');
-    var newmas=[mass[0],'',mass[1],mass[2],'ra'];
-    var newhref=$(elem).closest('a').attr('href');
-      // history.replaceState(curState.getall(), 'namepage2', '');
-    //   console.log(newhref);
-   // curState.set('menu',men);
-    curState.set('middle',men);
-       curState.set('yakor','#1');
-       makerMenu(newmas,'mainpages',men,noner,newhref);
-       var urlrasd=$(elem).closest('a').find('.sdt_link').text();
+    let men=$(elem).closest('a').attr('name');
+    let newhref=$(elem).closest('a').attr('href');
+       goLinkRasd(men,newhref,'#1');
+       let urlrasd=$(elem).closest('a').find('.sdt_link').text();
        coffUrl('',urlrasd);
        curState.set('cofrasd',urlrasd);
-    //   console.log(window.history.length);
-    //   console.log(window.history.state);
-       var peremsost=curState.getall();
-      // history.replaceState(curState.getall(), 'namepage2', '');
-      // history.replaceState(peremsost, null, window.location);
-       history.pushState(peremsost, null, newhref);
-
-//console.log($(elem).closest('a').attr('name'));
-//return false;
 }
-$(document).on("click", "a.linkarticle", function(event){
-    var elem=event.target||event.srcElement;
-    var men=$(elem).closest('tr').attr('name');
-    var mass=men.split('_');
-    var newmas=[mass[0],'',mass[1],mass[2],'oa'];
-    var newhref=$(elem).closest('a').attr('href');
-    console.log(newhref);
+$(document).on("click", ".pen_list.list", function(event){
+    let elem=event.target||event.srcElement;
+    let men=$(elem).attr('name');
+    let newhref=$(elem).attr('dathref');
+    const pageyak=newhref.split('/#');
+    //pageyak='#'+pageyak[1] || 1;
+
+            goLinkRasd(men,newhref,'#'+pageyak[1] || 1);
+
+        console.log(newhref);
+        goActPage.init();goActPage.goPage(1,'#'+pageyak[1] || 1);
+
+});
+
+function goLinkRasd(men,newhref,pageyak){
+    let mass=men.split('_');
+    let newmas=[mass[0],'',mass[1],mass[2],'ra'];
+    // history.replaceState(curState.getall(), 'namepage2', '');
     curState.set('middle',men);
-    curState.set('yakor','#1');
-    makerMenu(newmas,'mainpages',men,noner,newhref);
-    var peremsost=curState.getall();
-    history.pushState(peremsost, null, newhref);
+    curState.set('yakor',pageyak);
+    makerMenu(newmas, 'mainpages', men, noner, newhref,pageyak);
+
+    let peremsost=curState.getall(); history.pushState(peremsost, null, newhref);
+
+
+    // history.replaceState(peremsost, null, window.location);
+
+}
+
+$(document).on("click", "a.linkarticle", function(event){
+    let elem=event.target||event.srcElement;
+    let men=$(elem).closest('tr').attr('name');
+    let newhref=$(elem).closest('a').attr('href');
+    goLinkArt(men,newhref);
     return false;
 });
 
+$(document).on("click", ".pen_list.vpered", function(event){
+    const elem=event.target||event.srcElement;
+    let men=$(elem).attr('name');
+    let newhref=$(elem).attr('dathref');
+    goLinkArt(men,newhref);
+    return false;
+});
 
-function makerMenu(mass,id,men,callback,newhref){
+$(document).on("click", ".pen_list.nasad", function(event){
+    const elem=event.target||event.srcElement;
+    let men=$(elem).attr('name');
+    let newhref=$(elem).attr('dathref');
+    goLinkArt(men,newhref);
+    return false;
+});
+function goLinkArt(men,newhref){
+    let mass=men.split('_');
+    let newmas=[mass[0],'',mass[1],mass[2],'oa'];
+    //  console.log(newhref);
+    curState.set('middle',men);
+    curState.set('yakor','#1');
+    makerMenu(newmas,'mainpages',men,noner,newhref);
+    let peremsost=curState.getall();
+    history.pushState(peremsost, null, newhref);
+}
+
+
+
+function makerMenu(mass,id,men,callback,newhref,yakor){
     var data3={key:mass[0],tbl:mass[1],km:mass[2],kr:mass[3],what:mass[4],href:newhref};
-    console.log (data3);
+
+   // console.log (data3);
     $.ajax({
         type: "POST",   url: "/mod/hormenu.php",   data: data3,
         success: function(dat){
          // console.log( "Прибыли данные: " + dat  ); //+ data
             var data= JSON.parse(dat);
 
-           // console.log(data[1][0]);
+          //  console.log('**'+data[1][0]);
             if(mass[4]=='hm' || mass[4]=='hmr') $('#'+id).html(data[0]);
             if(mass[4]=='hm') $('#mainpages').html(data[1][0]).attr('name',men);
-            if(mass[4]=='ma') $('#mainpages').html(data[1][0]).attr('name',men);
-            if(mass[4]=='ra') $('#mainpages').html(data[1][0]).attr('name',men);
-            if(mass[4]=='oa') $('#mainpages').html(data[1][0]).attr('name',men);
+            if(mass[4]=='ma') {$('#mainpages').html(data[1][0]).attr('name',men); $('.penculinside').addClass('hidden').children().removeAttr('name').removeAttr('dathref');}
+            if(mass[4]=='ra') {$('#mainpages').html(data[1][0]).attr('name',men); $('.penculinside').addClass('hidden').children().removeAttr('name').removeAttr('dathref');}
+            if(mass[4]=='oa') {$('#mainpages').html(data[1][0]).attr('name',men); goArticle(data[2],data[3],data[4]);$('.penculinside').removeClass('hidden');}
+
+            if(yakor){myYakor(yakor);}
            // console.log(mass[4]); console.log(data[1][1]);
            if(mass[4]!='hmr') meta(data[1][1]);
+            socialButton();
             callback();
+            loadComment(1);
+            return true;
+          //  console.log(curState.getall());
             //history.pushState(curState.getall(), 'namepage', newhref);
         }// success
+    });
         /*complete: function(jqXHR, textStatus){
             console.log(textStatus);
             console.log(jqXHR);
         }*/
-    });
+
+
     var meta=function(data){
         document.querySelector('meta[property="og:description"]').setAttribute("content", data['description']);
         document.querySelector('meta[property="og:site_name"]').setAttribute("content", data['site_name']);
@@ -144,13 +199,18 @@ function makerMenu(mass,id,men,callback,newhref){
 
    // console.log(curState.getall());
 }
+function goArticle(prev,next,list){
+    $('.pen_list.nasad').attr('name',prev[0]).attr('dathref',prev[1]);
+    $('.pen_list.vpered').attr('name',next[0]).attr('dathref',next[1]);
+    $('.pen_list.list').attr('name',list[0]).attr('dathref',list[1]);
+}
 
 window.addEventListener('popstate', function(e){
     // console.log(e.target.location.pathname);
-  //  console.log(e.target.location.pathname.substr(1));
+    console.log(e.state);
     remakeMenu(e.state,e.target.location);
     var path=e.target.location.pathname.substr(1);
-     console.log(':: '+decodeURIComponent(path));
+    // console.log(':: '+decodeURIComponent(path));
     return false;
     // var newput=ajaxRedirect(path,0);
 }, false);
@@ -174,13 +234,23 @@ function remakeMenu(state){
         if(mass[1]>0) {var swtch='ra';} else{swtch='ma';}
         if(mass[2]>0) {var swtch='oa';}
         newmas=[mass[0],'',mass[1],mass[2],swtch];
-        console.log('remakeMenu '+state.middle);
-        makerMenu(newmas,'mainpages',state.middle,noner,newhref);
+      // console.log('remakeMenu '+state.middle);
+        //if(state.yakor){ myYakor.set(state.yakor);}
+        makerMenu(newmas,'mainpages',state.middle,noner,newhref,state.yakor);
         curState.set('middle',state.middle);
-    }
+        loadComment(1);
+    } else{
     if(state.yakor) {goActPage.init();goActPage.goPage(1,state.yakor.replace('#','')); }
-    console.log(curState.getall());
+    }
+    //console.log('%% '+curState.getall());
 }
+function myYakor(yak){
+     goActPage.init();
+       goActPage.goPage(1,yak.replace('#',''));
+
+
+}
+
 function initcurState(){
     var men=$('#sdt_menu').attr('name') || '0_0_0';
     var mid=$('.secstr ').eq(0).attr('name') || '0_0_0';
@@ -200,6 +270,58 @@ function initmakeUrl(){
     if(elem_last.charAt(0)=='#') {goActPage.init();goActPage.goPage(1,elem_last.replace('#',''));
         curState.set('yakor',elem_last); }
 }
+
+
+
+// соц коннект --------
+function callUlogin(token){
+    $.getJSON("//ulogin.ru/token.php?host=" + encodeURIComponent(location.toString()) + "&token=" + token + "&callback=?", function(data){
+        data = $.parseJSON(data.toString());
+        if(!data.error){
+            //alert("Привет, "+data.first_name+" "+data.last_name+"!");
+            console.log(data);
+            let nm=new Social();
+            nm.rega(data,1,"/mod/social.php");
+           // console.log(out);
+          //  if(out.length) $('.socialstatus').html(out);
+        }
+    });
+}
+
+function Social(){
+    this.ajax= function(ulogin,put) {
+        $.ajax({
+            type: "POST", url: put, data: "ulet="+JSON.stringify(ulogin),
+            success: function (dat) {
+                 console.log( "Прибыли данные2: " + dat  ); //+ data
+                 var data = JSON.parse(dat);
+                $('.socialstatus').html(data);
+            }
+        });
+    };
+     this.rega=function(ulogin, param,put) {
+        ulogin.param=param;
+      //   console.log(ulogin);
+        this.ajax(ulogin,put);
+    }
+
+}
+
+function ExitSocial(){
+    $.ajax({
+        type: "POST", url: "/mod/exitsocial.php",
+        success: function (dat) {
+            // console.log( "Прибыли данные: " + dat  ); //+ data
+           // var data = JSON.parse(dat);
+            $('.socialstatus').html(dat);
+            uLogin.customInit('uLogin_22addfea');
+        }
+    });
+}
+$(document).on("click", "#logid", function(event){ // нет кнопки
+    var nm=new Social();
+    nm.rega("56546",1,"/mod/social.php");
+});
 
 // управление плеером --------------------------------------------------
 
@@ -312,4 +434,50 @@ $(document).on("click", ".songadd", function(event){
          });
      }
 
+};
+
+$(document).on("click", ".songplay", function(event){
+
+});
+
+// comments-------------------------
+$(document).on("click", "#buttoncomm", function(event){
+  //  console.log(curState.getall());
+    let newcomm=commFunc;
+    newcomm.inputComm($('#textarea1').val());
+    newcomm.sendComm('new0');
+});
+$(document).on("click", ".commaddsend", function(event){
+    let elem=event.target||event.srcElement;
+    let id=$(elem).parent('.commaddopen').attr('id');
+    let txt=$(elem).parent('.commaddopen').children('textarea').val();
+    let newcomm=commFunc;
+    newcomm.inputComm(txt);
+    newcomm.sendComm(id);
+});
+
+let commFunc={
+        comm:'',
+    sendComm: function(elem){
+        //this.recieveComm();
+        let rasdel=curState.getall();
+     //   console.log(comm+elem+rasdel.middle);
+        $.ajax({
+            type: "POST", url: "/mod/comment.php", data: {updatcom: elem, typ: comm, part:rasdel.middle},
+            success: function (dat) {
+               //   console.log("Прибыли данные: " + dat); //+ data
+                var data = JSON.parse(dat);
+                let out='<div class="comlist">'+data[1]+'</div>';
+                $('.listcomment').html(out);
+                $('.comlist').niceScroll({cursorcolor:"#77262a", cursorwidth:'7'});
+                if(elem=='new0'){$('#textarea1').val('');}
+            }
+        });//ajax
+    },
+    recieveComm:function(){
+       // comm=$('#textarea1').val();
+        //console.log(comm);
+    },
+    inputComm:function(val){        comm=val;    }
+   // situation:function (param) {updatcom= param;  }
 };

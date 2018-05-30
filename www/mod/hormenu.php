@@ -58,7 +58,7 @@ include('class/makemenu.php');
         echo json_encode(array('',$massart));
     }
 
-    if($what=='ra') { // статьи раздела
+    if($what=='ra') { // статьи раздела переход из верхнего меню
         $needtbl='rasdel';
         $needkm=$kodmenu; $needkr=$kod;
         $menu = new makeMenu($needtbl,$db);
@@ -74,15 +74,17 @@ include('class/makemenu.php');
         echo json_encode(array('',$massart));
     }
 
-    if($what=='oa') { // статьи раздела
+    if($what=='oa') { // статьи раздела зайти в статью
         $needtbl='news';
         $needkm=$kodmenu; $needkr=$kodrasdel;
         $menu = new makeMenu($needtbl,$db);
         $where=' WHERE kod='.$kod. ' and vyvod=1 ';
         $menu->initRasdMenOnly($needkr,$needkm, $itogname);
         $menu->opengraph['url']=$href;
+
+        $menu->kodarticle=$kod;
         $massart=$menu->currentArticle('news',$where,$itogname);
         $massart[1]=$menu->checkOpenGraph($massart[1]);
-        echo json_encode(array('',$massart));
+        echo json_encode(array('',$massart,$menu->prevart,$menu->nextart,$menu->listart));
     }
 ?>

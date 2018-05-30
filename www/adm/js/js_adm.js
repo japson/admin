@@ -776,10 +776,10 @@ function changePage(elem, direct){
         var param=document.getElementById('position').massiv;
         console.log("param="+JSON.stringify(param)+'&put='+JSON.stringify(put));
         $.ajax({
-            type: "POST",   url: "mod/dirwatch.php",   data: "param="+JSON.stringify(param)+
+            type: "POST",   url: "/adm/mod/dirwatch.php",   data: "param="+JSON.stringify(param)+
 			'&put='+encodeURIComponent(JSON.stringify(put)),
             success: function(data){
-                 // console.log( "Прибыли данные: " + data  ); //+ data
+                  console.log( "Прибыли данные: " + data  ); //+ data
                 data= JSON.parse(data);
                // console.log(document.getElementsByClassName('Myconfirm')[0]);
                 if(document.getElementsByClassName('Myconfirm')[0]!=undefined){$('.Myconfirm').html('<p></p>'+data[0]);}
@@ -897,7 +897,7 @@ $(document).on('click', '.button[name="delsong"]',function(event){
 		//console.log(newmas);
 	}
 
-	function findSongs() {
+	function findSongs() { // поиск песен для ckeditor обновить директорию
 		data={format:'position'};
         $.ajax({
             type: "POST",   url: "mod/dirpunkt.php",

@@ -5,11 +5,12 @@
 	text-align: center;
     display: block;
 	position: relative;
-    overflow: hidden;
+    /*overflow: hidden;*/
 	margin:10px 3px 0 auto;
 	float:right;
 	/*height: 500px; /*500*/
-	width: 150px;
+	/*width: 150px;*/
+	max-width: 550px;
 	background: transparent url(../img/maf/bg2.jpg) no-repeat top center;
 	border: 4px solid #000000;
 	
@@ -37,7 +38,7 @@ transition: all 4s ease;
 .vc-container{
 	text-align: center;
 	display:block;
-	width: 580px;
+	width: 550px;
 	height: 470px;
 	border: 1px solid #000000;
 	 box-shadow: rgba(000,000,000,0.9) 0 3px 4px, inset rgba(255,255,255,0.4) 0 0px 0;
@@ -97,7 +98,7 @@ transition: all 4s ease;
 .vc-tape-wheel-right{
 	right: 91px; /*113*/
 }
-.spisokside{width: 580px; display:block; margin-top:0px; text-align: center; color:#333;}
+.spisokside{width: 550px; display:block; margin-top:0px; text-align: center; color:#333;}
 .songblok { margin:3px auto 0;display:inline-block; text-align:left; padding-left:2px; }
 .songblok .songinside{ background: transparent url(../img/maf/doroga.jpg) no-repeat center center; background-size: cover;}
 

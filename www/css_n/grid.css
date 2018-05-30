@@ -1,5 +1,10 @@
-.gridbody{display: grid;   grid-template-columns: 350px 10px 700px 10px auto;/*0.3fr*/;
-    grid-template-rows: 10px 70vh 10px;
+/*:root
+{ --minmax: -moz-min-content; width: -webkit-min-content; width: min-content;}*/
+
+.gridbody{display: grid;   width: 99vw;  grid-template-columns: 350px 2px 700px 2px
+minmax(0px,auto);/*0.3fr*/;
+    grid-template-rows: 10px 80vh 10px;
+    box-sizing: border-box;
    /* background: url('../img_n/fon.png')  top left ; background-size: 7%;  transition:  1.5s;}*/
     /*background: url('../img_n/kultura_empty.jpg') top left no-repeat #DBC1A0;  transition:  1.5s;}*/
    /* background: url('../img_n/fon.svg') top left repeat-x #DBC1A0;  background-size: auto 170%; transition:  1.5s;}*/
@@ -20,12 +25,11 @@ background: url('../img_n/fon_2_l.svg') top left  #77262a;  background-size: 65%
 
 .navmenu {grid-column: 1/1; grid-row: 1/1;}
 
-.extra {
-    grid-column-start: 5;
-    grid-column-end: 5;
-    grid-row-start: 1;
-    grid-row-end: 2;
-}
+.comment{grid-column: 5/5; grid-row: 2/3; height: 95vh; font-family: "Rubik", "Ubuntu", sans-serif; display: flex; }
+
+.comminside{ background-color:  rgba(170,117,85,0.5); width: 100%; margin: 0px 0 ; padding-bottom: 5px; color: #fad7d6;}
+.extra {grid-column: 5/5; grid-row: 1/2;}
+.closed{display: none;}
 /*  bumaga mehu -------------------------------------------*/
 .bumenu {display:none; position:relative; top:40px; left:100px; z-index:19; }
 .bumenu{opacity: 1; display: block;}
@@ -50,8 +54,8 @@ background: url('../img_n/fon_2_l.svg') top left  #77262a;  background-size: 65%
 .povor6 {}
 /* bumaga mehu -------------------------------------------*/
 /* средний блок*/
-.main_grid{display: grid; grid-template-columns: auto 700px auto ;grid-template-rows:  670px 100px 10px;
-    min-height: 650px;
+.main_grid{display: grid; grid-template-columns: auto 700px auto ;grid-template-rows:  1fr 10px 10px;
+    min-height: 94%;
 }
 /*.podfon{background: url('../img_n/upmid.png') no-repeat top left ;   transition:  1.5s;}*/
 .podfon{background: url('../img_n/midup_blue.png') repeat-x top left ; background-size: 45% 53px ;  transition:  1.5s;
@@ -119,18 +123,18 @@ background: url('../img_n/fon_2_l.svg') top left  #77262a;  background-size: 65%
 .blokpage { position:absolute; left:0px; top:0px; z-index:12;}
 .txt_block {position:absolute; left:15px; top:50px; z-index:12; color:#006; width: 96%; padding: 0 10px;}
 .txt_block_head {text-align: center; font-size: 1.4em; font-weight: bold; color:#6e3414; z-index:12;position: relative;text-transform: uppercase;  }
-.txt_block_str{position: absolute; 	color: #000066; 	z-index: 12; 	bottom: 5px;	text-align: center;
+.txt_block_str{position: absolute; 	color: #000066; 	z-index: 13; 	bottom: 5px;	text-align: center;
     width: 100%; left:15px; }
 .txt_block_date{position: absolute;right: 25px;width: 100%;margin-bottom: 25px;text-align: right; font-size: 9px; color: #0f0f11;}
 
-.nompagecurrent, .nompagelink{margin: 0 4px;}
+.nompagecurrent, .nompagelink{margin: 0 4px; width:10px;}
 .nompagelink{cursor: pointer; text-decoration: underline;}
-.pages_go{grid-column: 2/2; grid-row: 3/3; height:40px;bottom:60px;position:relative;z-index:12;}
+.pages_go{grid-column: 2/2; grid-row: 3/3; height:40px; bottom: -28px; position:relative;z-index:12;}
 .next_page { width:40px; height:40px; background-color:#0F0;  float: right; right:10px;position:relative; z-index:25;
     background: url('../img_n/_right.svg') no-repeat top left ; background-size: 100% ; cursor: pointer; }
 .prev_page { width:40px; height:40px; background-color: #cc7544; left:10px; float: left; position: relative; z-index:25;
     background: url('../img_n/_left.svg') no-repeat top left ; background-size: 100% ; cursor: pointer;}
-
+.social{ height:30px;  float: left; margin: 10px 0 0 30px; }
 /*background: url('../img/blocknot.png') top left no-repeat #DBC1A0;*/
 /* переворот страниц блокнота */
 
@@ -142,3 +146,42 @@ background: url('../img_n/fon_2_l.svg') top left  #77262a;  background-size: 65%
 .selectplay .songplay{background: no-repeat;width:20px; margin-right: 5px; display: block; background-image: url(/img_n/play.svg);cursor: pointer; }
 .selectplay .songtitle{ display: block;}
 .selectplay .songadd{ background: no-repeat;display: block;width:20px;margin-left: 5px;background-image: url(/img_n/add.svg);cursor: pointer;}
+
+/*loginza*/
+/*#loginza_main_ifr #identity {max-width:250px !important; display: block !important;overflow: hidden !important;}*/
+.socimg{ width: 40px;margin-bottom: -15px}
+.socialstatus{margin-bottom: 10px; line-height: 1.5; width: auto;}
+/*comments*/
+.commarea{width:100%; display: block; margin: 5px 0 5px 10px; color:#c6a4a4;}
+.comm_input{margin-left: 10px;}
+.comm_input textarea{max-height: 200px; height:70px; width:95%; min-width: 250px; background-color: rgba(219,199,185,0.1); border: none; color: rgba(219, 199, 185, 0.1); }
+.comm_input textarea:focus{background-color: #ffe5d2; color: rgba(96,26,26,1);}
+.comm_input button{  margin: 5px 5px 5px 10px; }
+.comlist{height:69vh; max-width: 93%; margin-left: 10px;}
+.buttcomm{width: auto;display: block;}
+.buttonmycar{background: no-repeat; background-image: url("/img_n/save.svg"); height:25px; width: 80px; border: none; margin-top: 7px;}
+.buttonrefreshcar{background: no-repeat ; background-image: url("/img_n/refresh.svg"); height:30px; width: 40px; border: none;}
+.comment{word-spacing: 0.16em; letter-spacing: 0.06em;
+    /*font-weight: 400; font-size: 16px;    line-height: 1.5em;*/}
+.commzero{}
+.commone{margin-left: 50px;}
+.socimgcomm{  width: 35px;margin-bottom: -15px;float: left;}
+.commview{ margin:4px 0 8px; padding: 5px 0 0 35px; }
+.commname{font-weight: 400; margin-right: 5px; color: #c2c0ab;}
+.commtext{color: #dbc7b9;}
+.commbutton{display: flex; justify-content: flex-end; margin: 5px 14px 0 0;  }
+.commbutton span{font-size: 0.7em; padding:3px 0 0 10px; color: #c8aaaa;}
+.answercomm{background: no-repeat; background-image: url("/img_n/save.svg"); height:20px; width: 50px; border: none;}
+.commaddsend{background-color:rgba(219,199,185,0.4);;border: none; color: #fad7d6;}
+.commaddsend{height: 2.35em; margin: 0px 0 0 2px;}
+.commaddopen textarea{ width: 80%;height: 3em; resize: none; font-size: 0.8em;background-color: rgba(219,199,185,0.4); border: none;}
+.commaddopen.commhidden{display: none;}
+.pencul{background: no-repeat;width: 40px; background-image: url("/img_n/pencul.svg"); height:610px; margin:30px 0; display: flex;flex-direction: column; flex-wrap: nowrap;  align-items: center; justify-content: flex-start; }
+.pensilmaf{height:50px;}
+.penculinside .pen_list{margin-top: 50px;}
+.penculinside.hidden{display:none;}
+.pen_list.maficon{background-image: url("/img_n/spisok_mafon.svg");height: 55px;}
+.pen_list.list{background-image: url("/img_n/spisok.svg");height: 75px;}
+.pen_list.vpered{background-image: url("/img_n/spisok_dalle.svg");height: 120px;}
+.pen_list.nasad{background-image: url("/img_n/spisok_nasad.svg");height: 120px;}
+.pen_list{background: no-repeat center center; background-color: transparent;width: 40px;  border: none;  background-size: contain;  }

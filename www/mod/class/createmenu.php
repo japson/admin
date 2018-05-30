@@ -12,6 +12,9 @@ class createMenu{
     private $kolOnPage=4;
     public $cofmen=''; public $cofrasd='';
     public $opengraph=array();
+    public $masspencil=array();
+    public $kodarticle;
+    public $prevart; public $nextart; public $listart;
 
     public function __construct($nmtbl,$dbh) {
         // $this->sql ="SELECT * FROM ".$nametabl."";
@@ -127,7 +130,7 @@ class createMenu{
         $temp=''; $key='';
           //  debug_to_console($this->typeRasdel());
         if ($sms = $stmt->fetchAll(PDO::FETCH_ASSOC)) {
-
+                $this->masspencil=$this->makePencil($tbl,$sms[0]);
             switch($this->typeRasdel()){
                 case 'articles':
                     if(count($sms)>1){ $temp=$this->makeArticleAll($sms,$itogname,'news','description');} //обработать комплект статей
@@ -141,6 +144,42 @@ class createMenu{
             }
         }
          return $temp;
+    }
+    private function makePencil($tbl,$record){ // то что на карандаше
+        $dbl=$this->db; $prev=0;$next=0; $pagerasdel='';
+        $sort=$record['sort']; $mass=array();
+        $where=' WHERE kodrasdel='.$this->kodrasdel.' and kodmenu='.$this->kodmenu.' and vyvod=1';
+        $sql = "SELECT kod, sort, name, nameurl FROM ".$tbl." ".$where."  ORDER by sort";
+        $stmt = $dbl->prepare($sql);
+        $stmt->execute();
+        if ($sms = $stmt->fetchAll(PDO::FETCH_ASSOC)) {
+                foreach($sms as $value){$mass[]=array($value['kod'],$value['name'],$value['nameurl']);}
+                for($i=0;$i<count($mass);$i++){
+                    if($mass[$i][0]==$this->kodarticle) {
+                        $pagerasdel=(integer)($i/$this->kolOnPage);
+                        if($i==(count($mass)-1) && count($mass)==1){$prev=$next=$mass[0];}
+                        else{
+                            switch($i){
+                                case 0: $prev=$mass[count($mass)-1];$next=$mass[$i+1]; break;
+                                case count($mass)-1: $next=$mass[0];$prev=$mass[$i-1];break;
+                                default: $next=$mass[$i+1];$prev=$mass[$i-1];break;
+                            }
+                        }
+                    }
+                }
+                $temptbl=$this->nametabl;
+            $this->nametabl='mainmenu'; $this->massivMenu('  ');
+            $this->nametabl='rasdel';$this->massivRasdel('',0);
+            $this->nametabl=$temptbl;
+            $this->prevart=array($prev[0].'_'.$this->kodmenu.'_'.$this->kodrasdel);
+            $menbegin=$this->makeUrlArt($this->prevart[0]);
+            $this->prevart[]=$menbegin.'/'.$this->CMP(array('name'=>$prev[1],'nameurl'=>$prev[2]),'name');
+            $this->nextart=array($next[0].'_'.$this->kodmenu.'_'.$this->kodrasdel);
+            $this->nextart[]=$menbegin.'/'.$this->CMP(array('name'=>$next[1],'nameurl'=>$next[2]),'name');
+            $this->listart=array($this->kodrasdel.'_'.$this->kodmenu.'_0',$menbegin.'/#'.($pagerasdel+1));
+        }
+       // $this->massivMenu('  ');
+       // $this->massivRasdel('',0);
     }
 
     private function makeArticle($sms,$itogname){
@@ -236,7 +275,7 @@ class createMenu{
         $stmt = $dbl->prepare($sql);
         $stmt->execute(array($sms['kod']));
         if ($row = $stmt->fetchAll(PDO::FETCH_ASSOC)) {$namepict=$row[0]['name_small'];}
-        else {$namepict='/nopict.jpg';}
+        else {$namepict='nopict.jpg';}
         return  'http://'.$_SERVER['SERVER_NAME'].$putimg.$namepict;
     }
 

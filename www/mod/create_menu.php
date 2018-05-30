@@ -32,6 +32,7 @@ $menuhoriz=$page->makeHorMenu();
 //$page->initRasdMen($needkr,$needkm,$itogname);
 
 // код для статьи
+//debug_to_console('art '.$needart);
 if ($needart){
     $itogname=$needart.'_'.$needkm.'_'.$needkr;
     $where=' WHERE kod='.$needart. ' and vyvod=1 ';}
@@ -42,7 +43,13 @@ if ($needart){
 //debug_to_console($page->cofmen);
 $page->initRasdMenOnly($needkr,$needkm, $itogname);
 $page->opengraph['url']='http://'.$_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'];
+$page->kodarticle=$needart;
 $massart=$page->currentArticle('news',$where,$itogname);
+if($needart) {
+    $nextart = ' name=' . $page->nextart[0] . ' dathref=' . $page->nextart[1] . ' ';
+    $prevart = ' name=' . $page->prevart[0] . ' dathref=' . $page->prevart[1] . ' ';
+    $listart = ' name=' . $page->listart[0] . ' dathref=' . $page->listart[1] . ' ';
+}
 $page->opengraph=$menu->checkOpenGraph($massart[1]);
 //($massart);
 //echo json_encode(array($menuhoriz,$massart));

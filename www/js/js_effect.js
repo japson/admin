@@ -1,44 +1,9 @@
 // JavaScript Document
 $( document ).ready(function() {
 	console.log('test');
-
-
-//$('.piven').each(function(index, element) {$(element).addClass('cursor');   });	
-	
-$(document).on("click",'.piven',function(){
-	if($('div').hasClass('pivo_rot')) {}
-	else {
-		$('.pivoimg').addClass('pivo_rot').removeClass('pivoimg');
-		$('.chaiimg').addClass('chai_rot').removeClass('chaiimg');
-		$('.piven').each(function(index, element) {$(element).removeClass('cursor');   });
-		$('.chaien').each(function(index, element) {$(element).addClass('cursor');   });
-		$('.cb-slideshow').animate({opacity:'0'},900, function(){
-	//$('.cb-slideshow').css("background-image",'url("../img/kultura_empty.jpg")');	
-	//$('.cb-slideshow').animate({opacity:'1'},600);
-		});
-		//$('.bumenu').css('opacity',0).css('display','block');
-	//	$('.bumenu').animate({opacity:'1'},700,function(){});
-	//	$('.menu').animate({opacity:'0'},700,function(){$('.menu').css('display','none');});
-		savcook(2);
-	}
-	//tango(0); return false;
-			});
-
-$(document).on("click",'.chaien',function(){
-	if($('div').hasClass('chai_rot')) {
-		$('.pivo_rot').addClass('pivoimg').removeClass('pivo_rot');
-		$('.chai_rot').addClass('chaiimg').removeClass('chai_rot');
-		$('.chaien').each(function(index, element) {$(element).removeClass('cursor');   });
-		$('.piven').each(function(index, element) {$(element).addClass('cursor');   });
-		$('.cb-slideshow').animate({opacity:'1'},900, function(){	});
-	//	$('.menu').css('opacity',0).css('display','block');
-	//	$('.menu').animate({opacity:'1'},700,function(){});
-		//$('.bumenu').animate({opacity:'0'},700,function(){$('.bumenu').css('display','none');});
-		savcook(1);
-		}else {}
-	
-	// tango(1); return false;
-	});	
+    $('#textarea1').niceScroll({cursorcolor:"#77262a", cursorwidth:'7'});
+	loadComment(1);
+    //$('.comlist').niceScroll({cursorcolor:"#77262a", cursorwidth:'7'});
 
 function savcook(perem) {
 	$.ajax({
@@ -63,13 +28,35 @@ $('.bumimg').each(function(index, element) {$(element).removeClass('povor'+index
  });
 
 
-
-
 }); // $( document ).ready(function()
 
+function loadComment(list){
+    let rasdel=curState.getall();
+    //console.log(rasdel);
+   // return false;
+    $.ajax({
+        type: "POST", url: "/mod/comment.php", data: {listcom: list, part:rasdel.middle},
+        success: function (dat) {
+          //  console.log("Прибыли данные: " + dat); //+ data
+            var data = JSON.parse(dat);
+            if(data[0]) {
+                let out = '<div class="comlist">' + data[1] + '</div>';
+                $('.entercomment').html(data[2]);
+                $('.listcomment').html(out);
+                $('.comlist').niceScroll({cursorcolor: "#77262a", cursorwidth: '7'});
+            } else{$('.entercomment').html(''); $('.listcomment').html('');}
+        }
+    });//ajax
+}
+$(document).on("click", ".answercomm", function(event){
+    let elem=event.target||event.srcElement;
+    $(elem).parent('.commbutton').siblings('.commaddopen').toggle('commhidden');
+    $(elem).parent('.commbutton').siblings('.commaddopen').children('textarea').focus();
+});
+$(document).on("click", "#buttonrefr", function(event){ loadComment(1); });
 
 
-tango=function (nope){
+tango=function (nope){ //  надо ли?-----------------------
 	
 	if(nope==1){var thikl='visible'; moto='hidden';
 	//$('.pivo_rot').children('img').attr('src','img/pivo.png');
@@ -97,8 +84,18 @@ function marqueRun(){ //Запуск скоролинга
             });*/
             $('.marque').simplemarquee();	
 }
-$('#main-container').animate(   {    width : '580px'  }, 200);
-function provCheck(){ // кнопка включения мафона
+
+$(document).on("click",'#buttcomment',function(){
+    provCheck();
+});
+function provCheck() { // кнопка включения мафона
+    $('.demo1').children('input').prop('checked', true);
+    $('.demo1no').children('input').prop('checked', false);
+    $('.comment').toggle('closed');
+    $('.extra').toggle('closed');
+}
+//$('#main-container').animate(   {    width : '580px'  }, 200);
+function provCheck_old(){ // кнопка включения мафона
 var per=$( '.switch.demo1' ).find('input:checked').length;
 if (per==1){ $('#main-container').animate(   {    width : '580px'  }, 2000);
 //$('#vc-container').removeClass('vc-cont-hid');
@@ -204,6 +201,9 @@ $(document).on("click",'#pusk',function(){goActPage.init(); goActPage.goPage(1);
 
 $(document).on("click",'#downn',function(){goActPage.init(); goActPage.goPage(0); goActPage.makeUrl();});
 
+$(document).on("click",'.nompagelink',function(event){
+	let elem=event.target||event.srcElement;
+	goActPage.init(); goActPage.goPage(1,$(elem).text()); goActPage.makeUrl();});
 
 function goPageObj(){
     var listing=0; var maxPage; var curPage='page_1'; var newPage;
@@ -252,6 +252,7 @@ function goPageObj(){
 }
 
 
+
 //-------------------------------------------------------------------------
 //var listing=0;
         $(document).on("click",'#pusk-----',function(){
@@ -276,7 +277,7 @@ function goPageObj(){
 			if(listing==0) {goPage(curPage,maxPage,0)}
 			});	
 			
-var goPa3ge=function(curPage,maxPage,direct){
+var goPa33333ge=function(curPage,maxPage,direct){
 	//var scrol=$('body').css('overflow-y');
 	//console.log(document.documentElement.clientHeight); console.log(document.documentElement.scrollHeight);
 	if(document.documentElement.clientHeight >= document.documentElement.scrollHeight)
