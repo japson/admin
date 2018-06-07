@@ -198,6 +198,7 @@ function editRecord(event){
 	var tbl=$(elem).closest('table').attr('id');
 	perem._unroll();
 	var data='tbl='+tbl+'&record='+perem.idnom+'&data='+JSON.stringify(perem.out);
+   // console.log( "дата: " + data );
 	$.ajax({
     	type: "POST",   url: "mod/recordedit.php",   data: data,
 		  success: function(data){
@@ -243,6 +244,8 @@ edRec.prototype={
                // case 'redirect':;
 			case 'vyvod': tmp=$(element).find('input').prop("checked"); if(tmp){self.out[attr]=1;}else{self.out[attr]=0;}  ;break;
 			case 'rol': self.out[attr]=$(element).find('option:selected').val();  ;break;
+            case 'type':
+			case 'side': self.out[attr]=$(element).find('option:selected').val();  ;break;
 			default: tmp=$(element).find('input'); if(tmp.length>0) {self.out[attr]=$(element).find('input').val();  } 
 			}
 		});
@@ -934,16 +937,49 @@ $(document).on('click', '.button[name="delsong"]',function(event){
 	$(document).on('click', '.buttonselectsong',function(event) { // выбрать ссылку песни и вставить в поле текст ссылки
         var elem = event.target || event.srcElement; var makeurl='';
         var tr=$(elem).closest('tr');
+
         if($(tr).children('td').eq(1).text()=='file') {
-        	var kod=$(tr).children('td').eq(0).children('div').attr('id');
-        	var title=$(tr).children('td').eq(0).children('div').attr('title');
-        	// makeurl='<div id="'+kod+'" class="selectplay" title="'+title+'"></div> ...';
-            makeurl='<div id="'+kod+'" class="selectplay" title="'+title+'"><span class="songplay"></span><span class="songtitle">'+title+'</span><span class="songadd"></span></div> ...';
-            $('.cke_dialog_contents').find('input[type=text]').val(makeurl);
-        //<span class="selectplaynow"></span><span class="selectplayadd" ></span>
-           // console.log('ghg');
+            addAllSongs.init(tr);
+            addAllSongs.select();
+            addAllSongs.why();
+		}
+        if($(tr).children('td').eq(1).text()=='DIR') {
+            addAllSongs.init(tr);
+            addAllSongs.cassette();
+            addAllSongs.why();
 		}
     });
+
+	let addAllSongs={
+		elem,
+		makeurl:'',
+        init: function (giveme){elem=giveme;makeurl='';},
+
+        select: function (){let kod='';
+			$(elem).each(function(index,element) {
+				if ($(element).children('td').eq(1).text() == 'file') {
+					kod = $(element).children('td').eq(0).children('div').attr('id');
+					title = $(element).children('td').eq(0).children('div').attr('title');
+                    makeurl+='<div id="'+kod+'" class="selectplay" title="'+title+'"><span class="songplay"></span><span class="songtitle">'+title+'</span><span class="songadd"></span></div>';
+            }
+        })
+		},
+        cassette:function(){ let kod='';
+            $(elem).each(function(index,element) {
+                if ($(element).children('td').eq(1).text() == 'DIR') {
+                    kod = $(element).children('td').eq(0).children('div').attr('id');
+                    title = $(element).children('td').eq(0).children('div').text();
+                    makeurl='<div class="selectplaylist"><div id="'+kod+'" class="selectplaylistchild" title="Включить кассету: &#013;'+title+'"></div></div>';
+                }
+            })
+		},
+        why: function (){$('.cke_dialog_contents').find('input[type=text]').val(makeurl);}
+
+	};
+
+
+
+
 
 function createMaSong(mass) {
    // console.log(mass);

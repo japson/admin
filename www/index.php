@@ -94,12 +94,13 @@ $opgraph=$page->opengraph;
            <div class='next_page'  id="pusk"></div>
        </div>
     </div>
+
 </div>
 <!--<div class="grid-element main">Main Content</div>-->
-    <div class="grid-element comment">
+    <div class="grid-element comment ">
         <div class="pencul">
             <div class="pensilmaf">
-            <button class="pen_list maficon" title="Магнитофон"></button>
+            <button class="pen_list maficon" title="Магнитофон" onclick="provCheck();"></button>
             </div>
             <div class="penculinside <? if(strlen($nextart)==0){echo ' hidden';} ?> ">
             <button class="pen_list vpered" title="Следующая статья" <? echo($nextart); ?> ></button>
@@ -121,9 +122,11 @@ $opgraph=$page->opengraph;
 
              </div>
     </div>
-    </div>
+         </div>
+         </div> <!--comment-->
 <div class="grid-element extra closed">
     <div id="main-container" class="main-container">
+        <!--<audio controls id="audioElem" src="/catalog/punkts/asdf/fghj/02 - All That Glitters.mp3"><span>HTML5 audio not supported</span></audio>-->
         <div class="switch demo1" onclick="provCheck();"> <input type="checkbox" ><label></label></div>
         <? echo $mafon; ?>
     </div>
@@ -138,6 +141,8 @@ $opgraph=$page->opengraph;
 <script type="text/javascript" src="/js/jquery.simplemarquee.js"></script>
 <script type="text/javascript" src="/js/jquery.easing.1.3.js"></script>
 <script type="text/javascript" src="/js/jquery.nicescroll.min.js"></script>
+<link rel="stylesheet" type="text/css" href="/fancy/jquery.fancybox.min.css">
+<script src="/fancy/jquery.fancybox.min.js"></script>
 
 
 <script src="/js/js_effect.js"></script>

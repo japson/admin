@@ -29,7 +29,7 @@ if(isset($_COOKIE['auth_key'])  and $arc[0]['atribut']==1)	{
 			$out=$windrecord->createOutFields($tablic,$record,$buttons);
 			//echo $out;
 			$mass[0]['atribut']=1;$mass[0]['text']=$out;
-		}else {$mass[0]['atribut']=0;$mass[0]['text']="Извините, проблемы с полями.";}
+		}else {$mass[0]['atribut']=0;$mass[0]['text']="Извините, проблемы с полями2.";}
 	
 	}else {$mass[0]['atribut']=0;$mass[0]['text']="Извините, проблемы с таблами.";}
 }

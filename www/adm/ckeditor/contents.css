@@ -10,7 +10,7 @@ body
 	font-size: 12px;
 
 	/* Text color */
-	color: #333;
+	color: #006;
 
 	/* Remove the background color to make it transparent */
 	background-color: #fff;
@@ -206,9 +206,16 @@ a > img {
 	max-height: 1080px;
 	margin:0 auto;
 }
-.selectplay{display: inline-flex; border: solid 1px ; border-color: rgba(0,0,0,0.3); background-color: #393c41;  height:20px; color: #FCFFFE;}
-.selectplay .songplay{width:20px; margin-right: 5px; display: block; background-image: url(../../img_n/play.svg);cursor: pointer;}
-.selectplay .songtitle{ display: block;}
-.selectplay .songadd{ display: block;width:20px;margin-left: 5px;background-image: url(../../img_n/add.svg);cursor: pointer;}
+.selectplay{display: inline-flex; border: solid 1px ; border-color: rgba(219, 199, 185, 0.3); background-color: rgba(216, 193, 184, 0.3);   color: #601A1A; width: 100%;}
+.selectplay .songplay{width:20px; margin-right: 5px; display: block; background: no-repeat center; background-image: url(../../img_n/play.svg);cursor: pointer;}
+.selectplay .songtitle{ display: block; background-color: rgba(255,229,210,0.3);width: 100%;
+	text-align: center;}
+.selectplay .songadd{ display: block;width:20px;margin-left: 5px;background: no-repeat center;background-image: url(../../img_n/add.svg);cursor: pointer;}
+.cke_editable{background-color: rgba(216, 194, 190, 1);font-family: "Rubik", "Ubuntu", sans-serif; word-spacing: 0.16em; letter-spacing:0.03em;
+	font-weight: 400; font-size: 16px; line-height: 1.5em;
+	grid-column: 2/2; grid-row: 1/1; /*top: 47px;  */   position:relative; z-index:9;
+	display: grid; grid-template-columns: auto  ;grid-template-rows:  auto; height: auto;}
+.selectplaylist{display: flex; justify-content: flex-end; width: 100%;}
+.selectplaylistchild{width:48px;height: 48px;background: no-repeat center; background-image: url(../../img_n/playlist.svg);cursor: pointer; margin: 0 15px 5px 0; }
 /*
 .selectplay {display: inline-block; background-image: url(../../img/mafonadmin2.png); background-size: contain; background-repeat: no-repeat; height:2.3em;width:3.3em; margin: -5px 2px; cursor: pointer;}*/

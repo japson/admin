@@ -33,6 +33,7 @@ if ( $logged_in &&  $auth_in ) {
 		$vyvod.='<script >table_auto("section",'.$masj.');</script >';
 		
 		$tablic='news';
+		include('mod/class/variables.php');
 		$test=new RasdelTable($tablic,$db);
 		$test->outmasskey($userpunkt,$massAssoc);
 		$count=$test->countrec("  WHERE kodmenu=".$men.' AND kodrasdel=0  ');
@@ -41,7 +42,7 @@ if ( $logged_in &&  $auth_in ) {
 		$vyvod.=$test->outtitle('Статьи: '.$alias);}
 		
 		$test->nameImgTbl();
-		$vyvod.=$test->createOut($massTypField,'', '?post=');
+		$vyvod.=$test->createOut($massTypField,$tbl_select, '?post=');
 		$masj="{'table':'".$test->aliasTbl()."','kodmenu':".$men.",'kodrasdel':0,'alias':'Статьи: ".$alias."'}";
 		$vyvod.='<script>table_auto("post",'.$masj.');</script>';
 		
@@ -67,6 +68,7 @@ if ( $logged_in &&  $auth_in ) {
 		$vyvod.='<script>table_auto("menu",'.$masj.');</script>';
 
          $tablic='news';
+         include('mod/class/variables.php');
          $test=new RasdelTable($tablic,$db);
          $test->outmasskey($userpunkt,$massAssoc);
          $count=$test->countrec('  WHERE kodmenu=0 AND kodrasdel=0  ');
@@ -75,7 +77,7 @@ if ( $logged_in &&  $auth_in ) {
              $vyvod.=$test->outtitle('Статьи: '.$alias);}
 
          $test->nameImgTbl();
-         $vyvod.=$test->createOut($massTypField,'', '?post=');
+         $vyvod.=$test->createOut($massTypField,$tbl_select, '?post=');
          $masj="{'table':'".$test->aliasTbl()."','kodmenu':0,'kodrasdel':0,'alias':'Статьи: ".$alias."'}";
          $vyvod.='<script>table_auto("post",'.$masj.');</script>';
 	 }
@@ -115,7 +117,7 @@ if ( $logged_in &&  $auth_in ) {
 		$vyvod.=$test->outtitle('Статьи: '.$alias);}
 		
 		$test->nameImgTbl();
-		$vyvod.=$test->createOut($massTypField,'', '?post=');
+		$vyvod.=$test->createOut($massTypField,$tbl_select, '?post=');
 		$masj="{'table':'".$test->aliasTbl()."','kodmenu':".$menu->menukod.",'kodrasdel':".$men.",'alias':'Статьи: ".$alias."'}";
 		$vyvod.='<script>table_auto("post",'.$masj.');</script>';
 
@@ -129,7 +131,7 @@ if ( $logged_in &&  $auth_in ) {
              $vyvod.=$test->outtitle('Пункты: '.$alias);}
 
          $test->nameImgTbl();
-         $vyvod.=$test->createOut($massTypField,'', '?post=');
+         $vyvod.=$test->createOut($massTypField,$tbl_select, '?post=');
          $masj="{'table':'".$test->aliasTbl()."','kodmenu':".$menu->menukod.",'kodrasdel':".$men.",'alias':'Пункты: ".$alias."'}";
          $vyvod.='<script>table_auto("position",'.$masj.');</script>';
 

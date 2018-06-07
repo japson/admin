@@ -48,7 +48,7 @@ class makeMenu extends createMenu{
     public function checkOpenGraph($mass){
        // debug_to_console($mass);
         if(strlen($mass['keyw'])==0){$mass['keyw']='Кривякин, Митяй, Japson, Джепсон, Искитимский андеграунд, группа из Искитима';}
-        if(strlen($mass['image'])==0){$mass['image']='http://'.$_SERVER['SERVER_NAME'].'/img/nopict.jpg';}
+        if(strlen($mass['image'])==0){$mass['image']='http://'.$_SERVER['SERVER_NAME'].'/catalog/imgnews/nopict.jpg';}
         if(strlen($mass['title'])==0){$mass['title']='Искитимский андеграунд';}
         if(strlen($mass['description'])==0){$mass['description']='Заметки, статьи участника Искитимского андеграунда папы Джепсона';}
         if(strlen($mass['url'])==0){$mass['url']='http://'.$_SERVER['SERVER_NAME'];}

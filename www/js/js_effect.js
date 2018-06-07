@@ -3,6 +3,7 @@ $( document ).ready(function() {
 	console.log('test');
     $('#textarea1').niceScroll({cursorcolor:"#77262a", cursorwidth:'7'});
 	loadComment(1);
+    $(".linkpictur").fancybox({});
     //$('.comlist').niceScroll({cursorcolor:"#77262a", cursorwidth:'7'});
 
 function savcook(perem) {
@@ -90,7 +91,7 @@ $(document).on("click",'#buttcomment',function(){
 });
 function provCheck() { // кнопка включения мафона
     $('.demo1').children('input').prop('checked', true);
-    $('.demo1no').children('input').prop('checked', false);
+   // $('.demo1no').children('input').prop('checked', false);
     $('.comment').toggle('closed');
     $('.extra').toggle('closed');
 }

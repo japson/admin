@@ -4299,7 +4299,7 @@
 
 				}, 'beforeMove.fb' : function( e, instance, current ) {
 		            var gallery = getGallery( instance );
-
+return false;
 		            // Update window hash
 		            if ( gallery && gallery !== '' ) {
 
@@ -4319,6 +4319,7 @@
 		            }
 
 		        }, 'beforeClose.fb' : function( e, instance, current ) {
+return false;
 					var gallery  = getGallery( instance );
 					var origHash = instance && instance.opts.origHash ? instance.opts.origHash : '';
 

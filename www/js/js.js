@@ -159,7 +159,7 @@ function makerMenu(mass,id,men,callback,newhref,yakor){
     $.ajax({
         type: "POST",   url: "/mod/hormenu.php",   data: data3,
         success: function(dat){
-         // console.log( "Прибыли данные: " + dat  ); //+ data
+          console.log( "Прибыли данные: " + dat  ); //+ data
             var data= JSON.parse(dat);
 
           //  console.log('**'+data[1][0]);
@@ -200,14 +200,15 @@ function makerMenu(mass,id,men,callback,newhref,yakor){
    // console.log(curState.getall());
 }
 function goArticle(prev,next,list){
-    $('.pen_list.nasad').attr('name',prev[0]).attr('dathref',prev[1]);
-    $('.pen_list.vpered').attr('name',next[0]).attr('dathref',next[1]);
+    $('.pen_list.nasad').attr('name',prev[0]).attr('dathref',prev[1]).attr('redir',prev[2]);
+    $('.pen_list.vpered').attr('name',next[0]).attr('dathref',next[1]).attr('redir',next[2]);
     $('.pen_list.list').attr('name',list[0]).attr('dathref',list[1]);
 }
 
+
 window.addEventListener('popstate', function(e){
-    // console.log(e.target.location.pathname);
-    console.log(e.state);
+     //console.log(e.target.location);
+     console.log(e.state);
     remakeMenu(e.state,e.target.location);
     var path=e.target.location.pathname.substr(1);
     // console.log(':: '+decodeURIComponent(path));
@@ -224,6 +225,7 @@ function remakeMenu(state){
     var newhref=(arguments[1].toString());
     coffUrl(state.cofmen,state.cofrasd);
     if(oldmenu!=state.menu) {
+       // console.log(state);
         var mass=state.menu.split('_');
         var newmas=[mass[0],'',mass[1],mass[2],'hmr'];
         makerMenu(newmas,'middle_menu',state.menu,middlmen,newhref);
@@ -326,21 +328,31 @@ $(document).on("click", "#logid", function(event){ // нет кнопки
 // управление плеером --------------------------------------------------
 
 $(document).on("click", ".songplay", function(event){
-    var elem=event.target||event.srcElement;
-    var id=$(elem).parent().attr('id');
-    var newSong=manageSongs;
+    let elem=event.target||event.srcElement;
+    let id=$(elem).parent().attr('id');
+    let newSong=manageSongs;
     newSong.init();
     newSong.addSong(id,'one');
 });
 $(document).on("click", ".songadd", function(event){
-    var elem=event.target||event.srcElement;
-    var id=$(elem).parent().attr('id');
-    var newSong=manageSongs;
+    let elem=event.target||event.srcElement;
+    let id=$(elem).parent().attr('id');
+    let newSong=manageSongs;
     newSong.init();
     newSong.addSide(id,'one');
 });
+$(document).on("click", ".selectplaylistchild", function(event){
+    let elem=event.target||event.srcElement;
+    let id=$(elem).attr('id');
+    let newSong=manageSongs;
+    let par=$(elem).parent();
+   // $(par).prepend("<div class='waiting'> Дождитесь загрузки кассеты... </div>");
+    newSong.init();
+    newSong.addList(id,'all');
+});
 
- var manageSongs={
+
+ let manageSongs={
 
     init: function () { this.song={};   },
 
@@ -369,9 +381,10 @@ $(document).on("click", ".songadd", function(event){
              var storona=el.data().cassette.currentSide;
              el.data().cassette._switchSidesA(storona);
              cursong=massiv['put'].replace('&amp;','&');
+             cursong=cursong.replace('%20',' ');
              el_new.options.songNames=[massiv['song']];
              el_new.options.songs=[cursong];
-
+           //  console.log(el_new.options.songs);
              $.when( el_new._createSides() ).done( function() {
                  el_new._vyvodSide('.spisokside',1);
                  el_new.cntTime=0;
@@ -432,13 +445,44 @@ $(document).on("click", ".songadd", function(event){
 
             // console.log(songs);
          });
+     },
+     addList: function(id,param){
+         this.getSong(id,param).then( function(massiv) {
+             let el = $('#vc-container'); let sides=[];
+             let storona = el.data().cassette.currentSide; //номер стороны
+             var tek_vrem = el.data().cassette._getSide().current;
+             el_new = $('#vc-container').data().cassette;
+             el_new._stop(); //
+            // console.log(massiv);
+             storona=el.data().cassette.currentSide;
+             el.data().cassette._switchSidesA(storona);
+             el_new.options.songNames=[]; el_new.options.songs=[];
+             massiv.forEach(function(value) {
+                 cursong = value['put'].replace('&amp;', '&');
+                // cursong = cursong.replace('%20', ' ');
+                 el_new.options.songNames.push(value['song']);
+                 el_new.options.songs.push (cursong);
+                 if(value['side']==2){sides.push('side2');}
+                 else{sides.push('side1');}
+             });
+                 $.when( el_new._createOneSidesAll(sides) ).done( function() {
+                     el_new._progrLoad(0); // при смене листа обязательно обновить прогресс бар
+                     marqueRun();
+                     //$('.waiting').remove();
+                 });
+
+
+
+
+            // console.log(el_new.options.songNames);
+         });
      }
 
 };
 
-$(document).on("click", ".songplay", function(event){
+/*$(document).on("click", ".songplay", function(event){
 
-});
+});*/
 
 // comments-------------------------
 $(document).on("click", "#buttoncomm", function(event){
@@ -465,12 +509,16 @@ let commFunc={
         $.ajax({
             type: "POST", url: "/mod/comment.php", data: {updatcom: elem, typ: comm, part:rasdel.middle},
             success: function (dat) {
-               //   console.log("Прибыли данные: " + dat); //+ data
+                 // console.log("Прибыли данные: " + dat); //+ data
                 var data = JSON.parse(dat);
-                let out='<div class="comlist">'+data[1]+'</div>';
-                $('.listcomment').html(out);
-                $('.comlist').niceScroll({cursorcolor:"#77262a", cursorwidth:'7'});
-                if(elem=='new0'){$('#textarea1').val('');}
+                if(data[0]) {
+                    let out = '<div class="comlist">' + data[1] + '</div>';
+                    $('.listcomment').html(out);
+                    $('.comlist').niceScroll({cursorcolor: "#77262a", cursorwidth: '7'});
+                    if (elem == 'new0') {
+                        $('#textarea1').val('');
+                    }
+                }
             }
         });//ajax
     },

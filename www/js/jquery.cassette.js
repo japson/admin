@@ -172,45 +172,63 @@
 
                     for( var i = 0, len = _self.options.songs.length; i < len; ++i ) {
                         var song = new $.Song( _self.options.songs[i], i, _self.options.songNames[i], sides[i]);
-
-                        //console.log(len);
+                       // console.log(song);
                         $.when( song.loadMetadata() ).done( function( song ) { // здесь происходит разделение по сторонам. Сделать функцию расчета времени добавть префикс A_ B_
-							if(song.side === 'side1'){
-                                playlistSide1.push( song );
-							} else {
-                                playlistSide2.push( song );
-							}
+                            if(song.side === 'side1'){ playlistSide1.push( song );}
+                            else {playlistSide2.push( song );}
                             //( song.id < len / 2 ) ? playlistSide1.push( song ) : playlistSide2.push( song );
-
                             ++cnt;
-
                             if( cnt === len ) {
-
                                 // two sides, each side with multiple songs
-
                                     _self.side1 = new $.Side('side1', playlistSide1, 'start');
-
                                     _self.side2 = new $.Side('side2', playlistSide2, 'end');
-
-
                                 _self._vyvodSide('.spisokside',1);
                                 dfd.resolve();
-
+                                $('.waiting').remove();
                             }
-
                         } );
-
                     }
-
                 }
-
             ).promise();
-
         },
+        // songs are distributed equally on both sides
+        _createOneSidesAll		: function(sides) {
+
+            var playlistSide1 	= [],
+                playlistSide2 	= [],
+                _self 			= this,
+                cnt 			= 0;
+
+                    for( var i = 0, len = _self.options.songs.length; i < len; ++i ) {
+                        _self._promiseSidesAll(i,_self,sides).then(function(song){
+                         //   console.log(song);
+                            if(song.side === 'side1'){ playlistSide1.push( song );}
+                            else {playlistSide2.push( song );}
+                            ++cnt;
+                          //  console.log(retsong);
+                            if( cnt === len ) {
+                                // two sides, each side with multiple songs
+                                _self.side1 = new $.Side('side1', playlistSide1, 'start');
+                                _self.side2 = new $.Side('side2', playlistSide2, 'end');
+                                _self._vyvodSide('.spisokside',1);
+                                $('.waiting').remove();
+                            }
+						});
+                    }
+        },
+		_promiseSidesAll : function(i,_self,sides){
+            var song = new $.Song( _self.options.songs[i], i, _self.options.songNames[i], sides[i]);
+            return new Promise(function(succeed, fail) {
+                    song.loadMetadataAll() .then( function(succeed2 ) {
+                        succeed(song);
+                    });
+			});
+		},
+
 		_createPlayer		: function() {
 			
 			// create HTML5 audio element
-			this.$audioEl	= $( '<audio id="audioElem"><span>' + this.options.fallbackMessage + '</span></audio>' );
+			this.$audioEl	= $( '<audio id="audioElem" ><span>' + this.options.fallbackMessage + '</span></audio>' );
 			this.$el.prepend( this.$audioEl );
 			
 			this.audio		= this.$audioEl.get(0);
@@ -1044,17 +1062,21 @@
 					
 					var $tmpAudio 	= $( '<audio/>' ),
 						songsrc		= _self.getSource( aux.getSupportedType() );
+                   // console.log(songsrc);
                     songsrc3=songsrc;
                     songsrc2=songsrc.replace('&amp;','&');
+                    //songsrc2=decodeURI(songsrc2);
+                    //songsrc2=songsrc.replace('%20',' ');
 					$tmpAudio.attr( 'preload', 'auto' );
 					$tmpAudio.attr( 'src', songsrc2 );
-                  //  console.log($tmpAudio);
+                   // console.log($tmpAudio.get(0).duration);
+                    //console.log($tmpAudio);
 					$tmpAudio.on( 'loadedmetadata', function( event ) {
 
 						_self.duration = $tmpAudio.get(0).duration;
 //console.log(_self.duration);console.log(_self);
 						dfd.resolve( _self );
-						
+
 					});
 
 				}
@@ -1062,6 +1084,30 @@
 			).promise();
 		
 		},
+
+        // load metadata to get the duration of the song
+        loadMetadataAll		: function() {
+
+            var _self = this;
+
+            return new Promise(function( succeed, fail ) {
+
+                    var $tmpAudio 	= $( '<audio/>' ),
+                        songsrc		= _self.getSource( aux.getSupportedType() );
+                    songsrc3=songsrc;
+                    songsrc2=songsrc.replace('&amp;','&');
+                    $tmpAudio.attr( 'preload', 'auto' );
+                    $tmpAudio.attr( 'src', songsrc2 );
+                    $tmpAudio.on( 'loadedmetadata', function( event ) {
+
+                        _self.duration = $tmpAudio.get(0).duration;
+                        succeed( _self );
+
+                    });
+
+                });
+
+        },
 		getDuration			: function() {
 		
 			return this.duration;

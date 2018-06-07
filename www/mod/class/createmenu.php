@@ -9,7 +9,8 @@ class createMenu{
     public $urlrasdel; public $urlmenu;
     public $itogname;
     private $typrasdel=array('3'=>'articles','5'=>'playlist','6'=>'galery','0'=>'articles');
-    private $kolOnPage=4;
+    private $typarticle=array('1'=>'articles','3'=>'playlist','2'=>'galery');
+    private $kolOnPage=4; private $PictOnPage=9; private $limpictonrow=3;
     public $cofmen=''; public $cofrasd='';
     public $opengraph=array();
     public $masspencil=array();
@@ -42,8 +43,8 @@ class createMenu{
     }
 
     public function massivMenu($where){  //make array main
-        $dbl=$this->db; $mass=array();
-        $sql = "SELECT * FROM ".$this->nametabl." ".$where."  ORDER by sort";
+        $dbl=$this->db; $mass=array();$tbl='mainmenu';
+        $sql = "SELECT * FROM ".$tbl." ".$where."  ORDER by sort";
         $stmt = $dbl->prepare($sql);
         $stmt->execute();
         if ($sms = $stmt->fetchAll(PDO::FETCH_ASSOC)) {
@@ -124,19 +125,21 @@ class createMenu{
 
         $dbl=$this->db;
         $sql = "SELECT * FROM ".$tbl." ".$where."  ORDER by sort";
-            //debug_to_console($sql);
+           // debug_to_console($sql);
         $stmt = $dbl->prepare($sql);
         $stmt->execute();
         $temp=''; $key='';
-          //  debug_to_console($this->typeRasdel());
+           // debug_to_console($this->typeRasdel());
         if ($sms = $stmt->fetchAll(PDO::FETCH_ASSOC)) {
                 $this->masspencil=$this->makePencil($tbl,$sms[0]);
             switch($this->typeRasdel()){
-                case 'articles':
+                case 'galery':;
+                case 'articles': //debug_to_console($this->typeRasdel());
                     if(count($sms)>1){ $temp=$this->makeArticleAll($sms,$itogname,'news','description');} //обработать комплект статей
                     if(count($sms)==1) { //обработать одну статей
-                        if($redirect=$sms[0]['$redirect']) {} //обработать редирект
-                        $temp=$this->makeArticle($sms[0],$itogname);
+                        if($redirect=$sms[0]['redirect']) {$temp=$this->redirect($sms[0],0);}
+                        //todo:обработать редирект
+                        else{$temp=$this->selectTypArticle($sms[0],$itogname);}
                     }
                     if(count($sms)==0){} //обработать нет статей
                     break;
@@ -149,11 +152,11 @@ class createMenu{
         $dbl=$this->db; $prev=0;$next=0; $pagerasdel='';
         $sort=$record['sort']; $mass=array();
         $where=' WHERE kodrasdel='.$this->kodrasdel.' and kodmenu='.$this->kodmenu.' and vyvod=1';
-        $sql = "SELECT kod, sort, name, nameurl FROM ".$tbl." ".$where."  ORDER by sort";
+        $sql = "SELECT kod, sort, name, nameurl,redirect FROM ".$tbl." ".$where."  ORDER by sort";
         $stmt = $dbl->prepare($sql);
         $stmt->execute();
         if ($sms = $stmt->fetchAll(PDO::FETCH_ASSOC)) {
-                foreach($sms as $value){$mass[]=array($value['kod'],$value['name'],$value['nameurl']);}
+                foreach($sms as $value){$mass[]=array($value['kod'],$value['name'],$value['nameurl'],$value['redirect']);}
                 for($i=0;$i<count($mass);$i++){
                     if($mass[$i][0]==$this->kodarticle) {
                         $pagerasdel=(integer)($i/$this->kolOnPage);
@@ -171,21 +174,98 @@ class createMenu{
             $this->nametabl='mainmenu'; $this->massivMenu('  ');
             $this->nametabl='rasdel';$this->massivRasdel('',0);
             $this->nametabl=$temptbl;
-            $this->prevart=array($prev[0].'_'.$this->kodmenu.'_'.$this->kodrasdel);
-            $menbegin=$this->makeUrlArt($this->prevart[0]);
-            $this->prevart[]=$menbegin.'/'.$this->CMP(array('name'=>$prev[1],'nameurl'=>$prev[2]),'name');
-            $this->nextart=array($next[0].'_'.$this->kodmenu.'_'.$this->kodrasdel);
-            $this->nextart[]=$menbegin.'/'.$this->CMP(array('name'=>$next[1],'nameurl'=>$next[2]),'name');
+
+            $prevmass=$this->processPenculRed($prev);$prevredir=array();
+            $prevtrue=$prevmass[0]; $makeurl=$prevtrue;
+            if(count($prevmass)>1){$prevredir=$prevmass[1];$makeurl=$prevredir;}
+           // debug_to_console($prevmass);
+            $this->prevart=array($prevtrue[0]);
+           // $this->prevart=array($prev[0].'_'.$this->kodmenu.'_'.$this->kodrasdel);
+            $menbegin=$this->makeUrlArt($makeurl[0]);
+            $this->prevart[]=$menbegin.'/'.$this->CMP(array('name'=>$makeurl[1],'nameurl'=>$makeurl[2]),'name');
+            if(count($prevredir)){$this->prevart[]=$prevredir[0];}else{$this->prevart[]='';}
+
+            $nextmass=$this->processPenculRed($next);$nextredir=array();
+            $nextrue=$nextmass[0]; $makeurl=$nextrue;
+            if(count($nextmass)>1){$nextredir=$nextmass[1];$makeurl=$nextredir;}
+            $this->nextart=array($nextrue[0]);
+           // $this->nextart=array($next[0].'_'.$this->kodmenu.'_'.$this->kodrasdel);
+            $menbegin=$this->makeUrlArt($makeurl[0]);
+            $this->nextart[]=$menbegin.'/'.$this->CMP(array('name'=>$makeurl[1],'nameurl'=>$makeurl[2]),'name');
+            if(count($nextredir)){$this->nextart[]=$nextredir[0];}else{$this->nextart[]='';}
+
             $this->listart=array($this->kodrasdel.'_'.$this->kodmenu.'_0',$menbegin.'/#'.($pagerasdel+1));
         }
        // $this->massivMenu('  ');
        // $this->massivRasdel('',0);
     }
+    private function processPenculRed($page){ $tmp=array();
+       // debug_to_console($page);
+        $tmp[0]=array($page[0].'_'.$this->kodmenu.'_'.$this->kodrasdel,$page[1],$page[2]);
+        if($page[3]>0){  $dbl=$this->db; $tbl='news';
+            $where=' WHERE kod=? ';
+            $sql = "SELECT kod, kodmenu, kodrasdel, name,nameurl FROM ".$tbl." ".$where."  ORDER by sort";
+            $stmt = $dbl->prepare($sql);
+            $stmt->execute(array($page['3']));
+            if ($sms = $stmt->fetchAll(PDO::FETCH_ASSOC)) {
+                $tmp[1]=array($sms[0]['kod'].'_'.$sms[0]['kodmenu'].'_'.$sms[0]['kodrasdel'],$sms[0]['name'],$sms[0]['nameurl']);
+            }
+        }
+        return $tmp;
+    }
+
+    private function selectTypArticle($sms,$itogname){ $tmp=array('','');
+        if($sms['type']==1){$tmp=$this->makeArticle($sms,$itogname);}
+        if($sms['type']==2){$tmp=$this->makeGalery($sms,$itogname,'news');}
+        return $tmp;
+    }
+    private function makeGalery($sms,$itogname,$tbl){$masspict=array(); $allpage=array();
+        if(file_exists('../adm/mod/class/var_alt.php')) {$put='../adm/mod/class/var_alt.php';}
+        else{$put='./adm/mod/class/var_alt.php';}
+        include ($put);
+        $dbl=$this->db; $tblimg=$picturTbl[$tbl];
+        $putimg=str_replace('../..','',$picturKat[$tbl]);
+        $where=' WHERE kodrasdel=? ';
+        $sql = "SELECT * FROM ".$tblimg." ".$where."  ORDER by sort";
+        $stmt = $dbl->prepare($sql);
+        $stmt->execute(array($sms['kod']));
+        if ($pic = $stmt->fetchAll(PDO::FETCH_ASSOC)){
+            foreach ($pic as $row){
+                $masspict[]='<td><a class="linkpictur" data-fancybox="group" title="'.$row['note'].'" href="'.$putimg.$row['name'].'"><img src="'.$putimg.$row['name_small'].'" ></a></td>';
+            }
+            $limpage=$this->PictOnPage; $limrow=$this->limpictonrow;
+            $perem=0;$stroka=array();$page=array();$line=array();
+            foreach ($masspict as $row){
+                $line[]=$row;
+                if(count($line)==$limrow){$page[].='<tr>'.implode('',$line).'</tr>';$line=array();}
+                if(count($page)==($limpage/$limrow)){$allpage[].='<table class="galtablpage">'.implode('',$page).'</table>';$page=array();}
+
+            }
+            if(count($line)){$page[].='<tr>'.implode('',$line).'</tr>';}
+            if(count($page)){ $allpage[].='<table class="galtablpage">'.implode('',$page).'</table>';}
+
+            $article=htmlspecialchars_decode($sms['post']); $book='';
+            for($i=0;$i<count($allpage);$i++) {
+                if($i==0){$styl='current '; $date = date_create($sms['data']);} else {$styl='';$article='';}
+                $book.='<div id="page_'.($i+1).'" class="secstr  '.$styl.'" name="'.$itogname.'">'.
+                    /* '<img class="blokpage" src="/img/blokpage.jpg">'.*/
+                    '<div class="txt_block_head">'.$sms['name'].'</div>'.
+                    '<div class="txt_block_date">'.date_format($date,'d-m-Y').'</div>'.
+                    '<div class="txt_block">'. $article. $allpage[$i].'</div>'.
+                    '<div class="txt_block_str">'.($i+1).' из '.count($allpage).'</div></div>';
+            }
+            $this->makeOpenGraph($sms);
+            return array($book,$this->opengraph);
+        }
+
+
+        $article=htmlspecialchars_decode($sms['post']); $book='';
+    }
 
     private function makeArticle($sms,$itogname){
         $tmp=htmlspecialchars_decode($sms['post']); $book='';
         $pieces = explode("[_page]", $tmp);
-       // debug_to_console($pieces);
+        //debug_to_console($sms);
         for($i=0;$i<count($pieces);$i++) {
             if($i==0){$styl='current '; $date = date_create($sms['data']);} else {$styl='';}
             $book.='<div id="page_'.($i+1).'" class="secstr  '.$styl.'" name="'.$itogname.'">'.
@@ -196,14 +276,10 @@ class createMenu{
                 '<div class="txt_block_str">'.($i+1).' из '.count($pieces).'</div></div>';
         }
        // $book='<div id="mainpages" class="mainpages" name="'.'">'.$book.'</div>';
-        $this->opengraph['keyw']=htmlspecialchars_decode($sms['keywords']);
-        $this->opengraph['image']=$this->makeOpenGraphImg($sms,'news');
-        $this->opengraph['title']=$sms['name'];
-        $this->opengraph['description']=$sms['description'];
-        //$this->opengraph['url']='http://'.$_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'];
-        $this->opengraph['site_name']='Japson\'s Undeground';
+        $this->makeOpenGraph($sms);
         return array($book,$this->opengraph);
     }
+
     private function makeArticleAll($sms,$itogname,$tbl,$pole){
         $tmp=''; $masstr=array(); $masspage=array();
         if(file_exists('../adm/mod/class/var_alt.php')) {$put='../adm/mod/class/var_alt.php';}
@@ -218,25 +294,21 @@ class createMenu{
         $stmt = $dbl->prepare($sql);
         $opengr=1;
         foreach ($sms as $row){
-            $stmt->execute(array($row['kod']));
-            if ($sms2 = $stmt->fetchAll(PDO::FETCH_ASSOC)) {$namepict=$sms2[0]['name_small'];}
-            else {$namepict='/nopict.jpg';}
-            $id=$row['kod'].'_'.$row['kodmenu'].'_'.$row['kodrasdel'];
-                if($opengr){
-                    $this->opengraph['keyw']=htmlspecialchars_decode($row['keywords']);
-                    $this->opengraph['image']='http://'.$_SERVER['SERVER_NAME'].$putimg.$namepict;
-                    $this->opengraph['title']='Каталог';//$row['name'];
-                    $this->opengraph['description']=$row['description'];
-                    //$this->opengraph['url']='http://'.$_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'];
-                    $this->opengraph['site_name']='Japson\'s Undeground';
-                    $opengr=0;
-                }
-            $url=$this->makeUrlArt($id).'/'.$this->CMP($row,'name');
-            $tmp='<tr class="tablnews" name="'.$id.'">';
-            $tmp.='<td><a class="linkarticle" href="'.$url.'"><img src="'.$putimg.$namepict.'"></a></td>';
-            $tmp.='<td><span class="dalee"><a class="linkarticle" href="'.$url.'">'.$row['name'].'.</a> </span> <div class="description">'.$row[$pole].'</div></td></tr>';
-            $masstr[]=$tmp;
+            if($redirect=$row['redirect']) {$masstr[]=$this->redirect($row,1);}
+           else{ $stmt->execute(array($row['kod']));
+                if ($sms2 = $stmt->fetchAll(PDO::FETCH_ASSOC)) {$namepict=$sms2[0]['name_small'];}
+                else {$namepict='/nopict.jpg';}
+                $id=$row['kod'].'_'.$row['kodmenu'].'_'.$row['kodrasdel'];
+                    if($opengr){ $this->makeOpenGraph($row); $opengr=0; }
+                $url=$this->makeUrlArt($id).'/'.$this->CMP($row,'name');
+                $tmp='<tr class="tablnews" name="'.$id.'">';
+                $tmp.='<td><a class="linkarticle" href="'.$url.'"><img src="'.$putimg.$namepict.'"></a></td>';
+                $tmp.='<td><span class="dalee"><a class="linkarticle" href="'.$url.'">'.$row['name'].'.</a> </span> <div class="description">'.$row[$pole].'</div></td></tr>';
+                $masstr[]=$tmp;
+            }
+
         } //debug_to_console($masstr);
+
             $kolPage=$this->kolOnPage; $cont=0; $tmp='';
         foreach($masstr as $row){
             $tmp.=$row; $cont=$cont+1;
@@ -262,6 +334,52 @@ class createMenu{
             else{$temp.='<span id="page_go_'.$i.'" class="nompagelink">'.($i+1).'</span>';}
         }
         return $temp;
+    }
+    private function redirect($mass,$vybor){
+        $dbl=$this->db; $tbl='news'; $where=' WHERE kod=? ';$pole='description';
+        $sql = "SELECT * FROM ".$tbl." ".$where."  ORDER by sort";
+        $stmt = $dbl->prepare($sql);
+        $stmt->execute(array($mass['redirect']));
+        if ($sms = $stmt->fetchAll(PDO::FETCH_ASSOC)) {
+            $var_alt=$this->selectVariable($tbl);
+            $tblimg = $var_alt[0];
+            $putimg=str_replace('../..','',$var_alt[1]);
+            $where = ' WHERE kodrasdel=? ';
+            $sql = "SELECT * FROM " . $tblimg . " " . $where . "  ORDER by sort";
+            $stmt2 = $dbl->prepare($sql);
+            $stmt2->execute(array($sms[0]['kod']));
+            if ($smsimg = $stmt2->fetchAll(PDO::FETCH_ASSOC)) {$namepict=$smsimg[0]['name_small'];}
+            else {$namepict='/nopict.jpg';}
+                if($vybor){
+                    $idfake=$mass['kod'].'_'.$mass['kodmenu'].'_'.$mass['kodrasdel'];
+                    $idtrue=$sms[0]['kod'].'_'.$sms[0]['kodmenu'].'_'.$sms[0]['kodrasdel'];
+                    $url=$this->makeUrlArt($idtrue).'/'.$this->CMP($sms[0],'name');
+                    $tmp='<tr class="tablnews" name="'.$idfake.'">';
+                    $tmp.='<td><a class="linkarticle" href="'.$url.'"><img src="'.$putimg.$namepict.'"></a></td>';
+                    $tmp.='<td><span class="dalee"><a class="linkarticle" href="'.$url.'">'.$sms[0]['name'].'.</a> </span> <div class="description">'.$sms[0][$pole].'</div></td></tr>';
+                }
+                else {$idtrue=$sms[0]['kod'].'_'.$sms[0]['kodmenu'].'_'.$sms[0]['kodrasdel'];
+                    $tmp=$this->selectTypArticle($sms[0],$idtrue);}
+            return $tmp;
+        }
+        return false;
+    }
+    private function selectVariable($tbl){ $mass=array();
+        if(file_exists('../adm/mod/class/var_alt.php')) {$put='../adm/mod/class/var_alt.php';}
+        else{$put='./adm/mod/class/var_alt.php';}
+        include ($put);
+        $mass=array($picturTbl[$tbl],$picturKat[$tbl]);
+        return $mass;
+    }
+
+
+    private function makeOpenGraph($sms){
+        $this->opengraph['keyw']=htmlspecialchars_decode($sms['keywords']);
+        $this->opengraph['image']=$this->makeOpenGraphImg($sms,'news');
+        $this->opengraph['title']=$sms['name'];
+        $this->opengraph['description']=$sms['description'];
+        //$this->opengraph['url']='http://'.$_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'];
+        $this->opengraph['site_name']='Japson\'s Undeground';
     }
 
     private function makeOpenGraphImg($sms,$tbl){
@@ -299,7 +417,7 @@ class createMenu{
         if(count($mass)>1) { $menu=$this->findMenu($mass[1],$tbl,0,0);}
         if(count($mass)>2) { $rasd=$this->findMenu($mass[2],'rasdel',$menu,0);}
         if(count($mass)>3) { $article=$this->findMenu($mass[3],'news',$menu,$rasd);}
-      //  debug_to_console($mass);
+       // debug_to_console($mass);
       //  $temp=$mass[count($mass)-1];
       //  if(substr($temp,0)=='#') {$yakor=substr($temp,1,3);}
         return array($menu,$rasd,$article);
@@ -327,10 +445,10 @@ class createMenu{
     private function makeUrlArt($id){ // делаем ссылку по кодам меню+раздел
         $url='';
         $mass=explode('_',$id);
-       // debug_to_console($this->urlmenu);
+       // debug_to_console($this->mainmenu);
         foreach ($this->mainmenu as $row) { if($row['kod']==$mass[1]) $url.='/'.$row['nameurl']; }
         foreach ($this->allrasdel as $row) { if($row['kod']==$mass[2]) $url.='/'.$row['nameurl']; }
-        //debug_to_console($mass);
+       // debug_to_console($mass); debug_to_console($url);
         return $url;
     }
 

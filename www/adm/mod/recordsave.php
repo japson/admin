@@ -20,6 +20,7 @@ if(isset($_COOKIE['auth_key'])  and $arc[0]['atribut']==1)	{
 		$temp=$windrecord->checkfields($windrecord->createfields($data));
 			if (strlen($temp)==0){
 				$windrecord->nameImgTbl();
+               // debug_to_console($data);
 				$windrecord->saveOutFields($data,$record);
 				$rec=str_replace("nom", "", $record);
 				$windrecord->outmasskey($userpunkt,$massAssoc);

@@ -26,8 +26,8 @@ switch ($switch){
     case '0': $outcomment=$comm->loadPageCom();
         break;
     case '1': $outcomment=$comm->inputCom();
-        output($comm,$outcomment);
-    //echo json_encode($outcomment);
+        if($outcomment[0]) {output($comm,$outcomment);}
+    else{echo json_encode($outcomment);}
         break;
     case '2': $outcomment=$comm->outCom();
         if($outcomment[0]){ $html=$comm->buildList($comm->massitog);

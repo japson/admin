@@ -21,6 +21,7 @@ class RecordEdit extends MenuTable{ // вывод редактируемых п�
 	public function checkfields($inputdat){ // проверка полей
 		$tmp='';
 		$basefields=$this->allmasskey();
+        //debug_to_console($inputdat);
 			foreach($inputdat as $key=>$value){
 				if(!array_search($value, $basefields)) {$tmp='maybe no '.$value;}
 				else {$this->massoutfld[]=$value;}
@@ -72,7 +73,7 @@ class RecordEdit extends MenuTable{ // вывод редактируемых п�
 				$temp='<td name="'.$key.'" class="tabl'.$key.'"><div class="checkbox"> '. 
 								 '<input type="checkbox" value="" '.$t .' > </div></td>' ;break;
 			case 'href': $temp.='<td name="'.$key.'" class="tabl'.$key.'"><input type="text" value="[_VALUE]"></input></td>'; break;
-			case 'select':// $temp='<select class="form-control" name="'.$key.'" id="'.$key.'">'.$this->selectField($typmenu).'</select> ';
+			case 'select': //$temp='<select class="form-control" name="'.$key.'" id="'.$key.'">'.$this->selectField($typmenu).'</select> ';
 			$temp.='<td name="'.$key.'" class="tabl'.$key.'"><div class="selectcenter"><select class="form-control" name="'. $key.'" id="'. $key.'">'.$this->selectField($typmenu, $valcur,$key).'</select></div></td>';break;
 			case 'sort': $temp.='<td name="'.$key.'" class="tabl'.$key.'">[_VALUE]</td>';break;
 			case 'picture': $temp.='<td name="'.$key.'" class="tabl'.$key.'">'.$this->countpictur($rec).'</td>';;break;
