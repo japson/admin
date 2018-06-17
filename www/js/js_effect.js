@@ -3,6 +3,7 @@ $( document ).ready(function() {
 	console.log('test');
     $('#textarea1').niceScroll({cursorcolor:"#77262a", cursorwidth:'7'});
 	loadComment(1);
+    delCode();
     $(".linkpictur").fancybox({});
     //$('.comlist').niceScroll({cursorcolor:"#77262a", cursorwidth:'7'});
 

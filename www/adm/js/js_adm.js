@@ -359,18 +359,19 @@ function sorty (elem,direct){
 $(document).on("click", ".tablredirect div", function(event){ var elem=event.target||event.srcElement;
     var tbl=$(elem).closest('table').attr('id');
     var param=document.getElementById(tbl).massiv;
+    param.avaliable=$(elem).text();
     tbl=$(elem).closest('tr').attr('id'); // номер
    // var men=new createWinPict(tbl); 	men.wincreate(param);
-    console.log(param);
+  //  console.log(param);
     var data={param:param,id:tbl};
     $.ajax({
-        type: "POST",   url: "mod/dirall.php",
+        type: "POST",   url: "mod/dirall.ph p",
         data: data,//"param="+JSON.stringify(param)+ '&put='+encodeURIComponent(JSON.stringify(put)),
         success: function(data){
-            //  console.log( "Прибыли данные: " + data  ); //+ data
+             // console.log( "Прибыли данные: " + data  ); //+ data
 
             data= JSON.parse(data);
-             //console.log(data);
+            // console.log(data);
 
             myConfirm('<div id="mybar" >'+data['0_0']+'</div>'+data['outbutton'], '');
            // $('#mybar').html(data['0_0']);
@@ -384,25 +385,35 @@ $(document).on("click", ".tablredirect div", function(event){ var elem=event.tar
 
 function redirSelect(event){    var elem=event.target||event.srcElement; addClass(elem);}
 
+
 function redirSave () {
-	var nam=$('tr.tblcolorstr').children('td').eq(0).children('div').attr('name');
-	if(nam) {
-		var param=newDirOption.punkt('record').split('_');
-        var data={param:param,save:{redirect : nam}};
-        $.ajax({
-            type: "POST",   url: "mod/dirallsave.php",
-            data: data,
-            success: function(data){
-                // console.log( "Прибыли данные: " + data  ); //+ data
-				if(data) {
-					var tmp=$('table#'+param[1]).find('tr#'+param[0]).children('.tablredirect').children('div').html('Есть');
-                    //console.log(tmp);
-				}
-            }// success
-        });
-        delOverley();
+    var nam=$('tr.tblcolorstr').children('td').eq(0).children('div').attr('name');
+    if(nam) {
+        let param = newDirOption.punkt('record').split('_');
+        nam=nam.split('_');
+        let tmp=new Object(engineRedirect); tmp.init(param,{redirect : nam[0]},'Есть');
+        tmp.ajax();
+        // console.log(data);
+    }
+}
+
+$(document).on("click", ".delredirect", function(event){ let elem=event.target||event.srcElement;
+ let tmp=new Object(engineRedirect); tmp.init(['nom'+$(elem).attr('id'),'post'],{redirect : 0},'Нет');
+    tmp.ajax();
+});
+
+var engineRedirect={
+	datamass:{}, res:'',
+    urljson: '',
+	init:  (param,obj,result)=>{datamass={param:param,save:obj,result:result};
+	res=result; urljson='mod/dirallsave.php' },
+	ajax: () =>{$.ajax({type: "POST",   url: urljson, data: datamass,
+        success: function(dat){ if(dat) {
+            $('table#'+datamass.param[1]).find('tr#'+datamass.param[0]).children('.tablredirect').children('div').html(res);
+            }   delOverley(); }// success
+    		});
 	}
- //   console.log(newDirOption.punkt('record'));
+
 
 }
 

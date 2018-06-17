@@ -18,7 +18,7 @@ class dirPunkt{
 
     public function selectName($tbl,$pole,$where){
             $dbh=$this->db; $mass=array();
-            $sql='SELECT * FROM '.$tbl. $where;
+            $sql='SELECT * FROM '.$tbl. $where.' ORDER by sort';
             $stmt = $dbh->prepare($sql);
             $stmt->execute();
         if($sms=$stmt->fetchAll(PDO::FETCH_ASSOC)) {
@@ -82,7 +82,7 @@ class dirPunkt{
             foreach ($menu as $menrow){
               //  $temp=$this->makePunkts($menrow[0],0,'news',$this->NewMenuArray);
              //   debug_to_console($this->menu);
-                $this->makeRasdel($menrow[0],$menrow[3]);
+                $this->makeRasdel($menrow[0],$menrow[3]); //kod'name'kodmenu'kodrasdel
                 $tmp.='<tr><td><div class="dirpunkt" id="'.$menrow[0].'_'.$menrow[3].'">'.$menrow[1].'</div></td><td>DIR</td><td></td></tr>';
 
 
@@ -98,19 +98,21 @@ class dirPunkt{
             $mass[]='<tr><td><div class="dirpunkt" id="'.'[_UPZAM]'.'">'.'...'.'</div></td><td></td><td></td></tr>';
                 foreach ($this->allrasdel as $row){
                     if($row[2]==$kodmenu and $row[3]==$kodrasdel){
-                        $mass[]='<tr id="__'.$row[2].'_'.$row[0].'"><td><div class="dirpunkt" id="'.$row[2].'_'.$row[0].'"  name="'.$row[0].'_'.$tblalias.'">'.$row[1].'</div></td><td>DIR</td><td><div class="buttonselectdir" onclick="{'.$this->actselect.'}"></div></td></tr>';
+                        $mass[]='<tr id="__'.$row[2].'_'.$row[0].'"><td><div class="dirpunkt" id="'.$row[2].'_'.$row[0].'"  name="'.$row[0].'_'.$tblalias.'">'.$row[1].
+                            '</div></td><td>DIR</td><td><div></div></td></tr>';//class="buttonselectdir" onclick="{'.$this->actselect.'}"
                        // $return=array($row[2].'_'.$row[0],$row[2].'_'.$row[3]);
                         $this->makeRasdel($kodmenu,$row[0]);
                     }
                 }
-            $temp=$this->makePunkts($kodmenu,$kodrasdel,'punkt',$this->allrasdel);$return=$temp[0];
+                // золочил 3 строки ниже, отключив перебор Пунктов. строку с UPZAM перенес ниже
+           // $temp=$this->makePunkts($kodmenu,$kodrasdel,'punkt',$this->allrasdel);$return=$temp[0];
 
-            if(strlen($temp[1])>0) {$mass[]=$temp[1]; $return=$temp[0];}
-            $mass[0]=str_replace('[_UPZAM]',$return[0],$mass[0]);
+         //   if(strlen($temp[1])>0) {$mass[]=$temp[1]; $return=$temp[0];}
+         //   $mass[0]=str_replace('[_UPZAM]',$return[0],$mass[0]);
             $temp=$this->makePunkts($kodmenu,$kodrasdel,'news',$this->allrasdel);$return=$temp[0];
           //  debug_to_console($temp);
             if(strlen($temp[1])>0) {$mass[]=$temp[1]; $return=$temp[0];}
-
+            $mass[0]=str_replace('[_UPZAM]',$return[0],$mass[0]);
                 if(count($mass)>0){
                         $tmp=implode('',$mass);
                     //$this->allmakedir[]= array($return,'<table class="tblselectpunkt">'.$tmp.'</table>');
@@ -118,6 +120,7 @@ class dirPunkt{
                 }
         }
         private function makePunkts($kodmenu,$kodrasdel,$tbl, $allrasd){ //добавить пункты в раздел
+            if($tbl=='news'){$redirect=' AND redirect=0 ';} else{ $redirect='';}
             $dbh=$this->db; $mass='';$return=array();
             $tblalias=$this->nameTbl($tbl);
             //$tbl=$this->nametabl;
@@ -131,7 +134,7 @@ class dirPunkt{
             foreach ($this->rasdel as $row){
 
                 if($row[2]==$kodmenu and $row[0]==$kodrasdel){
-                    $sql='SELECT * FROM '.$tbl.' Where kodmenu='.$kodmenu.' AND kodrasdel='.$kodrasdel .' ORDER by sort' ;
+                    $sql='SELECT * FROM '.$tbl.' Where kodmenu='.$kodmenu.' AND kodrasdel='.$kodrasdel .$redirect.' ORDER by sort' ;
                     $return=array($row[2].'_'.$row[3],$row[2].'_'.$row[0]);
                    // debug_to_console($sql);
                     $stmt = $dbh->prepare($sql);
@@ -151,7 +154,7 @@ class dirPunkt{
             } //end foreach
             foreach ($this->menu as $row){
                 if($row[0]==$kodmenu and $row[3]==$kodrasdel){
-                    $sql='SELECT * FROM '.$tbl.' Where kodmenu='.$kodmenu.' AND kodrasdel='.$kodrasdel .' ORDER by sort' ;
+                    $sql='SELECT * FROM '.$tbl.' Where kodmenu='.$kodmenu.' AND kodrasdel='.$kodrasdel .$redirect.' ORDER by sort' ;
                    // $return=array($row[2].'_'.$row[3],$row[2].'_'.$row[0]);
                     // debug_to_console($sql);
                     $stmt = $dbh->prepare($sql);
@@ -217,12 +220,9 @@ public function outAction($action){ //вывод функции действия
         $stmt = $dbh->prepare($sql);
         $stmt->execute(array($id));
         if ($sms = $stmt->fetchAll(PDO::FETCH_ASSOC)) {
-            $redir=explode('_',$sms[0]['redirect']);
-            include('var_alt.php');
-            $key=array_search($redir[1], $massTablAlias);
-            if(strlen($key)>0) {
-                $tablic = $key;
-                $sql='SELECT * FROM '.$tablic.' Where kod='.$redir[0];
+            $redir=$sms[0]['redirect'];
+                $tablic = $this->nametabl;
+                $sql='SELECT * FROM '.$tablic.' Where kod='.$redir;
                 $stmt = $dbh->prepare($sql);
                 $stmt->execute();
                 if ($sms = $stmt->fetchAll(PDO::FETCH_ASSOC)) {
@@ -230,10 +230,11 @@ public function outAction($action){ //вывод функции действия
                     $name = $sms[0][$nam];
                     $kodrasdel = $this->kodRasd($sms[0]['kodrasdel'], 'rasdel');
                     $kodmenu = $this->kodMenu($sms[0]['kodmenu'], 'mainmenu');
+                    $temp='<div>Линк: '.$kodmenu.$kodrasdel.$name.'('.$redir.')'.'</div><div class="delredirect" title="Удалить redirect" id="'.$id.'"></div>';
                 }
-            }
+
         }
-        return $kodmenu.$kodrasdel.$name.'('.$redir[1].')';
+        return $temp;
     }
 
     private function kodRasd($kod,$tbl){
@@ -267,6 +268,7 @@ public function outAction($action){ //вывод функции действия
         $sql=' UPDATE '.$this->nametabl.' SET '.$vvodata.' WHERE kod=?';
         $stmt = $dbh->prepare($sql);
         $stmt->execute($znach);
+       // debug_to_console($stmt );
     }
 }
 ?>

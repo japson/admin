@@ -29,8 +29,8 @@ class Comment {
 
     public function checkOperator(){  //проверка что может юзер
        // debug_to_console($_SESSION['ulogin']);
-        if(($_SESSION['ulogin']['is_auth']!=1)) {return array(0,'user isnt on');}
-        $iduser=$this->checkUser($_SESSION['ulogin']);
+        if(($_SESSION['jlogin']['is_auth']!=1)) {return array(0,'user isnt on');}
+        $iduser=$this->checkUser($_SESSION['jlogin']);
         if($iduser[0]==0) {return $iduser;}
         else{ // добавление комментария
             $this->userid=$iduser[1];
@@ -46,7 +46,7 @@ class Comment {
         $stmt->execute(array($user['provider'],$user['uid']));
         if ($sms = $stmt->fetchAll(PDO::FETCH_ASSOC)) {
             if($sms[0]['auntf']!=$user['ident']) {return array(0,'you have login on a another device');}
-            if($sms[0]['lock']==1) {return array(0,'you have spam me. i am remember');}
+            if($sms[0]['lock']==1) {return array(0,'you have spamed me. i am remember');}
             return array(1,$sms[0]['id']);
         }else{
             return array(0,'no reg');

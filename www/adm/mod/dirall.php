@@ -24,7 +24,7 @@ if(isset($_COOKIE['auth_key'])  and $arc[0]['atribut']==1)	{
         $windrecord->makeUrl();
         $link=$windrecord->testLink(str_replace('nom','',$id));
         //debug_to_console($link);
-        $link='<div class="oldput">Линк: '.$link.'</div>';
+        $link='<div class="oldput">'.$link.'</div>';
         $mass=$windrecord->allmakedir;
         $mass['outbutton']=$link.$windrecord->outAction('redirSave') ;
         $mass['record']=$id.'_'.$data['table'];

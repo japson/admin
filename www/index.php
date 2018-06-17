@@ -1,9 +1,9 @@
 <?
 session_start();
-include("mod/cook_check.php");
+//include("mod/cook_check.php");
 
-$sost=cook_check(0);
-$sovok=""; $modern=""; $slide=""; $chaen=''; $piven='';
+//$sost=cook_check(0);
+/*$sovok=""; $modern=""; $slide=""; $chaen=''; $piven='';
 if ($sost==1) {
 	$sovok="style='opacity: 1; display: block;'";
 	$slide="style='opacity: 1;'";
@@ -18,7 +18,7 @@ else  {
 	$classpiv='pivoimg pivo_rot';
 	$classchai='chaiimg chai_rot';
 	$chaen=" cursor";
-	}
+	}*/
 include('/mod/create_menu.php');
 include('/mod/social.php');
 include('/mod/comment.php');
@@ -110,8 +110,8 @@ $opgraph=$page->opengraph;
         </div>
        <!-- <div class="switch demo1 demo1no" onclick="provCheck();"> <input type="checkbox" ><label></label></div>-->
          <div class="comminside">
-             <div class="">
-             <script src="//ulogin.ru/js/ulogin.js"></script>
+             <div class=""><!--<button onclick="ExitSocial()">exit</button>-->
+            <!-- <script src="//ulogin.ru/js/ulogin2.js"></script>-->
           <div class="socialstatus">
            <? echo $outssesion; ?>
           </div>

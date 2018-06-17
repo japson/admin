@@ -112,12 +112,12 @@ class OutputComment extends Comment{
     private function outName($provider){
         switch ($provider){
             case 'facebook': $tmp='sc_f.png';break;
-            case 'vkontakte': $tmp='sc_vk.png';break;
+            case 'vk': $tmp='sc_vk.png';break;
             case 'googleplus': $tmp='sc_g.png';break;
             case 'odnoklassniki': $tmp='sc_o.png';break;
             case 'mailru': $tmp='sc_mail.png';break;
             case 'twitter': $tmp='sc_t.png';break;
-            case 'google': $tmp='sc_gog.png';break;
+            case 'go': $tmp='sc_gog.png';break;
             case 'yandex': $tmp='sc_ya.png';break;
             case 'instagram': $tmp='sc_inst.png';break;
         }

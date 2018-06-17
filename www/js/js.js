@@ -316,10 +316,20 @@ function ExitSocial(){
             // console.log( "Прибыли данные: " + dat  ); //+ data
            // var data = JSON.parse(dat);
             $('.socialstatus').html(dat);
-            uLogin.customInit('uLogin_22addfea');
+            let url = window.location.href;
+            url = url.split('?')[0];
+            history.replaceState(curState.getall(), 'namepage', url);
+           // uLogin.customInit('uLogin_22addfea');
         }
     });
 }
+function delCode(){
+    let url = window.location.href;
+    url = url.split('?')[0];
+    history.replaceState(curState.getall(), 'namepage', url);
+}
+
+
 $(document).on("click", "#logid", function(event){ // нет кнопки
     var nm=new Social();
     nm.rega("56546",1,"/mod/social.php");

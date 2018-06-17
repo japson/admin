@@ -123,6 +123,9 @@ td .selectcenter select{text-align:center; height:30px;}
 #mybar .dirpunkt:hover{text-decoration: underline;}
 #mybar .filepunkt{max-width: 300px; overflow: hidden}
 #mybar .buttonselectsong, #mybar .buttonselectdir{width:19px;height:19px; background-image: url(../img/plus.png); background-size: cover; margin: 0 0 0 30%;cursor: pointer;}
+#mybar .buttonselectsong.select, #mybar .buttonselectdir.select{background-image: url(../img/target.png);}
+.oldput{display: flex; justify-content: center;}
+.oldput .delredirect{background-image: url(../img/del.png);background-size: cover;width:19px;height:19px;cursor: pointer;margin: 0 0 0 15px;}
 
 .selectplay{display: inline-flex; border: solid 1px ; border-color: rgba(214, 219, 219, 0.3); background-color: #c6a4a4;   color: #FCFFFE;width: 100%;}
 .selectplay .songplay{width:20px; margin-right: 5px; display: block; background: no-repeat center;background-image: url(../../img_n/play.svg);cursor: pointer;}
