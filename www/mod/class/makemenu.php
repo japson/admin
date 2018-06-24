@@ -4,11 +4,14 @@ class makeMenu extends createMenu{
 
     public function __construct($nmtbl,$dbh) {
         parent::__construct($nmtbl,$dbh);
+       // $this->prefix=$_SERVER['SERVER_NAME'];
+       // debug_to_console($this->prefix);
     }
 
     public function makemodernMenu(){ // угловое меню
 
         $this->massivMenu(' WHERE vyvod=1 '); $mass=array(); $i=1;
+      //  debug_to_console($this->prefix);
         foreach ($this->mainmenu as $key=>$row){
             $mass[]='<div class="bumimg" id="men'.$i.'" name="'.$row['kod'].'_0_0"> 	<img src="/img/klok'.$i.'.png" title="'.$row['titlepage'].'"> <div><a href="'.$this->prefix.$row['nameurl'].'" onclick="{goUrl(event);return false;}">'.$row['name'].'</a></div></div>';
             $i++;

@@ -20,7 +20,7 @@ class createMenu{
     public function __construct($nmtbl,$dbh) {
         // $this->sql ="SELECT * FROM ".$nametabl."";
         $this->db=$dbh; $this->nametabl=$nmtbl;
-        $this->prefix='http://'.$_SERVER["HTTP_HOST"].'/';
+        $this->prefix='https://'.$_SERVER["HTTP_HOST"].'/';
 
     }
     public function renameTabl($new){$this->nametabl=$new;}

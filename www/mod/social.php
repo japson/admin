@@ -25,6 +25,10 @@ if(!empty($_SESSION['jlogin']['is_auth'])){
        $net=$_SERVER['REQUEST_URI']; $net2='';
        if(stristr($net,'vk_aunth')) {$net2='vk';}
         elseif(stristr($net,'google_aunth')) {$net2='go';}
+         elseif(stristr($net,'ok_aunth')) {$net2='ok';}
+           elseif(stristr($net,'mailru_aunth')) {$net2='mail';}
+            elseif(stristr($net,'ya_aunth')) {$net2='ya';}
+       elseif(stristr($net,'fb_aunth')) {$net2='fb';}
 
         debug_to_console( 'dfdcode '.($_SESSION['token']));
         include_once('class/socialclass.php');

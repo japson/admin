@@ -3,6 +3,7 @@ $( document ).ready(function() {
 	console.log('test');
     $('#textarea1').niceScroll({cursorcolor:"#77262a", cursorwidth:'7'});
 	loadComment(1);
+	loadSongs();
     delCode();
     $(".linkpictur").fancybox({});
     //$('.comlist').niceScroll({cursorcolor:"#77262a", cursorwidth:'7'});
@@ -112,6 +113,7 @@ console.log(per);
 function beginSong(event){  // перемотка на начало песни
 	var elem = event.target || event.srcElement;
   var elem2 = $(elem).siblings('.tablbar').find('.progrbar').attr('id');
+ // if (!elem2) elem2=0;
  // console.log(elem2);
 	var el=$('#vc-container');
 	var msSide=el.data().cassette._getSide().current; //id: "side2", status: "middle", playlist: Array[2], duration: 433.781932, playlistCount: 2 } playlistCount список песен  
@@ -252,93 +254,24 @@ function goPageObj(){
     var out=function() {console.log(curPage);}
 	return{init:init, out:out,goPage:goPage,makeUrl:makeUrl}
 }
+//-------------- load songs
+function loadSongs(){
+    $.ajax({
+        type: "POST", url: "/mod/makesong.php", data: '',
+        success: function (dat) {
+              console.log("Прибыли данные: " + dat); //+ data
+            var data = JSON.parse(dat);
+            let mf={songs			: data[0],songNames: data[2],sides: data[1],nomsongs:data[3]};
+            console.log(mf);
+            $(function() {$( '#vc-container' ).cassette(mf);    });
+          //  succeed(data);
+        }
+    });//ajax
+
+  //  let mf={songs			: ['444.mp3','444.mp3'],songNames: ['rrr','super'],sides: ['side1','side2','side2','side1']};
+   // $(function() {$( '#vc-container' ).cassette(mf);    });
+
+}
 
 
 
-//-------------------------------------------------------------------------
-//var listing=0;
-        $(document).on("click",'#pusk-----',function(){
-			var countPages=$('.mainpages').children('.secstr');
-			var curPage='page_1';
-			countPages.each(function(index, element) {if($(element).hasClass('current')){curPage=$(element).attr('id');}});
-			curPage=curPage.replace('page_','');
-			maxPage=countPages.length;
-			//console.log(curPage);
-			//console.log(maxPage);
-			if(listing==0) {goPage(curPage,maxPage,1)}
-			});
-			
-		$(document).on("click",'#downn---',function(){
-			var countPages=$('.mainpages').children('.secstr');
-			var curPage='page_1';
-			countPages.each(function(index, element) {if($(element).hasClass('current')){curPage=$(element).attr('id');}});
-			curPage=curPage.replace('page_','');
-			maxPage=countPages.length;
-			//console.log(listing);
-			//console.log(countPages);
-			if(listing==0) {goPage(curPage,maxPage,0)}
-			});	
-			
-var goPa33333ge=function(curPage,maxPage,direct){
-	//var scrol=$('body').css('overflow-y');
-	//console.log(document.documentElement.clientHeight); console.log(document.documentElement.scrollHeight);
-	if(document.documentElement.clientHeight >= document.documentElement.scrollHeight)
-	 {$('body').css('overflow-y','hidden');}
-	listing=1;
-   // console.log('::'+direct);
-	if(direct==1) {
-		var newPage=parseInt(curPage,10)+1;
-		var trans='transfU';
-		var anim='spin2';
-				}
-		else {var newPage=parseInt(curPage,10)-1;
-		var trans='transfD';
-		var anim='spin3';
-		}
-		if(newPage>maxPage){newPage=1;}
-		if(newPage==0){newPage=maxPage;}
-		var countPages=$('.mainpages');
-		
-		
-		newPage=countPages.children('.secstr[id="page_'+newPage+'"]');
-		curPage=countPages.children('.secstr[id="page_'+curPage+'"]');
-   // console.log(newPage);
-   // console.log(curPage);
-		
-/*if(direct==1) {	*/
-	curPage.css('z-index','11').addClass(trans);
-	//newPage.css('display','block');
-	curPage.addClass(anim).animate(   {    opacity : '0'  }, 300);
-    newPage.animate(   {    opacity : '1'  }, 300);
-   // newPage.css("display","block");newPage.css("opacity","0");
-    newPage.addClass('current');
-    curPage.removeClass('current').removeClass(trans).removeClass(anim).css('z-index','10');
-
-    listing=0;
-	/*setTimeout(function() { curPage.css("display","none")
-
-	newPage.addClass('current');
-	curPage.removeClass('current').removeClass(trans).removeClass(anim).css('z-index','10');
-	listing=0;
-	//$('body').css('overflow-y',scrol);
-	}, 200);*/
-	/*} else {
-    newPage.css('display','block').css('z-index','11');
-    //newPage.addClass('transfD');
-    newPage.addClass(anim).animate(   {    opacity : '1'  }, 300);
-    newPage.addClass('current').removeClass(trans).removeClass(anim).css('z-index','10');
-    curPage.removeClass('current').css('opacity','0');
-    listing=0;
-    //curPage.animate(   {    opacity : '0'  }, 3000);
-    setTimeout(function() { curPage.css("display","none");
-        newPage.addClass('current').removeClass(trans).removeClass(anim).css('z-index','10');
-        curPage.removeClass('current').css('opacity','0');
-        listing=0;
-        //$('body').css('overflow-y',scrol);
-    }, 1500);
-}*/
-	
-	
-	//console.log(newPage);
-	
-	}	   	

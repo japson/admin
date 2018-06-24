@@ -31,7 +31,7 @@ function selSongAll($id){
     $stmt->execute($menras);
     if ($sms = $stmt->fetchAll(PDO::FETCH_ASSOC)) {
         foreach($sms as $value) {
-            $temp[] = array('id' => $id, 'side' => $value['side'], 'song' => $value['title'] . ' - ' . $value['artist'], 'put' => $value['put']);
+            $temp[] = array('id' => $value['kod'], 'side' => $value['side'], 'song' => $value['title'] . ' - ' . $value['artist'], 'put' => $value['put']);
         }
     }
     if(!count($temp)){$temp=array('id'=>0);}

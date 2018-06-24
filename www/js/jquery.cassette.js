@@ -40,11 +40,12 @@
 	
 	$.Cassette.defaults 	= {
 		// song names. Assumes the path of each song is songs/name.filetype
-		songs			: [ '123.mp3', '222.mp3', '333.mp3', 'BlankKyt_RSPN.mp3' ],
-		songNames			: [ '--123', '--222', '--333', '--BlankKyt_RSPN' ],
+		songs			: [ ''  ],
+		songNames			: [ '',  ],
 		fallbackMessage	: 'HTML5 audio not supported',
 		// initial sound volume
-		initialVolume	: 0.7
+		initialVolume	: 0.7,
+        sides: ['']
 	};
 	
 	$.Cassette.prototype 	= {
@@ -73,9 +74,9 @@
 			this.timerID=0;
 			this.$loader		= this.$el.find( 'div.vc-loader' ).show();
 
-			// create cassette sides
-			$.when( this._createSides() ).done( function() {
-			
+			// create cassette sides               _createOneSides(mass_sides) side1
+			//$.when( this._createSides() ).done( function() {
+            $.when( this._createOneSides(this.options.sides) ).done( function() {
 				_self.$loader.hide();
 			
 				// create player
@@ -118,7 +119,7 @@
 			 marqueRun();
 		},
 		// songs are distributed equally on both sides
-		_createSides		: function() {
+		_createSides		: function(sides) {
 		
 			var playlistSide1 	= [],
 				playlistSide2 	= [],
@@ -131,7 +132,8 @@
 				
 					for( var i = 0, len = _self.options.songs.length; i < len; ++i ) {
 						
-						var song = new $.Song( _self.options.songs[i], i, _self.options.songNames[i]);
+						var song = new $.Song( _self.options.songs[i], i, _self.options.songNames[i],
+							_self.options.nomsongs[i], sides[i]);
 						//console.log(song);
 						$.when( song.loadMetadata() ).done( function( song ) { // здесь происходит разделение по сторонам. Сделать функцию расчета времени добавть префикс A_ B_
 							( song.id < len / 2 ) ? playlistSide1.push( song ) : playlistSide2.push( song );
@@ -171,7 +173,8 @@
                 function( dfd ) {
 
                     for( var i = 0, len = _self.options.songs.length; i < len; ++i ) {
-                        var song = new $.Song( _self.options.songs[i], i, _self.options.songNames[i], sides[i]);
+                        var song = new $.Song( _self.options.songs[i], i, _self.options.songNames[i],
+                            _self.options.nomsongs[i], sides[i]);
                        // console.log(song);
                         $.when( song.loadMetadata() ).done( function( song ) { // здесь происходит разделение по сторонам. Сделать функцию расчета времени добавть префикс A_ B_
                             if(song.side === 'side1'){ playlistSide1.push( song );}
@@ -321,8 +324,12 @@
 		var dlinSong=0;
 		var dlinBlok=$('.songbar').css('width');  //console.log(parseInt(dlinBlok,10)); 
 		var odinPrBlok=parseInt(dlinBlok,10)/100;
-		var tekSong=function(){ dlinSong=msSide.playlist[msTekPos.songIdx].duration;return (dlinSong/100);};
-		
+		var tekSong=function(){ dlinSong=msSide.playlist[msTekPos.songIdx].duration;
+		if(!dlinSong) dlinSong=0;
+		return (dlinSong/100);};
+           // console.log(msSide.playlist[msTekPos.songIdx].duration);
+          //  if(tekSong=='undefined') {
+          //      console.log('--');_self._beginSong();			};
 		var vremSek=function(seconds){var m=Math.floor(seconds/60)<10?"0"+Math.floor(seconds/60):Math.floor(seconds/60);
 				var s=Math.floor(seconds-(m*60))<10?"0"+Math.floor(seconds-(m*60)):Math.floor(seconds-(m*60));
 				return m+":"+s;};
@@ -346,7 +353,38 @@
 		if(param==0) { setTimeout(function() {  clearInterval( _self.timerID);}, 0);}
 		
 		},
-		
+
+        _beginSong: function () { // не нужна на событие елсе плей=------------------------------------
+            var _self = this;
+            let elem2=0;
+            var el=$('#vc-container');
+            var msSide=_self._getSide().current; //id: "side2", status: "middle", playlist: Array[2], duration: 433.781932, playlistCount: 2 } playlistCount список песен
+            var masSong=Array();
+            for(var i=0;i<msSide.playlist.length; i++) {
+                masSong[i]=msSide.playlist[i].duration;
+            }
+            var tek_vrem=_self.cntTime; // текущее время на стороне кассеты
+            var msTekPos=_self._getSongInfoByTime(tek_vrem);//  текущая песня/Object { songIdx: 0, timeInSong: 13.882392, iterator: 0 } iterator - сумма время предыдущих песен
+			if(tek_vrem=='Infinity'){ tek_vrem=0;}
+            i=0; var timcur=0;
+//return false;
+            while(elem2>i) {  timcur+=masSong[i];   i++;    }
+            elem=_self;
+            elem._stop();
+            elem._progrLoad(0);
+            var stop=0;
+            var timerId=setTimeout( function() {
+                elem.cntTime = timcur;//_self._getPosTime();
+                wheelVal2	= elem._getWheelValues( elem.cntTime );
+                elem._updateWheelValue( wheelVal2 );
+                elem._play();
+                elem._progrLoad(1);
+            }, 200 );
+            if(timerId){clearTimeout(timerId); elem._progrLoad(0);}
+
+        },
+
+
 		_loadEvents			: function() {
 			
 			var _self = this;
@@ -389,16 +427,20 @@
 			this.$cForward.on( 'mousedown', function( event ) {
 				
 				_self._setButtonActive( $( this ) );
-				_self._forward();
-				_self._progrLoad(0);
+                if(_self._getSide().current.getDuration()) {
+                    _self._forward();
+                    _self._progrLoad(0);
+                }
 			
 			} );
 
 			this.$cRewind.on( 'mousedown', function( event ) {
 				
-				_self._setButtonActive( $( this ) );				
-				_self._rewind();
-				_self._progrLoad(0);
+				_self._setButtonActive( $( this ) );
+				if(_self._getSide().current.getDuration()) {
+                    _self._rewind();
+                    _self._progrLoad(0);
+                }
 			
 			} );
 			
@@ -587,7 +629,7 @@
 			$.when( 1 ).done( function() {	// звук от этой фигни между песнями
 
 				var data	= _self._updateStatus();
-
+//console.log(data);
 			if( data ) {
 
 					_self._prepare( _self._getSide().current.getSong( data.songIdx ) );
@@ -595,8 +637,12 @@
 					_self.$audioEl.on( 'canplay', function( event ) {
 
 					$( this ).off( 'canplay' );
-					
-					_self.audio.currentTime = data.timeInSong;
+                      //  console.log(data.timeInSong);
+                       if(data.timeInSong=='-Infinity'){
+                           _self.audio.currentTime = 0;
+					   } else {
+                           _self.audio.currentTime = data.timeInSong;
+                       }
 					_self.audio.play();
 					_self.isMoving = true;
 
@@ -604,7 +650,7 @@
 					
 				});
 
-			}
+			} else{_self._beginSong(); }
 		
 			} );
 
@@ -1026,12 +1072,13 @@
 	};
 	
 	// Song obj
-	$.Song 					= function( name, id, nameSong ) {
+	$.Song 					= function( name, id, nameSong, nomsong ) {
 		
 		this.id		= id;
 		this.name 	= name;
 		this.nameSong 	= nameSong;
-		if(arguments[3]){this.side=arguments[3]; }
+        this.nomsong 	= nomsong;
+		if(arguments[4]){this.side=arguments[4]; }
 		this._init();
 		
 	};

@@ -372,35 +372,51 @@ $(document).on("click", ".selectplaylistchild", function(event){
                 type: "POST", url: "/mod/selsong.php", data: {id: id, typ: param},
                 success: function (dat) {
                   //  console.log("Прибыли данные: " + dat); //+ data
-                    var data = JSON.parse(dat);
+                    let data = JSON.parse(dat);
                     succeed(data);
                 }
             });//ajax
         });
         },
+     saveList:function(){
+         let el = $('#vc-container');
+         let storona = el.data().cassette.options;
+         let curobj={sides:storona.sides,nomsongs:storona.nomsongs};
+         $.ajax({
+             type: "POST", url: "/mod/makesong.php", data: curobj,
+             success: function (dat) {
+                   console.log("Прибыли данные: " + dat); //+ data
+               //  var data = JSON.parse(dat);
+              //   succeed(data);
+             }
+         });//ajax
+     },
      addSong: function(id,param){
+         let _self=this;
          this.getSong(id,param).then( function(massiv) {
-            var el = $('#vc-container');
-            var storona = el.data().cassette.currentSide; //номер стороны
-            var tek_vrem = el.data().cassette._getSide().current; // id: "side2", status: "middle", playlist: Array[2], duration: 433.781932, playlistCount: 2 } playlistCount список песен
+             let el = $('#vc-container');
+             let storona = el.data().cassette.currentSide; //номер стороны
+             let tek_vrem = el.data().cassette._getSide().current; // id: "side2", status: "middle", playlist: Array[2], duration: 433.781932, playlistCount: 2 } playlistCount список песен
              el_new = $('#vc-container').data().cassette;
            //  el_new._setButtonActive( $( this ) );
              el_new._stop(); //
 
             // el_new._clear(); //
-             var storona=el.data().cassette.currentSide;
+              storona=el.data().cassette.currentSide;
              el.data().cassette._switchSidesA(storona);
              cursong=massiv['put'].replace('&amp;','&');
              cursong=cursong.replace('%20',' ');
              el_new.options.songNames=[massiv['song']];
              el_new.options.songs=[cursong];
+             el_new.options.nomsongs=[massiv['id']];
+             el_new.options.sides=['side1'];
            //  console.log(el_new.options.songs);
-             $.when( el_new._createSides() ).done( function() {
+             $.when( el_new._createSides( el_new.options.sides) ).done( function() {
                  el_new._vyvodSide('.spisokside',1);
                  el_new.cntTime=0;
                  el_new._progrLoad(0); // при смене листа обязательно обновить прогресс бар
                  marqueRun();
-                setTimeout(function(){el_new._setButtonActive($(this));el_new._play();el_new._progrLoad(1);},500);
+                setTimeout(function(){el_new._setButtonActive($(this));el_new._play();el_new._progrLoad(1);_self.saveList();},500);
 
              });
 
@@ -417,8 +433,10 @@ $(document).on("click", ".selectplaylistchild", function(event){
         });
      },
      addSide: function(id,param){
+         let _self=this;
          this.getSong(id,param).then( function(massiv) {
-             var el = $('#vc-container'); var songs=[]; var songNames=[]; var sides=[];  var storona2;
+             let el = $('#vc-container'); let songs=[]; let songNames=[]; let sides=[];  let storona2;
+             let nomsongs=[];
              var storona = el.data().cassette.currentSide; //номер стороны
              if(storona==1){storona2="side2";storona="side1";}else{storona2="side1";storona="side2";}
              var tek_side = el.data().cassette._getSide().current; // id: "side2", status: "middle", playlist: Array[2], duration: 433.781932, playlistCount: 2 } playlistCount список песен
@@ -426,6 +444,7 @@ $(document).on("click", ".selectplaylistchild", function(event){
              for(var i=0;i<tek_side.playlistCount;i++){
                  songs.push(tek_side.playlist[i].name);
                  songNames.push(tek_side.playlist[i].nameSong);
+                 nomsongs.push(tek_side.playlist[i].nomsong);
                  //sides[tek_side.playlist[i].name]=storona;
                  sides.push(storona);
              }
@@ -434,6 +453,7 @@ $(document).on("click", ".selectplaylistchild", function(event){
              for(var i=0;i<tek_side.playlistCount;i++){
                  songs.push(tek_side.playlist[i].name);
                  songNames.push(tek_side.playlist[i].nameSong);
+                 nomsongs.push(tek_side.playlist[i].nomsong);
                 // sides[tek_side.playlist[i].name]=storona2;
                  sides.push(storona2);
              }
@@ -442,14 +462,18 @@ $(document).on("click", ".selectplaylistchild", function(event){
              songs.push(cursong);
              songNames.push(massiv['song']);
              sides.push(storona);
-             //console.log(sides); console.log(songs);
+             nomsongs.push(massiv['id']);
+              //console.log(songs);
              el_new = $('#vc-container').data().cassette;
              el_new._stop();
                  el_new.options.songNames=songNames;
                  el_new.options.songs=songs;
+             el_new.options.nomsongs=nomsongs;
+             el_new.options.sides=sides;
              $.when( el_new._createOneSides(sides) ).done( function() {
                  el_new._progrLoad(0); // при смене листа обязательно обновить прогресс бар
                  marqueRun();
+                 _self.saveList();
                //  setTimeout(function(){el_new._setButtonActive($(this));el_new._play();el_new._progrLoad(1);},500);
              });
 
@@ -457,36 +481,38 @@ $(document).on("click", ".selectplaylistchild", function(event){
          });
      },
      addList: function(id,param){
+         let _self=this;
          this.getSong(id,param).then( function(massiv) {
              let el = $('#vc-container'); let sides=[];
              let storona = el.data().cassette.currentSide; //номер стороны
              var tek_vrem = el.data().cassette._getSide().current;
              el_new = $('#vc-container').data().cassette;
              el_new._stop(); //
-            // console.log(massiv);
+             console.log(massiv);
              storona=el.data().cassette.currentSide;
              el.data().cassette._switchSidesA(storona);
-             el_new.options.songNames=[]; el_new.options.songs=[];
+             el_new.options.songNames=[]; el_new.options.songs=[];el_new.options.nomsongs=[];el_new.options.sides=[];
              massiv.forEach(function(value) {
                  cursong = value['put'].replace('&amp;', '&');
                 // cursong = cursong.replace('%20', ' ');
                  el_new.options.songNames.push(value['song']);
                  el_new.options.songs.push (cursong);
-                 if(value['side']==2){sides.push('side2');}
-                 else{sides.push('side1');}
+                 el_new.options.nomsongs.push(value['id']);
+                 if(value['side']==2){ el_new.options.sides.push('side2');}
+                 else{ el_new.options.sides.push('side1');}
              });
-                 $.when( el_new._createOneSidesAll(sides) ).done( function() {
+
+             $.when( el_new._createOneSides(el_new.options.sides) ).done( function() {
+                // $.when( el_new._createOneSidesAll( el_new.options.sides) ).done( function() {
                      el_new._progrLoad(0); // при смене листа обязательно обновить прогресс бар
                      marqueRun();
+                     _self.saveList();
                      //$('.waiting').remove();
                  });
 
-
-
-
-            // console.log(el_new.options.songNames);
+             // console.log(el_new.options.songNames);
          });
-     }
+     },
 
 };
 
