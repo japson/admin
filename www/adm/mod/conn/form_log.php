@@ -21,6 +21,7 @@ $perem='<div class="row">
      <button type="submit" id="log_butt" onClick="login_a(); return false;" class="btn btn-default">Войти</button>
     </div>
   </div>
+  
 </form>';
 
 ?>

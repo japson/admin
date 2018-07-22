@@ -26,7 +26,8 @@ include('class/makemenu.php');
         $menu->opengraph['url']=$href;
         $massart=$menu->currentArticle('news',$where,$itogname);
        // debug_to_console($menu->opengraph);
-        $massart[1]=$menu->checkOpenGraph($massart[1]);
+        if(strlen($massart[0])) {
+        $massart[1]=$menu->checkOpenGraph($massart[1]);}
         echo json_encode(array($menuhoriz,$massart));
     }
 
@@ -54,7 +55,8 @@ include('class/makemenu.php');
         $menu->opengraph['url']=$href;
         //debug_to_console($menu->opengraph);
         $massart=$menu->currentArticle('news',$where,$itogname);
-        $massart[1]=$menu->checkOpenGraph($massart[1]);
+        if(strlen($massart[0])) {
+        $massart[1]=$menu->checkOpenGraph($massart[1]);}
         echo json_encode(array('',$massart));
     }
 
@@ -69,7 +71,8 @@ include('class/makemenu.php');
       //  $menu->massivRasdel($where,0);
         $menu->opengraph['url']=$href;
         $massart=$menu->currentArticle('news',$where,$itogname);
-        $massart[1]=$menu->checkOpenGraph($massart[1]);
+        if(strlen($massart[0])) {
+        $massart[1]=$menu->checkOpenGraph($massart[1]);}
       //  debug_to_console($massart);
         echo json_encode(array('',$massart));
     }
@@ -84,7 +87,8 @@ include('class/makemenu.php');
 
         $menu->kodarticle=$kod;
         $massart=$menu->currentArticle('news',$where,$itogname);
-        $massart[1]=$menu->checkOpenGraph($massart[1]);
+        if(strlen($massart[0])) {
+        $massart[1]=$menu->checkOpenGraph($massart[1]);}
         echo json_encode(array('',$massart,$menu->prevart,$menu->nextart,$menu->listart));
     }
 ?>

@@ -238,6 +238,7 @@ if ( $logged_in &&  $auth_in ) {
 <link rel="stylesheet" type="text/css" href="../fancy/jquery.fancybox.min.css">
 <script src="ckeditor/ckeditor.js" type="text/javascript"></script>
 <script src="js/auto.js"></script>
+   <!-- <script src='https://www.google.com/recaptcha/api.js'></script>-->
 <title>Административная часть</title>
 </head>
 

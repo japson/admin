@@ -41,11 +41,11 @@
 	$.Cassette.defaults 	= {
 		// song names. Assumes the path of each song is songs/name.filetype
 		songs			: [ ''  ],
-		songNames			: [ '',  ],
+		songNames			: [ ''  ],
 		fallbackMessage	: 'HTML5 audio not supported',
 		// initial sound volume
-		initialVolume	: 0.7,
-        sides: ['']
+		initialVolume	: 0.5,
+        sides: [''], times:['']
 	};
 	
 	$.Cassette.prototype 	= {
@@ -72,17 +72,19 @@
 			this.isMoving		= false;
 			//таймер текущей песни
 			this.timerID=0;
-			this.$loader		= this.$el.find( 'div.vc-loader' ).show();
+			//this.$loader		= this.$el.find( 'div.vc-loader' ).show();
 
 			// create cassette sides               _createOneSides(mass_sides) side1
 			//$.when( this._createSides() ).done( function() {
-            $.when( this._createOneSides(this.options.sides) ).done( function() {
-				_self.$loader.hide();
+            $.when( this._createOneSidesAll( this.options.sides) ).done( function() {
+           // $.when( this._createOneSides(this.options.sides) ).done( function() {
+				//_self.$loader.hide();
 			
 				// create player
 				_self._createPlayer();
 				_self.sound = new $.Sound();
 				// load events
+                //_self._changeVolume(  );
 				_self._loadEvents();
 				
 			} );
@@ -114,12 +116,12 @@
 				//curtxt=curtxt+'<div class="songblok"><span> * </span><div class="songbar" id="'+sider.playlist[i].id+'">'+sider.playlist[i].nameSong+' <span name="time"></span><div class="progrbar" id="'+i+'"></div></div></div>';
 				curtxt=curtxt+'<tr class="songinside" ><td class="songbegin" onclick="beginSong(event);" > '+(i+1)+'. </td><td class="tablbar"><div class="songbar '+scrol+'" id="'+sider.playlist[i].id+'"><span class="namescroll">'+sider.playlist[i].nameSong+'</span> <span name="time" style=""></span></div><div class="progrbar" id="'+i+'"></div></td>';
 			}	
-			spisok.html('<table class="songblok3"><tr class="songup" ><td></td></tr></table>'+'<table class="songblok">'+curtxt+'</table>' +'<table class="songblok2"><tr class="songdown" ><td></td></tr></table>');
+			spisok.html('<table class="songblok3"><tr class="songup" ><td></td></tr></table>'+'<table class="songblok">'+curtxt+'</table>' +'<table class="songblok2"><tr class="songdown" ><td><div>Нажми на номер песни, для перехода в начало</div><div class="savecassette">Сохранить кассету...</div><div class="inputsavecass"></div></td></tr></table>');
 			//console.log(sider.playlist.length);
 			 marqueRun();
 		},
 		// songs are distributed equally on both sides
-		_createSides		: function(sides) {
+		/*_createSides		: function(sides) {
 		
 			var playlistSide1 	= [],
 				playlistSide2 	= [],
@@ -159,9 +161,9 @@
 				
 			).promise();
 			
-		},
+		},*/
         // songs are distributed equally on both sides
-        _createOneSides		: function(sides) {
+       /* _createOneSides		: function(sides) {
 
             var playlistSide1 	= [],
                 playlistSide2 	= [],
@@ -193,7 +195,7 @@
                     }
                 }
             ).promise();
-        },
+        },*/
         // songs are distributed equally on both sides
         _createOneSidesAll		: function(sides) {
 
@@ -204,7 +206,7 @@
 
                     for( var i = 0, len = _self.options.songs.length; i < len; ++i ) {
                         _self._promiseSidesAll(i,_self,sides).then(function(song){
-                         //   console.log(song);
+                          //  console.log(song);
                             if(song.side === 'side1'){ playlistSide1.push( song );}
                             else {playlistSide2.push( song );}
                             ++cnt;
@@ -220,7 +222,8 @@
                     }
         },
 		_promiseSidesAll : function(i,_self,sides){
-            var song = new $.Song( _self.options.songs[i], i, _self.options.songNames[i], sides[i]);
+            var song = new $.Song( _self.options.songs[i], i, _self.options.songNames[i],
+				_self.options.nomsongs[i], sides[i],_self.options.times[i]);
             return new Promise(function(succeed, fail) {
                     song.loadMetadataAll() .then( function(succeed2 ) {
                         succeed(song);
@@ -276,7 +279,7 @@
 				
 				} 
 				else {
-
+                    console.log(359 * this.options.initialVolume);
 					this.$controls.show();
 					this.$volume.show();
 					this.$volume.find( 'div.vc-volume-knob' ).knobKnob({
@@ -324,6 +327,7 @@
 		var dlinSong=0;
 		var dlinBlok=$('.songbar').css('width');  //console.log(parseInt(dlinBlok,10)); 
 		var odinPrBlok=parseInt(dlinBlok,10)/100;
+          //  console.log(msTekPos.songIdx);
 		var tekSong=function(){ dlinSong=msSide.playlist[msTekPos.songIdx].duration;
 		if(!dlinSong) dlinSong=0;
 		return (dlinSong/100);};
@@ -1044,7 +1048,7 @@
 			for( var i = 0, len = this.playlist.length; i < len; ++i ) {
 			
 				this.duration += this.playlist[ i ].duration;
-			
+
 			}
 		
 		},
@@ -1079,6 +1083,7 @@
 		this.nameSong 	= nameSong;
         this.nomsong 	= nomsong;
 		if(arguments[4]){this.side=arguments[4]; }
+        if(arguments[5]){this.times=arguments[5]; }
 		this._init();
 		
 	};
@@ -1086,10 +1091,12 @@
 	$.Song.prototype 		= {
 
 		_init				: function() {
+			if(this.name.substr(0,4)=='http') {put='';} else{put='/catalog/punkts/';};
 		
 			this.sources	= {
-				mp3	: '/catalog/punkts/' + this.name + '', //'.mp3'
-				ogg	: '/catalog/punkts/' + this.name + '' //'.ogg'
+
+				mp3	: put + this.name + '', //'.mp3'
+				ogg	: put + this.name + '' //'.ogg'
 			};
 		
 		},
@@ -1099,7 +1106,7 @@
 		
 		},
 		// load metadata to get the duration of the song
-		loadMetadata		: function() {
+		loadMetadata		: function() { // no use anymore------------------------------
 			
 			var _self = this;
 			
@@ -1138,19 +1145,25 @@
             var _self = this;
 
             return new Promise(function( succeed, fail ) {
+                _self.duration=parseFloat(_self.times);
+                succeed( _self );
 
-                    var $tmpAudio 	= $( '<audio/>' ),
+				/* var $tmpAudio 	= $( '<audio/>' ),
                         songsrc		= _self.getSource( aux.getSupportedType() );
                     songsrc3=songsrc;
                     songsrc2=songsrc.replace('&amp;','&');
                     $tmpAudio.attr( 'preload', 'auto' );
                     $tmpAudio.attr( 'src', songsrc2 );
+
+
+
                     $tmpAudio.on( 'loadedmetadata', function( event ) {
 
                         _self.duration = $tmpAudio.get(0).duration;
+                        console.log(songsrc2+' '+_self.duration);
                         succeed( _self );
 
-                    });
+                    });*/
 
                 });
 

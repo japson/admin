@@ -4,10 +4,10 @@
     z-index:10;
 	text-align: center;
     display: block;
-	position: relative;
-    /*overflow: hidden;*/
+	position: absolute;
+    overflow: hidden;
 	margin:10px 3px 0 auto;
-	float:right;
+
 	/*height: 500px; /*500*/
 	/*width: 150px;*/
 	max-width: 550px;
@@ -98,17 +98,21 @@ transition: all 4s ease;
 .vc-tape-wheel-right{
 	right: 91px; /*113*/
 }
-.spisokside{width: 550px; display:block; margin-top:0px; text-align: center; color:#333;}
+.spisokside{width: 550px; display:flex; flex-direction: column; justify-content: flex-start;align-items: stretch; margin-top:0px; text-align: center; color:#333;}
 .songblok { margin:3px auto 0;display:inline-block; text-align:left; padding-left:2px; }
 .songblok .songinside{ background: transparent url(../img/maf/doroga.jpg) no-repeat center center; background-size: cover;}
 
-.songblok2 { margin:-4px auto 5px;display:inline-block; }
+.songblok2 { margin:0px auto 5px;display:inline-block; }
 .songblok2 .songdown{ background: transparent url(../img/maf/doroga_down.jpg) no-repeat center center; background-size: cover;}
-.songblok2 .songdown td{ height:118px; width:422px;} 
+.songblok2 .songdown td{ height:118px; width:434px; vertical-align: top; display: flex;justify-content: flex-start;align-items: center; flex-direction: column;}
+.songdown div{margin: 6px 0 0; font-size: 0.7em; width: 290px;  color:rgba(83,134,187,1);}
+.savecassette{cursor: pointer; }
+div.inputsavecass{width:100%; background-color: #DFDED9; padding: 0 10px;}
+.inputsavecass input{width:75%;}
 
  .songblok3 { margin:3px auto -7px;display:inline-block; }
 .songblok3 .songup{ background: transparent url(../img/maf/doroga_up.jpg) no-repeat center center; background-size: cover;}
-.songblok3 .songup td{ height:63px; width:422px;} 
+.songblok3 .songup td{ height:63px; width:430px;}
 
 .tablbar---- { overflow:scroll; width:400px; height:19px;}
 .songbar { white-space:nowrap;  overflow:hidden; width:400px; height:19px; border:#0F0 none 1px; background-color: rgba(209,209,209,0); font-size:14px; }

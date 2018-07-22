@@ -10,7 +10,7 @@ class createMenu{
     public $itogname;
     private $typrasdel=array('3'=>'articles','5'=>'playlist','6'=>'galery','0'=>'articles');
     private $typarticle=array('1'=>'articles','3'=>'playlist','2'=>'galery');
-    private $kolOnPage=4; private $PictOnPage=9; private $limpictonrow=3;
+    private $kolOnPage=4; private $PictOnPage=9; private $limpictonrow=3; private $limalbumpage=2;
     public $cofmen=''; public $cofrasd='';
     public $opengraph=array();
     public $masspencil=array();
@@ -48,7 +48,7 @@ class createMenu{
         $stmt = $dbl->prepare($sql);
         $stmt->execute();
         if ($sms = $stmt->fetchAll(PDO::FETCH_ASSOC)) {
-            //debug_to_console($sms);
+           //debug_to_console($sms);
             foreach ($sms as $row) {
                 $mass[]=array('kod'=>$row['kod'], 'name'=>$row['name'],'nameurl'=>$this->CMP($row,'name'),'titlepage'=>$row['titlepage'],'rol'=>$row['rol']);
             }
@@ -63,7 +63,7 @@ class createMenu{
         if ($sms = $stmt->fetchAll(PDO::FETCH_ASSOC)) {
            // debug_to_console($sms);
             foreach ($sms as $row) { $url='';
-                if($pictur){$url=$this->pictUrl($row['kod']);}else {$url='/img/nopict.jpg';}
+                if($pictur){$url=$this->pictUrl($row['kod']);}else {$url='/img_n/nopict.jpg';}
                 $mass[]=array('kod'=>$row['kod'], 'name'=>$row['name'],'nameurl'=>$this->CMP($row,'name'),'titlepage'=>$row['titlepage'],'rol'=>$row['rol'],'pictur'=>$url,'kodrasdel'=>$this->kodrasdel,'kodmenu'=>$this->kodmenu);
             }
         }
@@ -87,11 +87,11 @@ class createMenu{
         $stmt->execute();
         if ($sms = $stmt->fetchAll(PDO::FETCH_ASSOC)) {
             $tmpurl=$dir.$sms[0]['name_small'];
-        } else {$tmpurl='/img/nopict.jpg';}
+        } else {$tmpurl='/img_n/nopict.jpg';}
         return $tmpurl;
     }
 
-    private function CMP($row,$name){ // nameurl translation
+    public function CMP($row,$name){ // nameurl translation
         if(strlen($row['nameurl'])){$nameurl=$this->translit($row['nameurl']); }
         else{$nameurl=$this->translit($row[$name]); }
         //$temp=array('nameurl'=>$nameurl,'rol'=>$row['rol'],'name'=>$row['name'],'kodmenu'=>$kodmenu,'rasdel'=>$row['kodrasdel'],'table'=>$nmtbl,'kod'=>$row['kod']);
@@ -125,7 +125,7 @@ class createMenu{
 
         $dbl=$this->db;
         $sql = "SELECT * FROM ".$tbl." ".$where."  ORDER by sort";
-           // debug_to_console($sql);
+          // debug_to_console($sql);
         $stmt = $dbl->prepare($sql);
         $stmt->execute();
         $temp=''; $key='';
@@ -133,7 +133,11 @@ class createMenu{
         if ($sms = $stmt->fetchAll(PDO::FETCH_ASSOC)) {
                 $this->masspencil=$this->makePencil($tbl,$sms[0]);
             switch($this->typeRasdel()){
-                case 'galery':;
+                case 'playlist':;
+                    $temp=$this->makePlayList(0);
+                    $temp=$this->makehtmlList($temp,$itogname);
+                   // debug_to_console($temp);
+                break;
                 case 'articles': //debug_to_console($this->typeRasdel());
                     if(count($sms)>1){ $temp=$this->makeArticleAll($sms,$itogname,'news','description');} //обработать комплект статей
                     if(count($sms)==1) { //обработать одну статей
@@ -141,7 +145,7 @@ class createMenu{
                         //todo:обработать редирект
                         else{$temp=$this->selectTypArticle($sms[0],$itogname);}
                     }
-                    if(count($sms)==0){} //обработать нет статей
+                    if(count($sms)==0){$temp=array();} //обработать нет статей
                     break;
 
             }
@@ -451,6 +455,77 @@ class createMenu{
        // debug_to_console($mass); debug_to_console($url);
         return $url;
     }
+    //----------------make playlists--------------
+
+    private function makePlayList($param){
+        $dbl=$this->db; $cassettes=array();
+        if($param) {$where=' WHERE rol='.$param;} else{$where='';}
+        $sql = "SELECT * FROM userlist ".$where."  ORDER by sort";
+        $stmt = $dbl->prepare($sql);
+        $stmt->execute();
+        if ($sms = $stmt->fetchAll(PDO::FETCH_ASSOC)) {
+            foreach ($sms as $row) {
+                $where=' WHERE (uid=? AND provider=? )';
+                $user=$this->userList($row['userm'],$row['provider'],'comuser',$where);
+                if(count($user)){
+                    if(strlen($user[0]['nick'])){$nick=$user[0]['nick'];}
+                    else{$nick=$user[0]['firstname'].' '.$user[0]['lastname'];}
+                    $user=$nick.': ';}
+                else{$user='Unknown: ';}
+                $namelist=$row['namelist'];
+               // $songs=$this->songUserList($row['arrsongs'],$row['arrsides'],'punkt');
+                $cassettes[]=array($user,$namelist,$row['kod'],$row['checker']);
+            }
+        }
+        return $cassettes;
+    }
+    private function userList($user,$prov,$tbl,$where){
+        $dbl=$this->db;
+        $sql = "SELECT * FROM ".$tbl.' '.$where."  ";
+        $stmt = $dbl->prepare($sql);
+        $stmt->execute(array($user,$prov));
+        if ($sms = $stmt->fetchAll(PDO::FETCH_ASSOC)) {
+            return $sms;
+        } else {return array();}
+    }
+
+
+
+    private function makehtmlList($mass,$itogname){
+        $tmp=''; $cass=array();
+        foreach ($mass as $value){
+            $tmp='<div class="cass_list" id="cassette'.$value[2].'"><div class="cass_author">'.$value[0].'</div>';
+            if(strlen($value[1])>260){$name=mb_strcut($value[1],0,220,"UTF-8").'...';}else{$name=$value[1];}
+           // $name=iconv($name,)
+            $tmp.='<div class="cass_name" title="'.$value[1].'">'.$name.'</div>';
+            if($value[3]==1){$classok='ok'; $titl='В каталоге';}
+            elseif($value[3]==2){$classok='class';$titl='Классика';}
+            else{$titl='На рассмотрении';$classok='nope';}
+            $tmp.='<div class="cass_check '.$classok.'" title="'.$titl.'"></div>';
+            $tmp.='</div>';
+            $cass[]=$tmp;
+        }
+        $limit=$this->limalbumpage; $cont=0; $tmp='';
+        $masspage=array();
+        foreach($cass as $row){
+            $tmp.=$row; $cont=$cont+1;
+            if($cont==$limit) {$cont=0; $masspage[]=$tmp; $tmp='';}
+        }
+        if(strlen($tmp)>0) $masspage[]=$tmp;
+        $book='';// debug_to_console(count($masspage));
+        for($i=0;$i<count($masspage);$i++) {
+            if($i==0){$styl='current ';} else {$styl='';}
+            $book.='<div id="page_'.($i+1).'" class="secstr  '.$styl.'" name="'.$itogname.'">'.
+                /* '<img class="blokpage" src="/img/blokpage.jpg">'.*/
+                '<div class="txt_block_head">Каталог кассет</div>'.
+                '<div class="txt_block">'.  $masspage[$i].'</div>'.
+                '<div class="txt_block_str">'.$this->makeStr($i,count($masspage)).'</div></div>';
+        }
+        return array($book,$this->opengraph);
+    }
+
+    public function db(){ return $this->db;        }
+    public function nametabl(){ return $this->nametabl;        }
 
 }
 

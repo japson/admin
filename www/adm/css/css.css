@@ -7,6 +7,7 @@
 .tablvyvod, .tablexternal, .tabllength, .tablredirect {width:30px;}
 .tablsort, .sorty{width: 30px;}
 .tablrol {width:120px;}
+.tablput{max-width: 300px; overflow-y:  hidden; display: block;}
 /*td.action, td.buttons { max-width:20em;}*/
 .btn{ padding:6px 6px; min-width:25px;}
 .editbutt{ font-size:0.9em; padding:6px 5px; min-width:55px;}

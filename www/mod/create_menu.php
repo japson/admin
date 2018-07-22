@@ -13,6 +13,10 @@ $menumodern=$menu->makemodernMenu();
 $cur_url=$_SERVER['REQUEST_URI'];
 //debug_to_console($_SERVER["QUERY_STRING"] );
 $cur_url=explode('/',$cur_url);
+debug_to_console($cur_url);
+//rss=substr($cur_url[1],0,3);
+//if($rss=='rss') {echo 'hi';}
+
 $page=new makeMenu('rasdel',$db);
 $masskod=$page->getKodes($cur_url,'mainmenu');
 debug_to_console($masskod);
@@ -50,7 +54,9 @@ if($needart) {
     $prevart = ' name=' . $page->prevart[0] . ' dathref=' . $page->prevart[1] . ' ';
     $listart = ' name=' . $page->listart[0] . ' dathref=' . $page->listart[1] . ' ';
 }
-$page->opengraph=$menu->checkOpenGraph($massart[1]);
+if(strlen($massart[0])) {
+    $page->opengraph = $menu->checkOpenGraph($massart[1]);
+}
 //($massart);
 //echo json_encode(array($menuhoriz,$massart));
 

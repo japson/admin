@@ -32,6 +32,7 @@ if(isset($_COOKIE['auth_key'])  and $arc[0]['atribut']==1) {
                     if(strlen($putback)>0){$newdir->comeback($putback);}
                     $pust=$newdir->scandir('');
                     $temp=$newdir->outDir();
+                  //  debug_to_console($pust);
                     $newdir->temper=$curput;
                    // array_push($temp,$_POST['put']);
                     //array_push($temp,$newdir->temper);

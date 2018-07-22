@@ -5,7 +5,7 @@ function datPars(data){ //проверка ajax поступления22
 	var result=0;
 	var answer='Problem on the server. Its not answer.';
 	if (data.length>0) {
-		//console.log( "Прибыли данные: " + JSON.parse(data) );
+		// console.log( "Прибыли данные: " + JSON.parse(data) );
 		var mass=JSON.parse(data);
 		if (mass[0]['atribut']==0) {answer=mass[0]['text'];}
 		else {result=1;answer=mass[0]['text'];}
@@ -27,7 +27,7 @@ if(!nampattern.test(logpass)){ err_out('#errorsave', 'Недопустимые �
    $.ajax({
     type: "POST",   url: "mod/conn/db_check.php",   data: data,
   success: function(data){
-	 //console.log( "Прибыли данные: " + data );
+	 console.log( "Прибыли данные: " + data );
 	 var mass=datPars(data);
 	 if (mass[0]==0) {err_out('#errorsave', mass[1]); $('#logname').val("");$('#logpass').val("");}
 	 else {location.reload();}
@@ -45,6 +45,7 @@ function logout_a() {
   success: function(data){
 	// console.log( "Прибыли данные: " + data );
 	 var mass=datPars(data);
+     // location.reload();
 	 if (mass[0]==1) { $(".container").html(mass[1]);}
   }
 							   });	
@@ -88,10 +89,10 @@ function createArticle(){
 	var men=new createWindow(''); 	men.wincreate(param);	
 	}
 function createElem(){
-	visualDir();return false;
-
-    var param=document.getElementById('position').massiv;
-    var men=new createWindow(''); 	men.wincreate(param);
+	visualDir();
+//	return false;
+   // var param=document.getElementById('position').massiv;
+   // var men=new createWindow(''); 	men.wincreate(param);
 }
 		
 
@@ -365,10 +366,10 @@ $(document).on("click", ".tablredirect div", function(event){ var elem=event.tar
   //  console.log(param);
     var data={param:param,id:tbl};
     $.ajax({
-        type: "POST",   url: "mod/dirall.ph p",
+        type: "POST",   url: "mod/dirall.php",
         data: data,//"param="+JSON.stringify(param)+ '&put='+encodeURIComponent(JSON.stringify(put)),
         success: function(data){
-             // console.log( "Прибыли данные: " + data  ); //+ data
+            //  console.log( "Прибыли данные: " + data  ); //+ data
 
             data= JSON.parse(data);
             // console.log(data);
@@ -858,7 +859,7 @@ function changePage(elem, direct){
                     	out+='<tr id="'+i+'"><td>'+mass[i]['artist']+'</td><td>'+mass[i]['title']+'</td><td>'+mass[i]['put']+'</td><td  class="button" name="delsong"><div>X</div></td></tr>';
 					}
 					out='<table class="previewtbl">'+out+'</table>';*/
-
+                    console.log(mass);
 					//if($('#tester') && $('#tester').html().length) {
 					if(document.getElementById('tester')){
 					//$('#tester').html(out);
@@ -866,20 +867,28 @@ function changePage(elem, direct){
 
                     document.getElementById('tester').massiv=mass;
                     createTester();
-					return false;
+					//return false;
 
 
                     // console.log(document.getElementsByClassName('Myconfirm')[0]);
-                    if(document.getElementsByClassName('Myconfirm')[0]!=undefined){$('.Myconfirm').html('<p></p>'+data[0]);}
-                    else{myConfirm(data[0], '');}
-                    document.body.massiv=data[1];
-                    console.log(data[1]);
+                 //   if(document.getElementsByClassName('Myconfirm')[0]!=undefined){$('.Myconfirm').html('<p></p>'+data[0]);}
+                //    else{myConfirm(data[0], '');}
+               //     document.body.massiv=data[1];
+                //    console.log(data[1]);
                     // console.log(data[2]);
                 }// success
             });
 		}
         console.log(masselem);
     }
+function emptyElement() {
+		let tmp=[{"title":"empty","artist":"","length":0,"year":"0","track_number":"1","genre":"","album":"empty","bytrate":0,"time":"0:00","rasmer":0,"put":"empty","put-utf":"empty"}];
+    if(document.getElementById('tester')){
+    } else {$('.Myconfirm').append('<div id="tester">'+''+'</div>');}
+    document.getElementById('tester').massiv=tmp;
+    createTester();
+    return false;
+}
 
 $(document).on('click', '.button[name="delsong"]',function(event){
     var elem=event.target||event.srcElement;
@@ -923,14 +932,14 @@ $(document).on('click', '.button[name="delsong"]',function(event){
 				$('#mybar').html(data['0_0']);
                 newDirOption=createMaSong(data);
                 document.getElementsByTagName('actionmenu').massiv=data;
-				return false;
+			//	return false;
 
                // data= JSON.parse(data);
                 // console.log(document.getElementsByClassName('Myconfirm')[0]);
-                if(document.getElementsByClassName('Myconfirm')[0]!=undefined){$('.Myconfirm').html('<p></p>'+data[0]);}
-                else{myConfirm(data[0], '');}
-                document.body.massiv=data[1];
-                console.log(data[1]);
+              //  if(document.getElementsByClassName('Myconfirm')[0]!=undefined){$('.Myconfirm').html('<p></p>'+data[0]);}
+             //   else{myConfirm(data[0], '');}
+            //    document.body.massiv=data[1];
+           //     console.log(data[1]);
                 // console.log(data[2]);
             }// success
         });
@@ -962,7 +971,7 @@ $(document).on('click', '.button[name="delsong"]',function(event){
     });
 
 	let addAllSongs={
-		elem,
+		elem:'',
 		makeurl:'',
         init: function (giveme){elem=giveme;makeurl='';},
 

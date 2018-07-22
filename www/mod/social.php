@@ -9,7 +9,7 @@ if (file_exists('../adm/mod/conn/db_conn.php')) {
     require_once($prefix.'/adm/mod/debug.php');
 }
 debug_to_console( 'dfd '.($_SESSION['token']));
-//debug_to_console( 'dfd2 '.($_SESSION['jlogin']));
+//debug_to_console( ($_SESSION['jlogin']['profile']));
 
 if(!empty($_SESSION['jlogin']['is_auth'])){
     $net=$_SESSION['jlogin']['profile']['logoprov'];

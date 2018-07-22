@@ -20,11 +20,16 @@ function savcook(perem) {
 
 }
 
-$('#menlast').mouseenter( function() {
-$('.bumimg').each(function(index, element) {if($(element).attr('id')!='menlast'){$(element).addClass('povor'+index);}});
-//$('.bumimg').children('div').each(function(index, element) {$(element).addClass('cursor');});
-// alert(); 
+$('#menlast').mouseenter( function(event) {
+    const elem=event.target||event.srcElement;
+    let parent=$(elem).parents('.bumenu').css('display');
+    if(parent=='grid') {
+        $('.bumimg').each(function (index, element) {
+            if ($(element).attr('id') != 'menlast') { $(element).addClass('povor' + index); }
+        });
+    }
  });
+
 $('.bumenu').mouseleave( function() { 
 $('.bumimg').each(function(index, element) {$(element).removeClass('povor'+index);});
 // alert(); 
@@ -40,7 +45,7 @@ function loadComment(list){
     $.ajax({
         type: "POST", url: "/mod/comment.php", data: {listcom: list, part:rasdel.middle},
         success: function (dat) {
-          //  console.log("Прибыли данные: " + dat); //+ data
+       //     console.log("Прибыли данные: " + dat); //+ data
             var data = JSON.parse(dat);
             if(data[0]) {
                 let out = '<div class="comlist">' + data[1] + '</div>';
@@ -98,7 +103,7 @@ function provCheck() { // кнопка включения мафона
     $('.extra').toggle('closed');
 }
 //$('#main-container').animate(   {    width : '580px'  }, 200);
-function provCheck_old(){ // кнопка включения мафона
+function provCheck_old22(){ // кнопка включения мафона
 var per=$( '.switch.demo1' ).find('input:checked').length;
 if (per==1){ $('#main-container').animate(   {    width : '580px'  }, 2000);
 //$('#vc-container').removeClass('vc-cont-hid');
@@ -153,30 +158,32 @@ var middlmen=function() {
      */
     $('#sdt_menu > li').bind('mouseenter',function(){
         var $elem = $(this);
-        $elem.find('img')
-            .stop(true)
-            .animate({
-                'width':'134px',
-                'height':'134px',
-                'top':'0px',
-                'left':'0px'
-            },600,'easeOutBack')
-            .addBack()
-            .find('.sdt_wrap')
-            .stop(true)
-            .animate({'top':'175px'},900,'easeOutBack')
-            .addBack()
-            .find('.sdt_active')
-            .stop(true)
-            .animate({'height':'190px'},500,function(){
-                var $sub_menu = $elem.find('.sdt_box');
-                if($sub_menu.length){
-                    var left = '130px';
-                    if($elem.parent().children().length == $elem.index()+1)
-                        left = '-170px';
-                    $sub_menu.show().animate({'left':left},250);
-                }
-            });
+        if($($elem).css('justify-self')=='baseline') {
+            $elem.find('img')
+                .stop(true)
+                .animate({
+                    'width': '134px',
+                    'height': '134px',
+                    'top': '0px',
+                    'left': '0px'
+                }, 600, 'easeOutBack')
+                .addBack()
+                .find('.sdt_wrap')
+                .stop(true)
+                .animate({'top': '175px'}, 900, 'easeOutBack')
+                .addBack()
+                .find('.sdt_active')
+                .stop(true)
+                .animate({'height': '190px'}, 500, function () {
+                    var $sub_menu = $elem.find('.sdt_box');
+                    if ($sub_menu.length) {
+                        var left = '130px';
+                        if ($elem.parent().children().length == $elem.index() + 1)
+                            left = '-170px';
+                        $sub_menu.show().animate({'left': left}, 250);
+                    }
+                });
+        }
     }).bind('mouseleave',function(){
         var $elem = $(this);
         var $sub_menu = $elem.find('.sdt_box');
@@ -259,17 +266,64 @@ function loadSongs(){
     $.ajax({
         type: "POST", url: "/mod/makesong.php", data: '',
         success: function (dat) {
-              console.log("Прибыли данные: " + dat); //+ data
+         //     console.log("Прибыли данные: " + dat); //+ data
             var data = JSON.parse(dat);
-            let mf={songs			: data[0],songNames: data[2],sides: data[1],nomsongs:data[3]};
-            console.log(mf);
+            let mf={songs			: data[0],songNames: data[2],sides: data[1],nomsongs:data[3],times:data[4]};
+          //  console.log(mf);
             $(function() {$( '#vc-container' ).cassette(mf);    });
           //  succeed(data);
         }
     });//ajax
+}
 
-  //  let mf={songs			: ['444.mp3','444.mp3'],songNames: ['rrr','super'],sides: ['side1','side2','side2','side1']};
-   // $(function() {$( '#vc-container' ).cassette(mf);    });
+function makeCasset(param){
+    $.ajax({
+        type: "POST", url: "/mod/changer.php", data: {id: 3, koder: param},
+        success: function (dat) {
+               //  console.log("Прибыли данные: " + dat); //+ data
+            var data = JSON.parse(dat);
+            let mf={songs			: data[0],songNames: data[2],sides: data[1],nomsongs:data[3],times:data[4]};
+              console.log(mf);
+            let el_new = $('#vc-container').data().cassette;
+            el_new._stop();
+            el_new.options.songNames=mf.songNames;
+            el_new.options.songs=mf.songs;
+            el_new.options.nomsongs=mf.nomsongs;
+            el_new.options.sides=mf.sides;  el_new.options.times=mf.times;
+            // console.log(times);
+            $.when( el_new._createOneSidesAll(mf.sides) ).done( function() {
+                el_new._progrLoad(0); // при смене листа обязательно обновить прогресс бар
+                marqueRun();
+                let newSong=manageSongs;
+                newSong.init();
+                newSong.saveList();
+                delOverley();
+            });
+        }
+    });//ajax
+}
+
+$(document).on("click", ".savecassette", function(event){
+    let tmp=$('.inputsavecass').html();
+    if(tmp.length){$('.inputsavecass').html('');}
+    else{$('.inputsavecass').html('Подпиши:<input type="text"><button onclick="saveCass();">Save</button>');}
+});
+
+function saveCass(){
+    $.ajax({
+        type: "POST", url: "/mod/savesong.php", data: {txt: $('.inputsavecass input').val()},
+        success: function (dat) {
+            console.log("Прибыли данные: " + dat); //+ data
+            var data = JSON.parse(dat);
+          //  let mf={songs			: data[0],songNames: data[2],sides: data[1],nomsongs:data[3]};
+          //  console.log(mf);
+         //  $(function() {$( '#vc-container' ).cassette(mf);    });
+            //  succeed(data);
+            $('.inputsavecass').html(data[1]);
+            setTimeout(function(){$('.inputsavecass').html('');},4000);
+        }
+    });//ajax
+
 
 }
 

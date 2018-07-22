@@ -11,6 +11,7 @@ class Social
     public $session = array();
     private $params;
     private $clientSecret; private $provider; private $publicKey;
+    private $noname=array('admin','хуй','пизд','ебли','ебла','ебля','japson','japsan','gapson','gapsan','жепсон','жепсан','джипсан','жипсон','жапсон','жапсан');
 
     public function __construct($nmtbl, $dbh)
     {
@@ -212,7 +213,7 @@ class Social
         $stmt->execute();
         if ($sms = $stmt->fetchAll(PDO::FETCH_ASSOC)) {
             // todo: проверить имя мож изменилось
-            $this->session = array('id' => $sms[0]['id'], 'uid' => $sms[0]['uid'], 'provider' => $sms[0]['provider'], 'name' => $sms[0]['firstname'] . ' ' . $sms[0]['lastname'], 'logoprov' => $this->logoprovaider, 'ident' => $sol);
+            $this->session = array('id' => $sms[0]['id'], 'uid' => $sms[0]['uid'], 'provider' => $sms[0]['provider'], 'name' => $sms[0]['firstname'] . ' ' . $sms[0]['lastname'], 'logoprov' => $this->logoprovaider, 'ident' => $sol, 'nick'=>$sms[0]['nick']);
 
         } else {
             foreach ($this->massdat as $key => $value) {
@@ -226,7 +227,7 @@ class Social
             $stmt = $dbl->prepare($sql);
             $stmt->execute($znach);
             $ider = $dbl->lastInsertId();
-            $this->session = array('id' => $ider, 'uid' => $this->massdat['uid'], 'provider' => $this->massdat['provider'], 'name' => $this->massdat['firstname'] . ' ' . $this->massdat['lastname'], 'logoprov' => $this->logoprovaider, 'ident' => $sol);
+            $this->session = array('id' => $ider, 'uid' => $this->massdat['uid'], 'provider' => $this->massdat['provider'], 'name' => $this->massdat['firstname'] . ' ' . $this->massdat['lastname'], 'logoprov' => $this->logoprovaider, 'ident' => $sol, 'nick'=>'');
         }
         $this->updateUser($sol);
     }
@@ -285,6 +286,8 @@ class Social
         }
         $logo = ' <img class="socimg" src="/img_n/' . $tmp . '">';
         $tmp = $logo . $user['name'] . ' <a id="outsession" href="" onclick="ExitSocial();return false;">Выйти</a>';
+        if(!strlen($user['nick'])){$nick=$user['name'];}else{$nick=$user['nick'];}
+        $tmp.='<div class="nickname">Ваш ник:<span>'.$nick.'</span><a id="outnick" href="" onclick="changeNick();return false;">Сменить</a></div>';
         return $tmp;
     }
 
@@ -292,9 +295,9 @@ class Social
     {   $log = $this->createAtoken();
 
         if ($param) {
-            $tmp = 'Comments only with:' . $log['vk'].$log['go'].$log['ok'].$log['mail'].$log['ya'].$log['fb'];
+            $tmp = 'Comments with:' . $log['vk'].$log['go'].$log['ok'].$log['mail'].$log['ya'].$log['fb'];
         } else {
-            $tmp = 'Comments only with:' . $log['vk'].$log['go'].$log['ok'].$log['mail'].$log['ya'];//.$log['fb']
+            $tmp = 'Comments with:' . $log['vk'].$log['go'].$log['ok'].$log['mail'].$log['ya'].$log['fb'];//.$log['fb']
         }
         return $tmp;
     }
@@ -401,6 +404,28 @@ return array('vk'=>$vk,'go'=>$go,'ok'=>$ok,'mail'=>$mail,'ya'=>$ya,'fb'=>$fb);
                 ); break;
         }
 
+    }
+    public function makeNick($nick){
+        $newnick=htmlspecialchars($nick); $tmp=0;
+        $no=(mb_strtolower($newnick));
+        for($i=0;$i<count($this->noname);$i++){
+           if(stripos(mb_strtolower($newnick),$this->noname[$i])=='false'){$tmp=1;};
+           //debug_to_console(mb_strtolower($newnick));
+        }
+        if(!$tmp){
+            $dbl=$this->db;
+            $sql = 'UPDATE ' . $this->nametabl . ' SET nick="' . $newnick . '" WHERE provider = "' . $this->provider . '" AND uid = "' . $_SESSION['jlogin']['profile']['uid'] . '"';
+           //  debug_to_console($sql);
+            $stmt = $dbl->prepare($sql);
+            $stmt->execute();
+            $name=$newnick;
+            $_SESSION['jlogin']['profile']['nick']=$newnick;
+        } else {
+            if(strlen($_SESSION['jlogin']['profile']['nick'])) {$name=$_SESSION['jlogin']['profile']['nick'];}
+            else{$name=$_SESSION['jlogin']['profile']['name'];}
+        }
+       // debug_to_console($name);
+       return $name;
     }
 }
 ?>

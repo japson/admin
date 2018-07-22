@@ -5,6 +5,7 @@ $login="mysql";
 $password="mysql";
 try {
     $db = new PDO('mysql:host=127.0.0.1;dbname=jap7;charset=UTF8', $login, $password);
+    $db->exec('SET NAMES utf8');
   //  foreach($dbh->query('SELECT * from FOO') as $row) {
   //      print_r($row);
   //  }

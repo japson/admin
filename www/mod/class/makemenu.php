@@ -13,10 +13,10 @@ class makeMenu extends createMenu{
         $this->massivMenu(' WHERE vyvod=1 '); $mass=array(); $i=1;
       //  debug_to_console($this->prefix);
         foreach ($this->mainmenu as $key=>$row){
-            $mass[]='<div class="bumimg" id="men'.$i.'" name="'.$row['kod'].'_0_0"> 	<img src="/img/klok'.$i.'.png" title="'.$row['titlepage'].'"> <div><a href="'.$this->prefix.$row['nameurl'].'" onclick="{goUrl(event);return false;}">'.$row['name'].'</a></div></div>';
+            $mass[]='<div class="bumimg" id="men'.$i.'" name="'.$row['kod'].'_0_0"> 	<img src="/img_n/klok'.$i.'.png" title="'.$row['titlepage'].'"> <div><a href="'.$this->prefix.$row['nameurl'].'" onclick="{goUrl(event);return false;}">'.$row['name'].'</a></div></div>';
             $i++;
         }
-        $mass[]=' <div class="bumimg" id="menlast" name="0_0_0"> 	<img src="/img/kloklast.png" title="Главная"> <div><a href="'.$this->prefix.''.'" onclick="{goUrl(event);return false;}">Меню</a></div></div>';
+        $mass[]=' <div class="bumimg" id="menlast" name="0_0_0"> 	<img src="/img_n/kloklast.png" title="Главная"> <div><a href="'.$this->prefix.''.'" onclick="{goUrl(event);return false;}">Меню</a></div></div>';
         $i++;
 
         $tmp=implode('',$mass);
@@ -51,7 +51,7 @@ class makeMenu extends createMenu{
     public function checkOpenGraph($mass){
        // debug_to_console($mass);
         if(strlen($mass['keyw'])==0){$mass['keyw']='Кривякин, Митяй, Japson, Джепсон, Искитимский андеграунд, группа из Искитима';}
-        if(strlen($mass['image'])==0){$mass['image']='http://'.$_SERVER['SERVER_NAME'].'/catalog/imgnews/nopict.jpg';}
+        if(strlen($mass['image'])==0){$mass['image']='https://'.$_SERVER['SERVER_NAME'].'/catalog/imgnews/nopict.jpg';}
         if(strlen($mass['title'])==0){$mass['title']='Искитимский андеграунд';}
         if(strlen($mass['description'])==0){$mass['description']='Заметки, статьи участника Искитимского андеграунда папы Джепсона';}
         if(strlen($mass['url'])==0){$mass['url']='http://'.$_SERVER['SERVER_NAME'];}

@@ -59,7 +59,7 @@ class OutputComment extends Comment{
         $this->makeHtmList();
        // debug_to_console($this->massitog);
        // debug_to_console($this->commOne);
-       // debug_to_console($this->userarray);
+      //  debug_to_console($this->userarray);
         return 1;
     }
     private function makeArrayComment($uroven){
@@ -104,7 +104,7 @@ class OutputComment extends Comment{
             $stmt = $dbl->prepare($sql);
             $stmt->execute(array($iduser));
             if ($sms = $stmt->fetchAll(PDO::FETCH_ASSOC)) {
-                $this->userarray[$iduser]=array($sms[0]['firstname'],$sms[0]['lastname'],$this->outName($sms[0]['provider']));
+                $this->userarray[$iduser]=array($sms[0]['firstname'],$sms[0]['lastname'],$this->outName($sms[0]['provider']),$sms[0]['nick']);
             }
         }
     }
@@ -153,7 +153,8 @@ class OutputComment extends Comment{
 
     private function getName($userid){
         $tmp=$this->userarray[$userid];
-        return array($tmp[0].' '.$tmp[1],$tmp[2]);
+        if(strlen($tmp[3])){$nick=$tmp[3];}else{$nick=$tmp[0].' '.$tmp[1];}
+        return array($nick,$tmp[2]);
     }
 
     public function buildList($mass){

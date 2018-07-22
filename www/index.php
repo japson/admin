@@ -35,20 +35,21 @@ $opgraph=$page->opengraph;
 <head>
     <link rel="icon" href="/favicon.ico" type="image/x-icon">
     <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link title="RSS | Japson's Undeground" type="application/rss+xml" rel="alternate" href="/rss.php"/>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-    <meta name="keywords" content="<? echo $opgraph['keyw']; ?>">
+    <meta name="keywords" content="<? echo $opgraph["keyw"]; ?>">
     <meta property="og:type" content="article">
-    <meta property="og:site_name" content="<? echo $opgraph['site_name']; ?>">
-    <meta property="og:title" content="<? echo $opgraph['site_name'].': '.$opgraph['title']; ?>">
-    <meta property="og:description" content="<? echo $opgraph['description']; ?>">
-    <meta property="og:url" content="<? echo $opgraph['url']; ?>">
+    <meta property="og:site_name" content="<? echo $opgraph["site_name"]; ?>">
+    <meta property="og:title" content="<? echo $opgraph["site_name"].": ".$opgraph["title"]; ?>">
+    <meta property="og:description" content="<? echo $opgraph["description"]; ?>">
+    <meta property="og:url" content="<? echo $opgraph["url"]; ?>">
     <meta property="og:locale" content="ru_RU">
-    <meta property="og:image" content="<? echo $opgraph['image']; ?>">
+    <meta property="og:image" content="<? echo $opgraph["image"]; ?>">
     <meta property="og:image:width" content="100">
     <meta property="og:image:height" content="100">
 
-    <script src="https://yastatic.net/share2/share.js" ></script>
+    <script  src="https://yastatic.net/share2/share.js" ></script>
 
     <link rel="stylesheet" type="text/css" href="/css_n/font/comfortaa.css"/>
     <link rel="stylesheet" type="text/css" href="/css_n/normalize.css" />
@@ -57,22 +58,25 @@ $opgraph=$page->opengraph;
     <link rel="stylesheet" type="text/css" href="/css_n/knobKnob.css" />
     <link rel="stylesheet" type="text/css" href="/css_n/button.css"/>
     <link rel="stylesheet" type="text/css" href="/css_n/css_maf.css"/>
+    <link rel="stylesheet" type="text/css" href="/css_n/grid_mob.css"/>
 
     <script src="/js/jquery-3.2.1.min.js"></script>
 
-    <title><? echo $opgraph['site_name'].': '.$opgraph['title']; ?></title>
+    <title><? echo $opgraph["site_name"].": ".$opgraph["title"]; ?></title>
 </head>
-<body class="gridbody">
+<body >
+<div class="gridbody">
 <div class="grid-element header">
           <nav class="navmenu">
+              <!--<audio controls src="https://t4.bcbits.com/stream/82f74c38b1f69e430234e7de96a1cd79/mp3-128/578156894?p=0&ts=1530117850&t=3cded827d7908bff88ed532258e2f79ee3408868&token=1530117850_7a2b3ad21d8d6fde1c661b92f03648fc145999da"></audio>-->
             <? echo($menumodern); ?>
         </nav>
-
-    <div class="logo"></div>
-    <div class="coffee"><div class="cofimg"><img src="/img_n/kofe.png"></div>
+</div>
+<div class="logo"></div>
+    <div class="coffee"><div class="cofimg"><!--<img src="/img_n/kofe.png">--></div>
         <div class="cofparent"><div class="cofemenUP" id="cofemenUP"><? echo($page->cofmen); ?></div></div>
         <div class="cofemenu" id="cofemenu"><? echo($page->cofrasd); ?></div></div>
-</div>
+
 <div class="grid-element main">
     <div class="main_grid">
         <div class="beforemidmenu">
@@ -87,27 +91,29 @@ $opgraph=$page->opengraph;
         <div id="mainpages" class="mainpages">
             <? echo($massart[0]); ?></div>
        <div class="pages_go">
-           <div class='prev_page' id="downn"></div>
-           <div class='social' id="social">
+           <div class="prev_page" id="downn"></div>
+           <div class="social" id="social">
                <div class="ya-share2" id="share2" data-services="vkontakte,facebook,odnoklassniki,gplus,twitter,reddit,tumblr,telegram" data-counter=""></div>
            </div>
-           <div class='next_page'  id="pusk"></div>
+           <div class="next_page"  id="pusk"></div>
        </div>
     </div>
 
 </div>
-<!--<div class="grid-element main">Main Content</div>-->
-    <div class="grid-element comment ">
-        <div class="pencul">
-            <div class="pensilmaf">
+    <div class="pencul">
+        <div class="pensilmaf">
+            <button class="pen_list comm" title="Комментарии" onclick="provComm();"></button>
             <button class="pen_list maficon" title="Магнитофон" onclick="provCheck();"></button>
-            </div>
-            <div class="penculinside <? if(strlen($nextart)==0){echo ' hidden';} ?> ">
+        </div>
+        <div class="penculinside <? if(strlen($nextart)==0){echo " hidden";} ?> ">
             <button class="pen_list vpered" title="Следующая статья" <? echo($nextart); ?> ></button>
             <button class="pen_list list" title="Вернуться к списку" <? echo($listart); ?> ></button>
             <button class="pen_list nasad" title="Предыдущая статья" <? echo($prevart); ?> ></button>
-            </div>
         </div>
+    </div>
+<!--<div class="grid-element main">Main Content</div>-->
+    <div class="grid-element comment ">
+
        <!-- <div class="switch demo1 demo1no" onclick="provCheck();"> <input type="checkbox" ><label></label></div>-->
          <div class="comminside">
              <div class=""><!--<button onclick="ExitSocial()">exit</button>-->
@@ -130,10 +136,12 @@ $opgraph=$page->opengraph;
         <div class="switch demo1" onclick="provCheck();"> <input type="checkbox" ><label></label></div>
         <? echo $mafon; ?>
     </div>
+
 </div>
 
-
+</div>
 <!--<div class="grid-element footer">Footer</div>-->
+
 <script type="text/javascript" src="/js/transform.js"></script>
 <script type="text/javascript" src="/js/knobKnob.jquery.js"></script>
 <script type="text/javascript" src="/js/jquery.cassette.js"></script>

@@ -13,13 +13,14 @@ require_once('class/makelist.php');
         if($_SESSION['jlogin']['is_auth'] == 1){
             $take=new makelist('usersong',$db);
             $result=$take->saveList($_POST['sides'], $_POST['nomsongs'] );
-            echo $result;
+
         }
+        echo $result;
     }else{
         $take=new makelist('usersong',$db);
         $take->checkSession();
         $take->makeList();
-        echo json_encode(array($take->mainsong,$take->mainsides,$take->maintitles,$take->songs));
+        echo json_encode(array($take->mainsong,$take->mainsides,$take->maintitles,$take->songs,$take->maintimes));
     }
 
 

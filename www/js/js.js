@@ -159,7 +159,7 @@ function makerMenu(mass,id,men,callback,newhref,yakor){
     $.ajax({
         type: "POST",   url: "/mod/hormenu.php",   data: data3,
         success: function(dat){
-          console.log( "Прибыли данные: " + dat  ); //+ data
+        //  console.log( "Прибыли данные: " + dat  ); //+ data
             var data= JSON.parse(dat);
 
           //  console.log('**'+data[1][0]);
@@ -276,7 +276,7 @@ function initmakeUrl(){
 
 
 // соц коннект --------
-function callUlogin(token){
+function callUlogin____(token){
     $.getJSON("//ulogin.ru/token.php?host=" + encodeURIComponent(location.toString()) + "&token=" + token + "&callback=?", function(data){
         data = $.parseJSON(data.toString());
         if(!data.error){
@@ -290,7 +290,7 @@ function callUlogin(token){
     });
 }
 
-function Social(){
+function Social____________(){
     this.ajax= function(ulogin,put) {
         $.ajax({
             type: "POST", url: put, data: "ulet="+JSON.stringify(ulogin),
@@ -328,7 +328,19 @@ function delCode(){
     url = url.split('?')[0];
     history.replaceState(curState.getall(), 'namepage', url);
 }
-
+function changeNick(){
+let name=$('.nickname').children('span');
+if ($(name).children('input').val()) {
+    $.ajax({
+    type: "POST", url:"/mod/changer.php", data: {id: 1, typ: $(name).children('input').val()},
+        success:    function (dat) {
+        //    console.log("Прибыли данные: " + dat); //+ data
+            let data = JSON.parse(dat);
+            if(data[0]){$(name).html(data[1]);}
+    } });
+}
+else{if($(name).children('input').length) {$(name).html($(name).attr('data'));}else {$(name).attr('data',$(name).html());$(name).html('<input type="text">');}}
+}
 
 $(document).on("click", "#logid", function(event){ // нет кнопки
     var nm=new Social();
@@ -385,7 +397,7 @@ $(document).on("click", ".selectplaylistchild", function(event){
          $.ajax({
              type: "POST", url: "/mod/makesong.php", data: curobj,
              success: function (dat) {
-                   console.log("Прибыли данные: " + dat); //+ data
+                 //  console.log("Прибыли данные: " + dat); //+ data
                //  var data = JSON.parse(dat);
               //   succeed(data);
              }
@@ -410,8 +422,9 @@ $(document).on("click", ".selectplaylistchild", function(event){
              el_new.options.songs=[cursong];
              el_new.options.nomsongs=[massiv['id']];
              el_new.options.sides=['side1'];
+             el_new.options.times=[massiv['times']];
            //  console.log(el_new.options.songs);
-             $.when( el_new._createSides( el_new.options.sides) ).done( function() {
+             $.when( el_new._createOneSidesAll( el_new.options.sides) ).done( function() {
                  el_new._vyvodSide('.spisokside',1);
                  el_new.cntTime=0;
                  el_new._progrLoad(0); // при смене листа обязательно обновить прогресс бар
@@ -420,31 +433,22 @@ $(document).on("click", ".selectplaylistchild", function(event){
 
              });
 
-            // console.log(el_new.options.songNames);
-
-            // cursong= cursong.replace('%20',' ');
-
-                         //el_new._loadLoud();
-                          //myOb.sound = new $.Sound();
-
-            // console.log(el.data().cassette._getSide().current);
-            //   console.log(el_new.options.songs);
-
         });
      },
      addSide: function(id,param){
          let _self=this;
          this.getSong(id,param).then( function(massiv) {
-             let el = $('#vc-container'); let songs=[]; let songNames=[]; let sides=[];  let storona2;
+             let el = $('#vc-container'); let songs=[]; let songNames=[]; let sides=[]; let times=[];  let storona2;
              let nomsongs=[];
              var storona = el.data().cassette.currentSide; //номер стороны
              if(storona==1){storona2="side2";storona="side1";}else{storona2="side1";storona="side2";}
              var tek_side = el.data().cassette._getSide().current; // id: "side2", status: "middle", playlist: Array[2], duration: 433.781932, playlistCount: 2 } playlistCount список песен
-           //  console.log(tek_side);
+            // console.log(tek_side);
              for(var i=0;i<tek_side.playlistCount;i++){
                  songs.push(tek_side.playlist[i].name);
                  songNames.push(tek_side.playlist[i].nameSong);
                  nomsongs.push(tek_side.playlist[i].nomsong);
+                 times.push(tek_side.playlist[i].duration);
                  //sides[tek_side.playlist[i].name]=storona;
                  sides.push(storona);
              }
@@ -454,6 +458,7 @@ $(document).on("click", ".selectplaylistchild", function(event){
                  songs.push(tek_side.playlist[i].name);
                  songNames.push(tek_side.playlist[i].nameSong);
                  nomsongs.push(tek_side.playlist[i].nomsong);
+                 times.push(tek_side.playlist[i].duration);
                 // sides[tek_side.playlist[i].name]=storona2;
                  sides.push(storona2);
              }
@@ -463,14 +468,16 @@ $(document).on("click", ".selectplaylistchild", function(event){
              songNames.push(massiv['song']);
              sides.push(storona);
              nomsongs.push(massiv['id']);
+             times.push(massiv['times']);
               //console.log(songs);
              el_new = $('#vc-container').data().cassette;
              el_new._stop();
                  el_new.options.songNames=songNames;
                  el_new.options.songs=songs;
              el_new.options.nomsongs=nomsongs;
-             el_new.options.sides=sides;
-             $.when( el_new._createOneSides(sides) ).done( function() {
+             el_new.options.sides=sides;  el_new.options.times=times;
+            // console.log(times);
+             $.when( el_new._createOneSidesAll(sides) ).done( function() {
                  el_new._progrLoad(0); // при смене листа обязательно обновить прогресс бар
                  marqueRun();
                  _self.saveList();
@@ -491,19 +498,22 @@ $(document).on("click", ".selectplaylistchild", function(event){
              console.log(massiv);
              storona=el.data().cassette.currentSide;
              el.data().cassette._switchSidesA(storona);
-             el_new.options.songNames=[]; el_new.options.songs=[];el_new.options.nomsongs=[];el_new.options.sides=[];
+             el_new.options.songNames=[]; el_new.options.songs=[];el_new.options.nomsongs=[];
+             el_new.options.sides=[]; el_new.options.times=[];
              massiv.forEach(function(value) {
                  cursong = value['put'].replace('&amp;', '&');
                 // cursong = cursong.replace('%20', ' ');
                  el_new.options.songNames.push(value['song']);
                  el_new.options.songs.push (cursong);
                  el_new.options.nomsongs.push(value['id']);
+                 el_new.options.times.push(value['times']);
                  if(value['side']==2){ el_new.options.sides.push('side2');}
                  else{ el_new.options.sides.push('side1');}
              });
-
-             $.when( el_new._createOneSides(el_new.options.sides) ).done( function() {
-                // $.when( el_new._createOneSidesAll( el_new.options.sides) ).done( function() {
+             console.log('_createOneSides');
+            // $.when( el_new._createOneSides(el_new.options.sides) ).done( function() {
+                 $.when( el_new._createOneSidesAll( el_new.options.sides) ).done( function() {
+                 console.log('_createOneSides after');
                      el_new._progrLoad(0); // при смене листа обязательно обновить прогресс бар
                      marqueRun();
                      _self.saveList();
@@ -565,3 +575,28 @@ let commFunc={
     inputComm:function(val){        comm=val;    }
    // situation:function (param) {updatcom= param;  }
 };
+$(document).on("click", ".cass_name", function(event){
+    let elem=event.target||event.srcElement;
+    let kod=$(elem).parent('.cass_list').attr('id');
+    $.ajax({
+        type: "POST", url:"/mod/changer.php", data: {id: 2, jens: kod},
+        success:    function (dat) {
+         //       console.log("Прибыли данные: " + dat); //+ data
+            $("body").append('<div id="overlay">fgdfgdf</div>');   //<!-- Пoдлoжкa -->
+            let main=$("body");
+            $(main).append("<div class='up_list'> Тест </div>");
+            let data = JSON.parse(dat);
+         //   if(data[0]){$(name).html(data[1]);}
+           $('.up_list').html(data);
+        } });
+});
+// удаление оверлея
+function delOverley() { $('.up_list').remove();$('#overlay').fadeOut(400);$('#overlay').remove();	}
+//--------------------------------------------удаление оверлея----------------------
+$(document).on("click", "#overlay", function(event){delOverley();});
+
+$(document).on("click", ".switchlist", function(event){
+    let elem=event.target||event.srcElement;
+    let kod=$(elem).attr('id');
+    makeCasset(kod);
+});

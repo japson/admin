@@ -57,9 +57,15 @@ class DirWatch //анализ и вывод каталога
                      $kod=$this->checkStr($file);
                      //$this->temper=$kod[0].'--'.$kod[1];
                     // $t=$kod[1];
+                   //  debug_to_console($file.'--'.$kod[0]);
                      if(filetype($this->put.$file)=='dir'){
+                       //  debug_to_console($file.'--'.$kod[0].'--'.$this->conv8($kod[1],1));
                          if($kod[0]!='.' && $kod[0]!='..'){
-                         array_push($newdir, array($kod[0],$kod[1]));}
+                           //  debug_to_console($newdir);
+                         array_push($newdir, array($kod[0],$kod[1]));
+                           //  $newdir[]=array($kod[0],$this->conv8($kod[1],1));
+                        //     debug_to_console('ups ');debug_to_console($newdir);
+                         }
                             // array_push($newdir, array($kod[0],$file));}
                      } else{
                          If(strlen($reg)) {
@@ -68,13 +74,13 @@ class DirWatch //анализ и вывод каталога
                              }
                          } else{array_push($newfile, array($kod[0],$kod[1]));}
                      }
-
+                   //  debug_to_console($newdir);
                     // $newfile[$t]=$kod[0];
                      //asort($newfile);
                     // array_push($newfile, $kod[0].'-'.filetype($this->put.$file));
                 }
             closedir($dh);
-        }
+        } //debug_to_console($newdir);
        // $this->temper=$newdir;
         $this->alldir=$newdir;
         $this->allfile=$newfile;
@@ -99,7 +105,8 @@ class DirWatch //анализ и вывод каталога
             for($i=0;$i<$len;$i++){
                 if(($kod=mb_detect_encoding(mb_substr ($str,$i,1)))=='ASCII') {$newstr.=mb_substr ($str,$i,1);
                     $newstrnorm.=mb_substr ($str,$i,1);}
-                else{$newstr.=htmlentities(mb_substr ($str,$i,1),ENT_QUOTES,cp1251);
+                else{//debug_to_console($newstr.'--');
+                    $newstr.=htmlentities(mb_substr ($str,$i,1),ENT_QUOTES,cp1251);
                     $newstrnorm.=iconv('cp1251','utf-8',mb_substr ($str,$i,1));
                     $flag=1;
                 }
@@ -133,7 +140,8 @@ class DirWatch //анализ и вывод каталога
         $put=iconv('cp1251','utf-8',$this->put);
         $temp='<div class="tbltitle">'.$put.'<span id="direturn">Назад</span></div><div class="selectwindow">[_ZAM]'.'</div>';
        // $temp.='<div class="inputbl"><input type="text" id="nameart"><input type="text" id="nameson">';
-        $temp.='<div class="col-sm-3 col-sm-offset-3"><button class="btn btn-info" onclick="{scanElement();}">ВЫбрать</button></div>';
+        $temp.='<div class="col-sm-3 col-sm-offset-0"><button class="btn btn-info" onclick="{emptyElement();}">Пустой</button></div>';
+        $temp.='<div class="col-sm-3 col-sm-offset-0"><button class="btn btn-info" onclick="{scanElement();}">ВЫбрать</button></div>';
         $temp.='<div class="col-sm-3"><button class="btn btn-success" onclick="{saveElements(\''.$this->aliastbl.'\');}">Сохранить</button></div>';
         $temp.='<div class="col-sm-3"><button class="btn btn-warning" onclick="{delOverley();}">Отмена</button></div>';
         return $temp;
