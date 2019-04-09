@@ -18,10 +18,10 @@ echo $zz."
 <language>ru</language>";
 
 //echo("<!DOCTYPE html><html><body>");
-require_once($prefix.'/adm/mod/conn/db_conn.php');
-require_once($prefix.'/adm/mod/debug.php');
-include('/mod/class/createmenu.php');
-include('/mod/class/rssclass.php');
+require_once($prefix.'adm/mod/conn/db_conn.php');
+require_once($prefix.'adm/mod/debug.php');
+include('mod/class/createmenu.php');
+include('mod/class/rssclass.php');
 
 $take = new rssclass('news',$db);
 $where=' WHERE redirect=0 and vyvod=1 and kodrasdel>0 order by data desc ';

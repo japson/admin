@@ -13,8 +13,12 @@ if(isset($_COOKIE['auth_key'])  and $arc[0]['atribut']==1)	{
         $tablic = $key;
         include('class/dir_punkt.php');
         $windrecord = new dirPunkt($tablic, $db);
+        if ($data=='position') {$perem=Array('artist','title','file','buttonselectsong','dirpunkt');}
+        if ($data=='post') {$perem=Array('nameurl','name','article','buttonselectartic','dirarticle');}
+        $windrecord->polesout=$perem;
         $massmenu = $windrecord->havePunkt('mainmenu', 'kodmenu', '');// menu
         $massrasd = $windrecord->havePunkt('rasdel', 'kodrasdel', '');//rasdel have punkts
+
         $mass2=$windrecord->buildPut($massmenu,$massrasd);//all dir in put
         $windrecord->makeUrl();
         $mass=$windrecord->allmakedir;

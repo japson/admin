@@ -11,7 +11,7 @@ class createMenu{
 	public function __construct($punkts,$dbh) { // создание меню
 		$this->db=$dbh;
 		if(gettype($punkts)=='array') {
-		$this->menuout='<div class="row" id="actionmenu"><ul class="nav nav-pills col-md-5">';
+		$this->menuout='<div class="row" id="actionmenu"><ul class="nav nav-pills col-md-12">';
 			foreach($punkts as $key=>$value){
 			$this->menuout.='<li><a id='.$value.' href="#" onClick="'.$value.'('.$uroven.'); return false;">'.$key.'...</a></li>';
 			}	

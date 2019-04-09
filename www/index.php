@@ -19,12 +19,20 @@ else  {
 	$classchai='chaiimg chai_rot';
 	$chaen=" cursor";
 	}*/
-include('/mod/create_menu.php');
-include('/mod/social.php');
-include('/mod/comment.php');
+$mobile='no';
+require_once ('mod/mobile_detect.php');
+$detect = new Mobile_Detect;
+// Если мобильное устройство (телефон или планшет).
+	if ( $detect->isMobile() ) {
+        $mobile='yes';
+	}
+
+include('mod/create_menu.php');
+include('mod/social.php');
+include('mod/comment.php');
 
 
-include('/mod/mafon.php');
+include('mod/mafon.php');
 $opgraph=$page->opengraph;
 //echo $_SERVER["HTTP_HOST"] ;
 
@@ -33,11 +41,22 @@ $opgraph=$page->opengraph;
 <!DOCTYPE html>
 <html>
 <head>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-124167356-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-124167356-1');
+    </script>
+
     <link rel="icon" href="/favicon.ico" type="image/x-icon">
     <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
-    <link title="RSS | Japson's Undeground" type="application/rss+xml" rel="alternate" href="/rss.php"/>
+    <link title="RSS | Japson's Undeground" type="application/rss+xml" rel="alternate" href="https://japson.ru/rss.php"/>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="description" content ="<? echo $opgraph["description"]; ?>">
     <meta name="keywords" content="<? echo $opgraph["keyw"]; ?>">
     <meta property="og:type" content="article">
     <meta property="og:site_name" content="<? echo $opgraph["site_name"]; ?>">
@@ -58,13 +77,59 @@ $opgraph=$page->opengraph;
     <link rel="stylesheet" type="text/css" href="/css_n/knobKnob.css" />
     <link rel="stylesheet" type="text/css" href="/css_n/button.css"/>
     <link rel="stylesheet" type="text/css" href="/css_n/css_maf.css"/>
-    <link rel="stylesheet" type="text/css" href="/css_n/grid_mob.css"/>
+    <? if($mobile=='no') {echo '<link rel="stylesheet" type="text/css" href="/css_n/grid_mob.css"/>';}
+    else{echo '<link rel="stylesheet" type="text/css" href="/css_n/grid_mob2.css"/>';}
+    ?>
+
+    <!--<script src="https://vk.com/js/api/openapi.js?144"></script>
+    <script>
+        VK.Retargeting.Init('VK-RTRG-292286-9Onx6');
+    </script>-->
 
     <script src="/js/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript">!function(){var t=document.createElement("script");t.type="text/javascript",t.async=!0,t.src="https://vk.com/js/api/openapi.js?159",t.onload=function(){VK.Retargeting.Init("VK-RTRG-292286-9Onx6"),VK.Retargeting.Hit()},document.head.appendChild(t)}();</script><noscript><img src="https://vk.com/rtrg?p=VK-RTRG-292286-9Onx6" style="position:fixed; left:-999px;" alt=""/></noscript>
 
     <title><? echo $opgraph["site_name"].": ".$opgraph["title"]; ?></title>
+    <!-- Facebook Pixel Code -->
+    <script>
+        !function(f,b,e,v,n,t,s)
+        {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+            n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+            if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+            n.queue=[];t=b.createElement(e);t.async=!0;
+            t.src=v;s=b.getElementsByTagName(e)[0];
+            s.parentNode.insertBefore(t,s)}(window, document,'script',
+            'https://connect.facebook.net/en_US/fbevents.js');
+        fbq('init', '340716826697908');
+        fbq('track', 'PageView');
+    </script>
+    <noscript><img height="1" width="1" style="display:none"
+                   src="https://www.facebook.com/tr?id=340716826697908&ev=PageView&noscript=1"
+        /></noscript>
+    <!-- End Facebook Pixel Code -->
+
 </head>
 <body >
+<<script>
+    fbq('track', 'ViewContent', {
+        value: 1,
+    });
+</script>
+<!-- Rating@Mail.ru counter -->
+<script type="text/javascript">
+var _tmr = window._tmr || (window._tmr = []);
+_tmr.push({id: "3100320", type: "pageView", start: (new Date()).getTime(), pid: "USER_ID"});
+(function (d, w, id) {
+  if (d.getElementById(id)) return;
+  var ts = d.createElement("script"); ts.type = "text/javascript"; ts.async = true; ts.id = id;
+  ts.src = "https://top-fwz1.mail.ru/js/code.js";
+  var f = function () {var s = d.getElementsByTagName("script")[0]; s.parentNode.insertBefore(ts, s);};
+  if (w.opera == "[object Opera]") { d.addEventListener("DOMContentLoaded", f, false); } else { f(); }
+})(document, window, "topmailru-code");
+</script>
+<!-- //Rating@Mail.ru counter -->
+
+
 <div class="gridbody">
 <div class="grid-element header">
           <nav class="navmenu">
@@ -92,14 +157,14 @@ $opgraph=$page->opengraph;
             <? echo($massart[0]); ?></div>
        <div class="pages_go">
            <div class="prev_page" id="downn"></div>
-           <div class="social" id="social">
-               <div class="ya-share2" id="share2" data-services="vkontakte,facebook,odnoklassniki,gplus,twitter,reddit,tumblr,telegram" data-counter=""></div>
-           </div>
+
            <div class="next_page"  id="pusk"></div>
        </div>
+
     </div>
 
 </div>
+
     <div class="pencul">
         <div class="pensilmaf">
             <button class="pen_list comm" title="Комментарии" onclick="provComm();"></button>
@@ -111,6 +176,9 @@ $opgraph=$page->opengraph;
             <button class="pen_list nasad" title="Предыдущая статья" <? echo($prevart); ?> ></button>
         </div>
     </div>
+    <div class="social" id="social">
+        <div class="ya-share2" id="share2" data-services="vkontakte,facebook,odnoklassniki,gplus,twitter,reddit,tumblr,telegram" data-counter=""></div>
+    </div>
 <!--<div class="grid-element main">Main Content</div>-->
     <div class="grid-element comment ">
 
@@ -119,7 +187,7 @@ $opgraph=$page->opengraph;
              <div class=""><!--<button onclick="ExitSocial()">exit</button>-->
             <!-- <script src="//ulogin.ru/js/ulogin2.js"></script>-->
           <div class="socialstatus">
-           <? echo $outssesion; ?>
+           <? echo $outssesion;  ?>
           </div>
            <div class="entercomment">
               <!-- < ? echo $outcomment; ?>-->
@@ -129,10 +197,38 @@ $opgraph=$page->opengraph;
              </div>
     </div>
          </div>
+        <!-- Yandex.Metrika counter -->
+        <script type="text/javascript" >
+            (function (d, w, c) {
+                (w[c] = w[c] || []).push(function() {
+                    try {
+                        w.yaCounter50011537 = new Ya.Metrika2({
+                            id:50011537,
+                            clickmap:true,
+                            trackLinks:true,
+                            accurateTrackBounce:true
+                        });
+                    } catch(e) { }
+                });
+
+                var n = d.getElementsByTagName("script")[0],
+                    s = d.createElement("script"),
+                    f = function () { n.parentNode.insertBefore(s, n); };
+                s.type = "text/javascript";
+                s.async = true;
+                s.src = "https://mc.yandex.ru/metrika/tag.js";
+
+                if (w.opera == "[object Opera]") {
+                    d.addEventListener("DOMContentLoaded", f, false);
+                } else { f(); }
+            })(document, window, "yandex_metrika_callbacks2");
+        </script>
+        <noscript><div><img src="https://mc.yandex.ru/watch/50011537" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+        <!-- /Yandex.Metrika counter -->
          </div> <!--comment-->
 <div class="grid-element extra closed">
     <div id="main-container" class="main-container">
-        <!--<audio controls id="audioElem" src="/catalog/punkts/asdf/fghj/02 - All That Glitters.mp3"><span>HTML5 audio not supported</span></audio>-->
+
         <div class="switch demo1" onclick="provCheck();"> <input type="checkbox" ><label></label></div>
         <? echo $mafon; ?>
     </div>
@@ -141,6 +237,7 @@ $opgraph=$page->opengraph;
 
 </div>
 <!--<div class="grid-element footer">Footer</div>-->
+
 
 <script type="text/javascript" src="/js/transform.js"></script>
 <script type="text/javascript" src="/js/knobKnob.jquery.js"></script>
@@ -152,8 +249,9 @@ $opgraph=$page->opengraph;
 <link rel="stylesheet" type="text/css" href="/fancy/jquery.fancybox.min.css">
 <script src="/fancy/jquery.fancybox.min.js"></script>
 
-
+<script src="/js/howler.core.js"></script>
 <script src="/js/js_effect.js"></script>
 <script src="/js/js.js"></script>
+
 </body>
 </html>

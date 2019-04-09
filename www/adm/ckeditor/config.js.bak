@@ -27,7 +27,8 @@ CKEDITOR.editorConfig = function( config ) {
 		{ name: 'colors' },
 		{ name: 'about' },
         { name: 'pagerasdel' },
-		{ name: 'Playlist' }
+		{ name: 'Playlist' },
+		{ name: 'Link_Inner' }
 	];
 
 
@@ -46,7 +47,7 @@ CKEDITOR.editorConfig = function( config ) {
 	// Simplify the dialog windows.
 	config.removeDialogTabs = 'image:advanced;link:advanced';
 	
-	config.extraPlugins = 'imageuploader,justify,playlist,spanmy,pagerasdel,divmy';
+	config.extraPlugins = 'imageuploader,justify,playlist,linkinner,div,spanmy,pagerasdel,divmy';
 
     config.allowedContent = true;
     config.extraAllowedContent = 'p(*)[*]{*};div(*)[*]{*};li(*)[*]{*};span(*)[*]{*};ul(*)[*]{*}';
@@ -63,11 +64,11 @@ CKEDITOR.dtd['play']={};
 
 //config.protectedSource.push(/<(span)[^>]*>.*<\/span>/ig);
 /*
-// Вариант А
-config.enterMode = CKEDITOR.ENTER_P;   // вставит <p></p>
-// Вариант Б
-config.enterMode = CKEDITOR.ENTER_DIV; // вставит <div></div>
-// Вариант В
-config.enterMode = CKEDITOR.ENTER_BR;  // вставит <br/>
+// Р’Р°СЂРёР°РЅС‚ Рђ
+config.enterMode = CKEDITOR.ENTER_P;   // РІСЃС‚Р°РІРёС‚ <p></p>
+// Р’Р°СЂРёР°РЅС‚ Р‘
+config.enterMode = CKEDITOR.ENTER_DIV; // РІСЃС‚Р°РІРёС‚ <div></div>
+// Р’Р°СЂРёР°РЅС‚ Р’
+config.enterMode = CKEDITOR.ENTER_BR;  // РІСЃС‚Р°РІРёС‚ <br/>
 
 */

@@ -23,7 +23,13 @@ function socialButton() {
             title: document.head.querySelector("[property='og:title']").content,
             description: document.head.querySelector("[property='og:description']").content,
             image: document.head.querySelector("[property='og:image']").content
-        }
+        },
+            theme: {
+                direction: 'vertical',
+                bare: false,
+                size: 'm',
+
+            }
     });
 }
 
@@ -125,20 +131,23 @@ $(document).on("click", "a.linkarticle", function(event){
 });
 
 $(document).on("click", ".pen_list.vpered", function(event){
-    const elem=event.target||event.srcElement;
-    let men=$(elem).attr('name');
-    let newhref=$(elem).attr('dathref');
-    goLinkArt(men,newhref);
+    innerClick(event.target||event.srcElement,'dathref');
     return false;
 });
 
 $(document).on("click", ".pen_list.nasad", function(event){
-    const elem=event.target||event.srcElement;
-    let men=$(elem).attr('name');
-    let newhref=$(elem).attr('dathref');
-    goLinkArt(men,newhref);
+    innerClick(event.target||event.srcElement,'dathref');
     return false;
 });
+function innerGo(event){
+    innerClick(event.target||event.srcElement,'href');
+    return false;
+}
+function innerClick(elem,atr){
+    let men=$(elem).attr('name');
+    let newhref=$(elem).attr(atr);
+    goLinkArt(men,newhref);
+}
 function goLinkArt(men,newhref){
     let mass=men.split('_');
     let newmas=[mass[0],'',mass[1],mass[2],'oa'];
@@ -187,6 +196,7 @@ function makerMenu(mass,id,men,callback,newhref,yakor){
 
 
     var meta=function(data){
+     //   console.log(data);
         document.querySelector('meta[property="og:description"]').setAttribute("content", data['description']);
         document.querySelector('meta[property="og:site_name"]').setAttribute("content", data['site_name']);
         document.querySelector('meta[property="og:title"]').setAttribute("content", data['site_name']+': '+data['title']);
@@ -208,7 +218,7 @@ function goArticle(prev,next,list){
 
 window.addEventListener('popstate', function(e){
      //console.log(e.target.location);
-     console.log(e.state);
+   //  console.log(e.state);
     remakeMenu(e.state,e.target.location);
     var path=e.target.location.pathname.substr(1);
     // console.log(':: '+decodeURIComponent(path));
@@ -412,7 +422,7 @@ $(document).on("click", ".selectplaylistchild", function(event){
              el_new = $('#vc-container').data().cassette;
            //  el_new._setButtonActive( $( this ) );
              el_new._stop(); //
-
+            // if(el_new.howlerSong.playing()){el_new.howlerSong.stop();}
             // el_new._clear(); //
               storona=el.data().cassette.currentSide;
              el.data().cassette._switchSidesA(storona);
@@ -429,7 +439,17 @@ $(document).on("click", ".selectplaylistchild", function(event){
                  el_new.cntTime=0;
                  el_new._progrLoad(0); // при смене листа обязательно обновить прогресс бар
                  marqueRun();
-                setTimeout(function(){el_new._setButtonActive($(this));el_new._play();el_new._progrLoad(1);_self.saveList();},500);
+                setTimeout(function(){el_new._setButtonActive($(this));el_new._progrLoad(1);
+                    el_new.cntTime=0;
+                  // var perem="https://japson.ru/mitya/mitya_music/holya-nogtey/2003 - holyanogteq/side A/08 - Moj Chikago.mp3";
+                  //  console.log(el_new);
+                 //   var sound = new Howl({  src: ['/catalog/punkts/'+cursong],html5: true  });
+                 //   console.log(sound);
+                  //  sound.once('load', function(){
+                 //       sound.play();
+                  //  });
+                    el_new._play();_self.saveList();
+                    },500);
 
              });
 
@@ -495,7 +515,8 @@ $(document).on("click", ".selectplaylistchild", function(event){
              var tek_vrem = el.data().cassette._getSide().current;
              el_new = $('#vc-container').data().cassette;
              el_new._stop(); //
-             console.log(massiv);
+             el_new.cntTime=0; el_new._progrLoad(0);
+            // console.log(massiv);
              storona=el.data().cassette.currentSide;
              el.data().cassette._switchSidesA(storona);
              el_new.options.songNames=[]; el_new.options.songs=[];el_new.options.nomsongs=[];
@@ -510,13 +531,17 @@ $(document).on("click", ".selectplaylistchild", function(event){
                  if(value['side']==2){ el_new.options.sides.push('side2');}
                  else{ el_new.options.sides.push('side1');}
              });
-             console.log('_createOneSides');
+            // console.log('_createOneSides');
             // $.when( el_new._createOneSides(el_new.options.sides) ).done( function() {
                  $.when( el_new._createOneSidesAll( el_new.options.sides) ).done( function() {
-                 console.log('_createOneSides after');
-                     el_new._progrLoad(0); // при смене листа обязательно обновить прогресс бар
                      marqueRun();
-                     _self.saveList();
+                     el_new.cntTime=0;
+                  //   el_new._progrLoad(0);
+                 //console.log('_createOneSides after');
+                     setTimeout(function(){ el_new._setButtonActive($(this));el_new._progrLoad(1);
+                         el_new.cntTime=0;
+                         el_new._play();
+                     _self.saveList();},500);
                      //$('.waiting').remove();
                  });
 
@@ -583,7 +608,7 @@ $(document).on("click", ".cass_name", function(event){
         success:    function (dat) {
          //       console.log("Прибыли данные: " + dat); //+ data
             $("body").append('<div id="overlay">fgdfgdf</div>');   //<!-- Пoдлoжкa -->
-            let main=$("body");
+            let main=$(".gridbody");
             $(main).append("<div class='up_list'> Тест </div>");
             let data = JSON.parse(dat);
          //   if(data[0]){$(name).html(data[1]);}

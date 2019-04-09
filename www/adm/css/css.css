@@ -101,11 +101,11 @@ td .selectcenter select{text-align:center; height:30px;}
 .textareablock { width:940px; margin:0;}
 .cke_top.cke_reset_all {border: 1px solid #d1d1d1;}
 #cke_textID {border:none;}
-.cke_contents.cke_reset {width:540px;border: 1px solid #d1d1d1; margin:0 auto;}
+.cke_contents.cke_reset {width:662px;border: 1px solid #d1d1d1; margin:0 auto;height: 672px !important;}
 .cke_dialog_ui_hbox_first, .cke_dialog_ui_hbox_child{ vertical-align: middle !important; padding-top: 3px !important;}
 .cke_dialog_ui_hbox_last{vertical-align: middle !important; text-align: end !important;  }
 
-.primerclass {width:540px;margin:0 auto; height:640px;background-color: rgba(216, 194, 190, 1);font-family: "Rubik", "Ubuntu", sans-serif; word-spacing: 0.16em; letter-spacing:0.03em;
+.primerclass {width:652px;margin:0 auto; height:672px;background-color: rgba(216, 194, 190, 1);font-family: "Rubik", "Ubuntu", sans-serif; word-spacing: 0.16em; letter-spacing:0.03em;
 	font-weight: 400; font-size: 16px; line-height: 1.5em;
 	 top: 47px;     position:relative; }
 .primerclass .article_less{font-size: 93%;line-height: 1.4em;}
@@ -123,10 +123,19 @@ td .selectcenter select{text-align:center; height:30px;}
 #mybar .dirpunkt{cursor: pointer;}
 #mybar .dirpunkt:hover{text-decoration: underline;}
 #mybar .filepunkt{max-width: 300px; overflow: hidden}
-#mybar .buttonselectsong, #mybar .buttonselectdir{width:19px;height:19px; background-image: url(../img/plus.png); background-size: cover; margin: 0 0 0 30%;cursor: pointer;}
-#mybar .buttonselectsong.select, #mybar .buttonselectdir.select{background-image: url(../img/target.png);}
+#mybar .buttonselectsong, #mybar .buttonselectdir, #mybar .buttonselectartic{width:19px;height:19px; background-image: url(../img/plus.png); background-size: cover; margin: 0 0 0 30%;cursor: pointer;}
+#mybar .buttonselectsong.select, #mybar .buttonselectdir.select, #mybar .buttonselectartic.select{background-image: url(../img/target.png);}
 .oldput{display: flex; justify-content: center;}
 .oldput .delredirect{background-image: url(../img/del.png);background-size: cover;width:19px;height:19px;cursor: pointer;margin: 0 0 0 15px;}
+
+#mybar2{display: block;min-height: 200px;overflow-y: scroll; overflow-x: hidden; max-height: 300px;}
+#mybar2 .tblselectpunkt{width:95%;}
+#mybar2 .tblselectpunkt tr{height: 2.1em;}
+#mybar2 .dirarticle{cursor: pointer;}
+#mybar2 .dirarticle:hover{text-decoration: underline;}
+#mybar2 .filepunkt{max-width: 300px; overflow: hidden}
+#mybar2 .buttonselectsong, #mybar2 .buttonselectdir, #mybar2 .buttonselectartic{width:19px;height:19px; background-image: url(../img/plus.png); background-size: cover; margin: 0 0 0 30%;cursor: pointer;}
+#mybar2 .buttonselectsong.select, #mybar2 .buttonselectdir.select, #mybar2 .buttonselectartic.select{background-image: url(../img/target.png);}
 
 .selectplay{display: inline-flex; border: solid 1px ; border-color: rgba(214, 219, 219, 0.3); background-color: #c6a4a4;   color: #FCFFFE;width: 100%;}
 .selectplay .songplay{width:20px; margin-right: 5px; display: block; background: no-repeat center;background-image: url(../../img_n/play.svg);cursor: pointer;}

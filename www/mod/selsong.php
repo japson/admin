@@ -18,7 +18,7 @@ function selSong($id){
     $stmt = $db->prepare($sql);
     $stmt->execute(array($id));
     if ($sms = $stmt->fetchAll(PDO::FETCH_ASSOC)) {
-        $temp=array('id'=>$id,'song'=>$sms[0]['title'].' - '. $sms[0]['artist'],'put'=>$sms[0]['put'],'times'=>$sms[0]['length'] );
+        $temp=array('id'=>$id,'song'=>$sms[0]['title'].' - '. $sms[0]['artist'],'put'=>htmlspecialchars_decode($sms[0]['put']),'times'=>$sms[0]['length'] );
     } else {$temp=array('id'=>0);}
     return $temp;
 }
@@ -31,7 +31,7 @@ function selSongAll($id){
     $stmt->execute($menras);
     if ($sms = $stmt->fetchAll(PDO::FETCH_ASSOC)) {
         foreach($sms as $value) {
-            $temp[] = array('id' => $value['kod'], 'side' => $value['side'], 'song' => $value['title'] . ' - ' . $value['artist'], 'put' => $value['put'],'times'=>$value['length']);
+            $temp[] = array('id' => $value['kod'], 'side' => $value['side'], 'song' => $value['title'] . ' - ' . $value['artist'], 'put' => htmlspecialchars_decode($value['put']),'times'=>$value['length']);
         }
     }
     if(!count($temp)){$temp=array('id'=>0);}

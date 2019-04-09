@@ -49,7 +49,7 @@ class makelist{
     }
 
     private function makeDefaultList(){
-        $this->songs=array('45','50','54');
+        $this->songs=array('70','105','74');
         $this->sides=array(1,1,1);
     }
 
@@ -62,7 +62,7 @@ class makelist{
         foreach ($this->songs as $value){
             $stmt->execute(array($value));
             if ($sms = $stmt->fetchAll(PDO::FETCH_ASSOC)) {
-                $this->mainsong[]=$sms[0]['put']; //todo: make external links
+                $this->mainsong[]=htmlspecialchars_decode($sms[0]['put']); //todo: make external links
                 $this->maintitles[]=$sms[0]['title'].' - '.$sms[0]['artist'];
                 $this->maintimes[]=$sms[0]['length'];
             }

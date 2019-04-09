@@ -88,7 +88,7 @@ if ( $logged_in &&  $auth_in ) {
 					 if(preg_match("/^[0-9]+$/",$men)){
 		// debug_to_console('--');
 		require_once('mod/class/create_menu.php');
-		$menu= new createMenu(array('Создать раздел'=>'createSect','Создать статью'=>'createArticle','Создать элемент'=>'createElem'),$db);
+		$menu= new createMenu(array('Создать раздел'=>'createSect','Создать статью'=>'createArticle','Создать элемент'=>'createElem','Выгрузить элементы'=>'downloadElem','Загрузить элементы'=>'uploadElem'),$db);
 		$menu->creatBreadSect($men,'rasdel','rasdel');
 		$alias=$menu->namemenu;
 		$bread=$menu->breadcrumb.$menu->menuout;	 

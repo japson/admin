@@ -5,10 +5,10 @@ if (file_exists('../adm/mod/conn/db_conn.php')) {
     require_once($prefix.'../adm/mod/conn/db_conn.php');
     require_once($prefix.'../adm/mod/debug.php');
 }else{
-    require_once($prefix.'/adm/mod/conn/db_conn.php');
-    require_once($prefix.'/adm/mod/debug.php');
+    require_once($prefix.'adm/mod/conn/db_conn.php');
+    require_once($prefix.'adm/mod/debug.php');
 }
-debug_to_console( 'dfd '.($_SESSION['token']));
+//debug_to_console( 'dfd '.($_SESSION['token']));
 //debug_to_console( ($_SESSION['jlogin']['profile']));
 
 if(!empty($_SESSION['jlogin']['is_auth'])){
@@ -30,7 +30,7 @@ if(!empty($_SESSION['jlogin']['is_auth'])){
             elseif(stristr($net,'ya_aunth')) {$net2='ya';}
        elseif(stristr($net,'fb_aunth')) {$net2='fb';}
 
-        debug_to_console( 'dfdcode '.($_SESSION['token']));
+      //  debug_to_console( 'dfdcode '.($_SESSION['token']));
         include_once('class/socialclass.php');
         $ul = $_GET['code'];
         $aunt = new Social('comuser', $db);

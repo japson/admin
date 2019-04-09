@@ -14,8 +14,8 @@ if (file_exists('../adm/mod/conn/db_conn.php')) {
     require_once($prefix.'../adm/mod/conn/db_conn.php');
     require_once($prefix.'../adm/mod/debug.php');
 }else{
-    require_once($prefix.'/adm/mod/conn/db_conn.php');
-    require_once($prefix.'/adm/mod/debug.php');
+    require_once($prefix.'adm/mod/conn/db_conn.php');
+    require_once($prefix.'adm/mod/debug.php');
 }
 
 include('class/commclass.php');

@@ -1,5 +1,6 @@
 ﻿
 //var el_new="";
+//let howlerSong=new Howl({  src: [''],html5: true  });;
 ( function( window, $, undefined ) {
 	
 	var aux = {
@@ -32,10 +33,7 @@
 	$.Cassette 			= function( options, element, songNames ) {
 	//window.myOb=this;
 		this.$el = $( element );
-		//this.songNames = songNames;					
 		this._init( options,songNames );
-//console.log($( element ));		 		
-		//console.log(this.options);	console.log("----");		 		
 	};
 	
 	$.Cassette.defaults 	= {
@@ -53,38 +51,21 @@
 		_init				: function( options,songNames ) {
 			
 			var _self = this;   //my
-			//if (el_new.length>0) {this.$el=$(el_new);} //my
-				
-			// the options
 			this.options		= $.extend( true, {}, $.Cassette.defaults, options ); //true переписать но оставить не совпадающие
 			//this.songNames		= $.extend( true, {}, $.Cassette.defaults, _self.songNames ); //true переписать но оставить не совпадающие
-			// current side of the tape
-			this.currentSide	= 1;
-			// current time of playing side
-			this.cntTime		= 0;
-			// current sum of the duration of played songs 
-			this.timeIterator	= 0;
-			// used for rewind / forward
-			this.elapsed		= 0.0;
-			// action performed
-			this.lastaction		= '';
-			// if play / forward / rewind active..
-			this.isMoving		= false;
-			//таймер текущей песни
-			this.timerID=0;
-			//this.$loader		= this.$el.find( 'div.vc-loader' ).show();
-
+			this.currentSide	= 1; // current side of the tape
+			this.cntTime		= 0; // current time of playing side
+			this.timeIterator	= 0; // current sum of the duration of played songs
+			this.elapsed		= 0.0; // used for rewind / forward
+			this.lastaction		= ''; // action performed
+			this.isMoving		= false; // if play / forward / rewind active..
+			this.timerID=0; //таймер текущей песни
 			// create cassette sides               _createOneSides(mass_sides) side1
 			//$.when( this._createSides() ).done( function() {
             $.when( this._createOneSidesAll( this.options.sides) ).done( function() {
-           // $.when( this._createOneSides(this.options.sides) ).done( function() {
-				//_self.$loader.hide();
-			
-				// create player
+             //   _self.howlerSong=new Howl({src:['/sounds/click.mp3']});
 				_self._createPlayer();
 				_self.sound = new $.Sound();
-				// load events
-                //_self._changeVolume(  );
 				_self._loadEvents();
 				
 			} );
@@ -94,11 +75,8 @@
 		_getSide			: function() {
 
 			return ( this.currentSide === 1 ) ? {
-				current : this.side1,
-				reverse : this.side2	
-			} : {
-				current : this.side2,
-				reverse : this.side1	
+				current : this.side1, reverse : this.side2
+			} : { 	current : this.side2, reverse : this.side1
 			};
 
 		},
@@ -121,82 +99,6 @@
 			 marqueRun();
 		},
 		// songs are distributed equally on both sides
-		/*_createSides		: function(sides) {
-		
-			var playlistSide1 	= [],
-				playlistSide2 	= [],
-				_self 			= this, 
-				cnt 			= 0;
-				
-			return $.Deferred(
-			
-				function( dfd ) {
-				
-					for( var i = 0, len = _self.options.songs.length; i < len; ++i ) {
-						
-						var song = new $.Song( _self.options.songs[i], i, _self.options.songNames[i],
-							_self.options.nomsongs[i], sides[i]);
-						//console.log(song);
-						$.when( song.loadMetadata() ).done( function( song ) { // здесь происходит разделение по сторонам. Сделать функцию расчета времени добавть префикс A_ B_
-							( song.id < len / 2 ) ? playlistSide1.push( song ) : playlistSide2.push( song );
-							
-							++cnt;
-							
-							if( cnt === len ) {
-								
-								// two sides, each side with multiple songs
-								_self.side1 	= new $.Side( 'side1', playlistSide1, 'start' ),
-								_self.side2		= new $.Side( 'side2', playlistSide2, 'end' );
-
-								_self._vyvodSide('.spisokside',1);
-								dfd.resolve();
-							
-							}
-							
-						} );
-						
-					}
-			
-				}
-				
-			).promise();
-			
-		},*/
-        // songs are distributed equally on both sides
-       /* _createOneSides		: function(sides) {
-
-            var playlistSide1 	= [],
-                playlistSide2 	= [],
-                _self 			= this,
-                cnt 			= 0;
-
-            return $.Deferred(
-
-                function( dfd ) {
-
-                    for( var i = 0, len = _self.options.songs.length; i < len; ++i ) {
-                        var song = new $.Song( _self.options.songs[i], i, _self.options.songNames[i],
-                            _self.options.nomsongs[i], sides[i]);
-                       // console.log(song);
-                        $.when( song.loadMetadata() ).done( function( song ) { // здесь происходит разделение по сторонам. Сделать функцию расчета времени добавть префикс A_ B_
-                            if(song.side === 'side1'){ playlistSide1.push( song );}
-                            else {playlistSide2.push( song );}
-                            //( song.id < len / 2 ) ? playlistSide1.push( song ) : playlistSide2.push( song );
-                            ++cnt;
-                            if( cnt === len ) {
-                                // two sides, each side with multiple songs
-                                    _self.side1 = new $.Side('side1', playlistSide1, 'start');
-                                    _self.side2 = new $.Side('side2', playlistSide2, 'end');
-                                _self._vyvodSide('.spisokside',1);
-                                dfd.resolve();
-                                $('.waiting').remove();
-                            }
-                        } );
-                    }
-                }
-            ).promise();
-        },*/
-        // songs are distributed equally on both sides
         _createOneSidesAll		: function(sides) {
 
             var playlistSide1 	= [],
@@ -216,7 +118,7 @@
                                 _self.side1 = new $.Side('side1', playlistSide1, 'start');
                                 _self.side2 = new $.Side('side2', playlistSide2, 'end');
                                 _self._vyvodSide('.spisokside',1);
-                                $('.waiting').remove();
+                              //  $('.waiting').remove();
                             }
 						});
                     }
@@ -232,12 +134,16 @@
 		},
 
 		_createPlayer		: function() {
-			
+
+            let _self = this;
+            this.$audioEl=new Howl({src:['/sounds/click.mp3'],html5:true, format:['mp3'],
+            onplay: function() {_self.getSeek(_self.$audioEl);}});
+
 			// create HTML5 audio element
-			this.$audioEl	= $( '<audio id="audioElem" ><span>' + this.options.fallbackMessage + '</span></audio>' );
-			this.$el.prepend( this.$audioEl );
+			//this.$audioEl	= $( '<audio id="audioElem" ><span>' + this.options.fallbackMessage + '</span></audio>' );
+		//	this.$el.prepend( this.$audioEl );
 			
-			this.audio		= this.$audioEl.get(0);
+		//	this.audio		= this.$audioEl.get(0);
 
 			// create custom controls
 			this._createControls();
@@ -279,7 +185,7 @@
 				
 				} 
 				else {
-                    console.log(359 * this.options.initialVolume);
+               //     console.log(359 * this.options.initialVolume);
 					this.$controls.show();
 					this.$volume.show();
 					this.$volume.find( 'div.vc-volume-knob' ).knobKnob({
@@ -292,7 +198,7 @@
 						}
 					});
 
-					this.audio.volume = this.options.initialVolume;
+                    this.$audioEl.volume (this.options.initialVolume);
 				}
 
 			}
@@ -328,8 +234,10 @@
 		var dlinBlok=$('.songbar').css('width');  //console.log(parseInt(dlinBlok,10)); 
 		var odinPrBlok=parseInt(dlinBlok,10)/100;
           //  console.log(msTekPos.songIdx);
-		var tekSong=function(){ dlinSong=msSide.playlist[msTekPos.songIdx].duration;
-		if(!dlinSong) dlinSong=0;
+		var tekSong=function(){ //console.log(msTekPos.songIdx);
+			if(msSide.playlist[msTekPos.songIdx]==undefined){return 0;}
+			else{dlinSong=msSide.playlist[msTekPos.songIdx].duration;}
+		//if(!dlinSong) {dlinSong=0;console.log(msSide.playlist[msTekPos.songIdx]);}
 		return (dlinSong/100);};
            // console.log(msSide.playlist[msTekPos.songIdx].duration);
           //  if(tekSong=='undefined') {
@@ -359,6 +267,7 @@
 		},
 
         _beginSong: function () { // не нужна на событие елсе плей=------------------------------------
+            console.log('_beginSong');
             var _self = this;
             let elem2=0;
             var el=$('#vc-container');
@@ -403,11 +312,11 @@
 			this.$cPlay.on( 'mousedown', function( event ) {
 				$.when( _self.sound.play( 'click' ) ).done( function() {// здесь клик кнопки играть
 					_self._setButtonActive( $( this ) );
-					_self._play();
+					//_self._play();
+                    _self._play('continue');
 					_self._progrLoad(1);
 					});
-				
-				
+
 			} );
 			
 			this.$cStop.on( 'mousedown', function( event ) {
@@ -447,10 +356,11 @@
                 }
 			
 			} );
-			
-			this.$audioEl.on( 'timeupdate', function( event ) {
-			
-				_self.cntTime	= _self.timeIterator + _self.audio.currentTime;
+			// need li ---------------------------------
+		/*	this.$audioEl.on( 'timeupdate', function( event ) {
+            	console.log( _self.howlerSong.seek());
+				//_self.cntTime	= _self.timeIterator + _self.audio.currentTime;
+                _self.cntTime	= _self.timeIterator + _self.howlerSong.seek();
 				var wheelVal	= _self._getWheelValues( _self.cntTime );
 				_self._updateWheelValue( wheelVal );
 
@@ -465,8 +375,8 @@
 				_self.timeIterator += _self.audio.duration;
 				_self._play();
 				
-			});
-		
+			}); */
+            // need li ---------------------------------
 		},
 		_setButtonActive	: function( $button ) {
 
@@ -485,14 +395,37 @@
 			this.lastaction = action;
 
 		},
-		_prepare			: function( song ) {
-		
-			this._clear();
-			this.$audioEl.attr( 'src', song.getSource( aux.getSupportedType() ) );
+		_prepare			: function( song, continier,timeInSong, index) {
+            let _self=this;
+          //  if(!continier){
+                this.$audioEl=new Howl({src:[song.sources.mp3],html5:true, format:['mp3'],
+					onplay: function() {_self.getSeek(_self.$audioEl,_self.timeIterator);} ,
+                    onend: function() {
+                        _self.cntTime=_self._allduration(index);
+                       // console.log('onend');
+                        _self._play();
+
+                        /*if(_self.cntTime!=_self._getSide().current.duration)
+						{ _self._play();console.log('play');}
+						else{_self._stop();console.log('stop ', _self.cntTime); }*/
+
+                        } ,
+                });
+            this.$audioEl.seek(timeInSong);
+			//this._clear();
+			//this.$audioEl.attr( 'src', song.getSource( aux.getSupportedType() ) );
 			
 		},
+		_allduration		: function(id){
+			let alltim=0;
+           // console.log(this._getSide().current);
+			for(let i=0;i<id+1;i++){
+                alltim+=this._getSide().current.getSong( i ).duration;
+			}
+			return alltim;
+		},
 		_switchSides		: function() {
-
+           // console.log('67');
 			if( this.isMoving ) {
 
 				alert( 'Пожалуйста, остановите плеер перед переключением на другую сторону!.' );
@@ -519,14 +452,18 @@
 				} );
 
 				setTimeout( function() {
-
+                    let positionCurr=_self._getPosTime();
+                    let proc=_self.cntTime/_self._getSide().current.duration;
 					_self.$tapeSideA.hide();
 					_self.$tapeSideB.show();
 
 					// update wheels
-					_self.cntTime = _self._getPosTime();
-
-				}, 200 );
+					//_self.cntTime = _self._getPosTime();
+                    let rever=_self._getSide().reverse.duration;
+                    _self.cntTime = Math.abs(1-proc)*rever;
+                    if(!isFinite(_self.cntTime)) _self.cntTime=0;
+		//console.log('newtime '+_self.cntTime);
+				}, 300 );
 
 			} 
 			else {
@@ -542,13 +479,22 @@
 				} );
 
 				setTimeout( function() {
+                    let positionCurr=_self._getPosTime();
+                    let proc=_self.cntTime/_self._getSide().current.duration;
 
 					_self.$tapeSideB.hide();
 					_self.$tapeSideA.show();
 
 					// update wheels
-					_self.cntTime = _self._getPosTime();
-					
+					//_self.cntTime = _self._getPosTime();
+
+                    // update wheels
+                    //_self.cntTime = _self._getPosTime();
+                    let rever=_self._getSide().reverse.duration;
+
+                    _self.cntTime = Math.abs(1-proc)*rever;
+                    if(!isFinite(_self.cntTime)) _self.cntTime=0;
+                 //   console.log('revertime '+_self.cntTime);
 				}, 200 );
 
 			}
@@ -620,19 +566,53 @@
 		},
 		_changeVolume		: function( ratio ) {
 
-			this.audio.volume = ratio;
+			this.$audioEl.volume( ratio);
+            this.options.initialVolume=ratio;
+			//console.log(ratio);
 			
 		},
-		_play				: function() {
 
-			var _self	= this;
+		_play				: function(button) {
 
+            let _self	= this; let continier='';
+
+            this._updateButtons( 'play' );
+           // console.log('cur: '+this.cntTime);
+           // console.log('dur: '+_self._getSide().current.duration);
+            let data	= _self._updateStatus();
+            if( data ) {
+                if(button){continier=button;}
+                if(!isFinite(data.timeInSong)){data.timeInSong=0;}
+               // console.log(data.timeInSong);
+                _self._prepare( _self._getSide().current.getSong( data.songIdx ),continier,data.timeInSong ,data.songIdx );
+               // console.log(data.timeInSong);
+                //
+                //console.log('init '+_self.options.initialVolume);
+                _self.$audioEl.volume(_self.options.initialVolume);
+                _self.$audioEl.play();
+                //console.log( 'vol '+_self.$audioEl.volume());
+                _self.isMoving = true;
+                _self._setWheelAnimation( '2s', 'play' );
+                // _self.$audioEl.on( 'play', this.getSeek(_self.$audioEl));
+            }
+
+
+		/*	var _self	= this;
+            console.log(_self);
+            let howput=(_self.options.songs[0]);
 			this._updateButtons( 'play' );
+            if(attrib) {
+                _self.howlerSong = new Howl({src: [_self._howlerput(howput) + howput], html5: true
+                , play:function (){console.log( _self.howlerSong.seek());}} );
+                _self.cntTime=0; // время прошло от начала стороны
+            } else{_self.cntTime=_self.howlerSong.seeker || 0;}
+
 
 			//$.when( this.sound.play( 'click' ) ).done( function() {
 			$.when( 1 ).done( function() {	// звук от этой фигни между песнями
 
 				var data	= _self._updateStatus();
+
 //console.log(data);
 			if( data ) {
 
@@ -647,7 +627,15 @@
 					   } else {
                            _self.audio.currentTime = data.timeInSong;
                        }
-					_self.audio.play();
+                      //  console.log(_self.getDuration());
+                        _self.audio.currentTime=_self.cntTime; //
+                        console.log(_self.howlerSong);
+                      // if(this.howlerSong){this.howlerSong.stop();}
+
+
+                        _self.howlerSong.play();
+
+					//_self.audio.play();
 					_self.isMoving = true;
 
 					_self._setWheelAnimation( '2s', 'play' );
@@ -657,51 +645,47 @@
 			} else{_self._beginSong(); }
 		
 			} );
-
+*/
 		},
+        getSeek         :function( obj ) {
+            // console.log(obj);
+            let _self	= this;
+            let seek = obj.seek() ;
+            if(_self.cntTime!=_self._getSide().current.duration)
+            _self.cntTime	= _self.timeIterator + seek;
+            let wheelVal	= _self._getWheelValues( _self.cntTime );
+            _self._updateWheelValue( wheelVal );
+            //console.log('iter seek'+_self.timeIterator);
+            if(obj.playing()){setTimeout(function(){_self.getSeek(obj);}, 1000);}
+
+        },
 		_updateStatus		: function( buttons ) {
 
-			var posTime	= this.cntTime;
-
-			// first stop
-			this._stop( true );
-
+			let posTime	= this.cntTime;
+			this._stop( true );  // first stop
 			this._setSidesPosStatus( 'middle' );
-
 			// the current time to play is this.cntTime +/- [this.elapsed]
 			if( this.lastaction === 'forward' ) {
-
 				posTime += this.elapsed;
-
 			}
 			else if( this.lastaction === 'rewind' ) {
-
 				posTime -= this.elapsed;
-
 			}
 
 			// check if we have more songs to play on the current side..
 			if( posTime >= this._getSide().current.getDuration() ) {
-
 				this._stop( buttons );
 				this._setSidesPosStatus( 'end' );
 				return false;
-
 			}
 
 			this._resetElapsed();
-
 			// given this, we need to know which song is playing at this point in time,
 			// and from which point in time within the song we will play
 			var data			= this._getSongInfoByTime( posTime );
-
-			// update cntTime
-			this.cntTime		= posTime;
-			// update timeIterator
-			this.timeIterator	= data.iterator;
-
+			this.cntTime		= posTime; // update cntTime
+			this.timeIterator	= data.iterator; // update timeIterator
 			return data;
-
 		},
 		_rewind				: function() {
 
@@ -756,16 +740,17 @@
 
 		},
 		_stop				: function( buttons ) {
-			
-			if( !buttons ) { 
 
+			if( !buttons ) {
+                this.sound.stop(  );
 				this._updateButtons( 'stop' );
 				this.sound.play( 'click' );
 
 			}
+            //this.sound.stop(  );
 			this.isMoving = false;
 			this._stopWheels();
-			this.audio.pause();
+            this.$audioEl.pause();
 			this._stopTimer();
 		
 		},
@@ -777,15 +762,11 @@
 		_setSidesPosStatus	: function( position ) {
 
 			this._getSide().current.setPositionStatus( position );
-
 			switch( position ) {
-
 				case 'middle'	: this._getSide().reverse.setPositionStatus( position );break;
 				case 'start'	: this._getSide().reverse.setPositionStatus( 'end' );break;
 				case 'end'		: this._getSide().reverse.setPositionStatus( 'start' );break;
-
 			}
-
 		},
 		// given a point in time for the current side, returns the respective song of that side and the respective time within the song
 		_getSongInfoByTime	: function( time ) {
@@ -832,7 +813,7 @@
 
 			var wleft	= this.$wheelLeft.data( 'wheel' ),
 				wright	= this.$wheelRight.data( 'wheel' );
-
+			//console.log(wleft+'**'+wright);
 			if( wleft === undefined ) {
 
 				wleft = 60;
@@ -845,6 +826,7 @@
 			}
 			
 			var T		= this._getSide().current.getDuration(),
+
 				posTime	= this.currentSide === 2 ? ( T * wleft ) / 60 : ( T * wright ) / 60;
 
 			return posTime;
@@ -967,7 +949,7 @@
 
 			var wheelVal = this._getWheelValues( posTime );
 			this._updateWheelValue( wheelVal );
-
+//console.log(posTime);
 			if( posTime >= this._getSide().current.getDuration() || posTime <= 0 ) {
 
 				this._stop();
@@ -1008,17 +990,11 @@
 	
 	// Cassette side obj
 	$.Side					= function( id, playlist, status ) {
-	
-		// side's name / id
-		this.id 		= id;
-		// status is "start", "middle" or "end"
-		this.status		= status;
-		// array of songs sorted by song id
-		this.playlist	= playlist.sort( function( a, b ) {
-			
-			var aid = a.id,
+		this.id 		= id; // side's name / id
+		this.status		= status; // status is "start", "middle" or "end"
+		this.playlist	= playlist.sort( function( a, b ) { // array of songs sorted by song id
+			let aid = a.id,
 				bid	= b.id;
-			
 			return ( ( aid < bid ) ? -1 : ( ( aid > bid ) ? 1 : 0 ) );
 			
 		} );
@@ -1031,47 +1007,18 @@
 	
 	$.Side.prototype 		= {
 
-		getSong				: function( num ) {
-		
-			return this.playlist[ num ];
-		
-		},
-		getPlaylist			: function() {
-			
-			return this.playlist;
-		
-		},
+		getSong				: function( num ) { return this.playlist[ num ]; 		},
+		getPlaylist			: function() { 			return this.playlist; 		},
 		_setDuration		: function() {
-		
 			this.duration = 0;
-			
-			for( var i = 0, len = this.playlist.length; i < len; ++i ) {
-			
+			for( let i = 0, len = this.playlist.length; i < len; ++i ) {
 				this.duration += this.playlist[ i ].duration;
-
 			}
-		
 		},
-		getDuration			: function() {
-			
-			return this.duration;
-		
-		},
-		getPlaylistCount	: function() {
-		
-			return this.playlistCount;
-		
-		},
-		setPositionStatus	: function( status ) {
-
-			this.status = status;
-
-		},
-		getPositionStatus	: function() {
-
-			return this.status;
-
-		}
+		getDuration			: function() {			return this.duration;		},
+		getPlaylistCount	: function() {			return this.playlistCount;		},
+		setPositionStatus	: function( status ) {		this.status = status;		},
+		getPositionStatus	: function() {			return this.status;		}
 
 	};
 	
@@ -1105,80 +1052,26 @@
 			return this.sources[type];
 		
 		},
-		// load metadata to get the duration of the song
-		loadMetadata		: function() { // no use anymore------------------------------
-			
-			var _self = this;
-			
-			return $.Deferred(
-			
-				function( dfd ) {
-					
-					var $tmpAudio 	= $( '<audio/>' ),
-						songsrc		= _self.getSource( aux.getSupportedType() );
-                   // console.log(songsrc);
-                    songsrc3=songsrc;
-                    songsrc2=songsrc.replace('&amp;','&');
-                    //songsrc2=decodeURI(songsrc2);
-                    //songsrc2=songsrc.replace('%20',' ');
-					$tmpAudio.attr( 'preload', 'auto' );
-					$tmpAudio.attr( 'src', songsrc2 );
-                   // console.log($tmpAudio.get(0).duration);
-                    //console.log($tmpAudio);
-					$tmpAudio.on( 'loadedmetadata', function( event ) {
-
-						_self.duration = $tmpAudio.get(0).duration;
-//console.log(_self.duration);console.log(_self);
-						dfd.resolve( _self );
-
-					});
-
-				}
-				
-			).promise();
-		
-		},
 
         // load metadata to get the duration of the song
         loadMetadataAll		: function() {
 
             var _self = this;
-
             return new Promise(function( succeed, fail ) {
                 _self.duration=parseFloat(_self.times);
                 succeed( _self );
-
-				/* var $tmpAudio 	= $( '<audio/>' ),
-                        songsrc		= _self.getSource( aux.getSupportedType() );
-                    songsrc3=songsrc;
-                    songsrc2=songsrc.replace('&amp;','&');
-                    $tmpAudio.attr( 'preload', 'auto' );
-                    $tmpAudio.attr( 'src', songsrc2 );
-
-
-
-                    $tmpAudio.on( 'loadedmetadata', function( event ) {
-
-                        _self.duration = $tmpAudio.get(0).duration;
-                        console.log(songsrc2+' '+_self.duration);
-                        succeed( _self );
-
-                    });*/
-
                 });
 
         },
 		getDuration			: function() {
-		
 			return this.duration;
-		
 		}
 
 	};
 	
 	// Sound obj
 	$.Sound					= function() {
-		
+        this.soundsrc;
 		this._init();
 		
 	};
@@ -1187,49 +1080,60 @@
 
 		_init				: function() {
 
-			this.$audio	= $( '<audio/>' ).attr( 'preload', 'auto' );
-		
+			//this.$audio	= $( '<audio/>' ).attr( 'preload', 'auto' );
+
 		},
 		getSource			: function( type ) {
-
-			return '/sounds/' + this.action + '.' + type;
+			//let ist= '/sounds/' + this.action + '.' + type;
+        //    this.$audioEl=new Howl({src:[song.sources.mp3],html5:true, format:['mp3']});
+		//	return '/sounds/' + this.action + '.' + type;
 		
 		},
+		stop		: function(){ var _self = this;
+		//if(_self.soundsrc && _self.soundsrc.playing()){				console.log(_self.soundsrc);
+        //    _self.soundsrc.stop();}
+			},
+
 		play				: function( action, loop ) {
-			
+
 			var _self = this;
-			return $.Deferred( function( dfd ) {
+			//return $.Deferred( function( dfd ) {
+            if(_self.soundsrc && _self.soundsrc.playing()){
+               // console.log(_self.soundsrc);
+                _self.soundsrc.stop();}
 
 				_self.action = action;
 
-				var soundsrc = _self.getSource( aux.getSupportedType() );
-				
-				_self.$audio.attr( 'src', soundsrc );
-				if( loop ) {
+                let ist= '/sounds/' + this.action + '.' + 'mp3';
+            _self.soundsrc=new Howl({src:[ist],html5:true, format:['mp3']});
+				//var soundsrc = _self.getSource( aux.getSupportedType() );
 
-					_self.$audio.attr( 'loop', loop );
+				//_self.$audio.attr( 'src', soundsrc );
+				if( loop ) {
+                    _self.soundsrc.loop(true);
+					//_self.$audio.attr( 'loop', loop );
 
 				}
 				else {
-
-					_self.$audio.removeAttr( 'loop' );
+                    _self.soundsrc.loop(false);
+					//_self.$audio.removeAttr( 'loop' );
 
 				}
-					
-				_self.$audio.on( 'canplay', function( event ) {
-					
+
+			//	_self.$audio.on( 'canplay', function( event ) {
+
 					// TODO: change timeout to ended event . ended event does not trigger for safari ?
-					setTimeout( function() {
+					//setTimeout( function() {
 
-						dfd.resolve();
+						//dfd.resolve();
 
-					}, 500 );
-					$( this ).get(0).play();
-					
-				});
+				//	}, 500 );
+					//$( this ).get(0).play();
+            _self.soundsrc.play();
+			//	});
 
-			});
-		
+			//}); Deferred
+
 		}
 
 	};

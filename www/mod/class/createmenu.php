@@ -10,7 +10,7 @@ class createMenu{
     public $itogname;
     private $typrasdel=array('3'=>'articles','5'=>'playlist','6'=>'galery','0'=>'articles');
     private $typarticle=array('1'=>'articles','3'=>'playlist','2'=>'galery');
-    private $kolOnPage=4; private $PictOnPage=9; private $limpictonrow=3; private $limalbumpage=2;
+    private $kolOnPage=4; private $PictOnPage=9; private $limpictonrow=3; private $limalbumpage=5;
     public $cofmen=''; public $cofrasd='';
     public $opengraph=array();
     public $masspencil=array();
@@ -124,7 +124,7 @@ class createMenu{
         public function currentArticle($tbl,$where,$itogname){
 
         $dbl=$this->db;
-        $sql = "SELECT * FROM ".$tbl." ".$where."  ORDER by sort";
+        $sql = "SELECT * FROM ".$tbl." ".$where."  ORDER by sort DESC"; //sorter
           // debug_to_console($sql);
         $stmt = $dbl->prepare($sql);
         $stmt->execute();
@@ -153,10 +153,10 @@ class createMenu{
          return $temp;
     }
     private function makePencil($tbl,$record){ // то что на карандаше
-        $dbl=$this->db; $prev=0;$next=0; $pagerasdel='';
+        $dbl=$this->db; $prev=0;$next=0; $pagerasdel=0;
         $sort=$record['sort']; $mass=array();
         $where=' WHERE kodrasdel='.$this->kodrasdel.' and kodmenu='.$this->kodmenu.' and vyvod=1';
-        $sql = "SELECT kod, sort, name, nameurl,redirect FROM ".$tbl." ".$where."  ORDER by sort";
+        $sql = "SELECT kod, sort, name, nameurl,redirect FROM ".$tbl." ".$where."  ORDER by sort DESC";//sorter
         $stmt = $dbl->prepare($sql);
         $stmt->execute();
         if ($sms = $stmt->fetchAll(PDO::FETCH_ASSOC)) {
@@ -277,7 +277,7 @@ class createMenu{
                 '<div class="txt_block_head">'.$sms['name'].'</div>'.
                 '<div class="txt_block_date">'.date_format($date,'d-m-Y').'</div>'.
                 '<div class="txt_block">'.  $pieces[$i].'</div>'.
-                '<div class="txt_block_str">'.($i+1).' из '.count($pieces).'</div></div>';
+                '<div class="txt_block_str righter">'.($i+1).' из '.count($pieces).'</div></div>';
         }
        // $book='<div id="mainpages" class="mainpages" name="'.'">'.$book.'</div>';
         $this->makeOpenGraph($sms);
@@ -307,7 +307,7 @@ class createMenu{
                 $url=$this->makeUrlArt($id).'/'.$this->CMP($row,'name');
                 $tmp='<tr class="tablnews" name="'.$id.'">';
                 $tmp.='<td><a class="linkarticle" href="'.$url.'"><img src="'.$putimg.$namepict.'"></a></td>';
-                $tmp.='<td><span class="dalee"><a class="linkarticle" href="'.$url.'">'.$row['name'].'.</a> </span> <div class="description">'.$row[$pole].'</div></td></tr>';
+                $tmp.='<td><span class="dalee"><a class="linkarticle" href="'.$url.'">'.$row['name'].'</a> </span> <div class="description">'.htmlspecialchars_decode($row[$pole]).'</div></td></tr>';
                 $masstr[]=$tmp;
             }
 

@@ -1,5 +1,5 @@
 // JavaScript Document
-var newDirOption;
+var newDirOption ; var newDirOption2 ;
 
 function datPars(data){ //проверка ajax поступления22   
 	var result=0;
@@ -15,25 +15,25 @@ function datPars(data){ //проверка ajax поступления22
 
 function login_a() // логин 
 {
-	var remember=1;//нужна ли кука
-	$("#logname").parent("div").children(".errorlog").remove();
-	$("#logpass").parent("div").children(".errorlog").remove();
-	var lognam=$('#logname').val();
-	var logpass=$('#logpass').val();
-	var nampattern = new RegExp(/^[a-z0-9]+$/i);
- if(lognam.length==0 || !nampattern.test(lognam)){ err_out('#errorsave', 'Недопустимые символы в логине.' ); return(0);} 
-if(!nampattern.test(logpass)){ err_out('#errorsave', 'Недопустимые символы в пароле.' ); return(0);} 
-  var data="lognam="+lognam+"&logpass="+logpass+"&remember="+remember;
-   $.ajax({
-    type: "POST",   url: "mod/conn/db_check.php",   data: data,
-  success: function(data){
-	 console.log( "Прибыли данные: " + data );
-	 var mass=datPars(data);
-	 if (mass[0]==0) {err_out('#errorsave', mass[1]); $('#logname').val("");$('#logpass').val("");}
-	 else {location.reload();}
-	   }
-							   });	
-	}
+    var remember=1;//нужна ли кука
+    $("#logname").parent("div").children(".errorlog").remove();
+    $("#logpass").parent("div").children(".errorlog").remove();
+    var lognam=$('#logname').val();
+    var logpass=$('#logpass').val();
+    var nampattern = new RegExp(/^[a-z0-9]+$/i);
+    if(lognam.length==0 || !nampattern.test(lognam)){ err_out('#errorsave', 'Недопустимые символы в логине.' ); return(0);}
+    if(!nampattern.test(logpass)){ err_out('#errorsave', 'Недопустимые символы в пароле.' ); return(0);}
+    var data="lognam="+lognam+"&logpass="+logpass+"&remember="+remember;
+    $.ajax({
+        type: "POST",   url: "mod/conn/db_check.php",   data: data,
+        success: function(data){
+            console.log( "Прибыли данные: " + data );
+            var mass=datPars(data);
+            if (mass[0]==0) {err_out('#errorsave', mass[1]); $('#logname').val("");$('#logpass').val("");}
+            else {location.reload();}
+        }
+    });
+}
 //--------------------------------error handle
 function err_out(elem, text) { $(elem).empty(); $(elem).html("<div id='errorsave'>"+ text +"</div>");return;	}		
 
@@ -86,6 +86,7 @@ function createSect(){
 	}	
 function createArticle(){
 	var param=document.getElementById('post').massiv;
+	//alert(JSON.stringify( param));
 	var men=new createWindow(''); 	men.wincreate(param);	
 	}
 function createElem(){
@@ -106,6 +107,7 @@ function createWindow(data){
 			else {return false;}
 		//if(arguments.length==3){arr=arguments[2]} else{ arr='';}
 		$.ajax({
+
   		  type: "POST",   url: "mod/wincreate.php",   data: 'tbl='+JSON.stringify(ukaz)+'&param='+this.param ,
   			success: function(data){
 	// console.log( "Прибыли данные: " + data );
@@ -128,7 +130,7 @@ function saveNew(tabl){
 var perem= new dataMyConfirm($('.Myconfirm'));
 var itog=perem._init(); itog[1]=Array(itog[1]);
 if(arguments[1]) itog[1]=arguments[1];
-console.log(itog);console.log(param);
+//console.log(itog);console.log(param);
 
     /*var data2 = new FormData();
     data2.append("keys", JSON.stringify(param));
@@ -150,7 +152,7 @@ if (itog[0].length>0){$("#errform").html('!!!'+itog[0]);}
 				//dataType: 'json',
 
 					  success: function(data){
-					 console.log( "Прибыли данные: " + data );
+					// console.log( "Прибыли данные: " + data );
 					// $("#errorsave").html(data);
 					var mass=datPars(data);
 					if (mass[0]==1) { location.reload(); }
@@ -159,7 +161,7 @@ if (itog[0].length>0){$("#errform").html('!!!'+itog[0]);}
 					});
 		}
 	}	
-
+//----------------------------
 dataMyConfirm	= function( element) {this.$el = $( element );}
 
 dataMyConfirm.prototype={
@@ -278,7 +280,7 @@ var elem=event.target||event.srcElement;
 transfMass=function(param){
     elem=document.body;
     elem.massiv=param;
-    console.log(param);
+    //console.log(param);
 }
 
 function delRecord(event) {
@@ -300,7 +302,7 @@ function delPosition(attr) {
     $.ajax({
         type: "POST",   url: "mod/recordel.php",   data: data,
         success: function(data){
-            console.log( "Прибыли данные: " + data );
+          //  console.log( "Прибыли данные: " + data );
             //$("#errorsave").html(data);
             //	  return false;
             var mass=datPars(data);
@@ -504,7 +506,7 @@ function countpict(operator, nompos) {
 	//console.log(nompos);
 var nomstr=nompos;//$('.divtblpict').find('tr').eq(0).attr('id');
 	var priem=$('table[id="'+param+'"]').find('tr[id='+nomstr+']').find('[name="pictur"]').children('div').children('span');
-	console.log(priem);
+	//console.log(priem);
 	if(operator==1){	priem.text(priem.text()*1+1);}
 	if(operator==0){	priem.text(priem.text()*1-1);}	
 	}	
@@ -604,7 +606,7 @@ function changePict(elem) { // функция изменения картино�
 			$('#downformvvod').html(this.massconfirm);
 			table_auto("delpictconfirm",{id:this.id,param:param,text:txt,tbl:idtbl,kodpos:idpos});
 			$('.buttpictform').css('display','none');
-			console.log ({id:this.id,param:param,text:txt,tbl:idtbl,kodpos:idpos});
+			//console.log ({id:this.id,param:param,text:txt,tbl:idtbl,kodpos:idpos});
 	}
 	
 }
@@ -794,13 +796,13 @@ function changePage(elem, direct){
             type: "POST",   url: "/adm/mod/dirwatch.php",   data: "param="+JSON.stringify(param)+
 			'&put='+encodeURIComponent(JSON.stringify(put)),
             success: function(data){
-                  console.log( "Прибыли данные: " + data  ); //+ data
+                //  console.log( "Прибыли данные: " + data  ); //+ data
                 data= JSON.parse(data);
                // console.log(document.getElementsByClassName('Myconfirm')[0]);
                 if(document.getElementsByClassName('Myconfirm')[0]!=undefined){$('.Myconfirm').html('<p></p>'+data[0]);}
                 else{myConfirm(data[0], '');}
                 document.body.massiv=data[1];
-                console.log(data[1]);
+                //console.log(data[1]);
                // console.log(data[2]);
             }// success
         });
@@ -816,7 +818,7 @@ function changePage(elem, direct){
         id=id.replace('direct','');
         $(elem).toggleClass('select');
         $(elem).closest('tr').toggleClass('tblcolorstr');
-		console.log(id);
+		//console.log(id);
 	}
 
 	$(document).on('click', '.tbldirsel',function(event) { var elem=event.target||event.srcElement;
@@ -824,7 +826,7 @@ function changePage(elem, direct){
         var id=$(elem).closest('tr').attr('id');
         id=id.replace('direct','');
        // delOverley();
-        console.log('Iz obj: '+data['core'][2]+data['core'][1]+data[id][0]+'/');
+       // console.log('Iz obj: '+data['core'][2]+data['core'][1]+data[id][0]+'/');
         visualDir(data['core'][2]+data['core'][1]+data[id][0]+'/',data['core'][2]+data['core'][1]);
 
 	});
@@ -921,7 +923,7 @@ $(document).on('click', '.button[name="delsong"]',function(event){
 	}
 
 	function findSongs() { // поиск песен для ckeditor обновить директорию
-		data={format:'position'};
+		var data={format:'position'};
         $.ajax({
             type: "POST",   url: "mod/dirpunkt.php",
 			 data: data,//"param="+JSON.stringify(param)+ '&put='+encodeURIComponent(JSON.stringify(put)),
@@ -952,6 +954,15 @@ $(document).on('click', '.button[name="delsong"]',function(event){
 		var newzn=$(elem).attr('id');
         var newtmp=newDirOption.punkt(newzn);
         $('#mybar').html(newtmp);
+	});
+	$(document).on('click', '.dirarticle',function(event) {
+		var elem = event.target || event.srcElement;
+		var tmp={};
+		//tmp=document.getElementsByTagName('actionmenu').massiv;
+		console.log(newDirOption);
+		var newzn=$(elem).attr('id');
+		var newtmp=newDirOption2.punkt(newzn);
+		$('#mybar2').html(newtmp);
 	});
 
 	$(document).on('click', '.buttonselectsong',function(event) { // выбрать ссылку песни и вставить в поле текст ссылки
@@ -997,6 +1008,45 @@ $(document).on('click', '.button[name="delsong"]',function(event){
 
 	};
 
+	//--------------------ckeditor insert link
+function findPages() { // поиск  обновить директорию
+    var data={format:'post'};
+    console.log(data);
+    $.ajax({
+        type: "POST",   url: "mod/dirpunkt.php",
+        data: data,//"param="+JSON.stringify(param)+ '&put='+encodeURIComponent(JSON.stringify(put)),
+        success: function(data){
+             // console.log( "Прибыли данные: " + data  ); //+ data
+            data= JSON.parse(data);
+            // console.log(data);
+            $('#mybar2').html(data['0_0']);
+            newDirOption2=createMaSong(data);
+            document.getElementsByTagName('actionmenu').massiv=data;
+
+        }// success
+    });
+}
+$(document).on('click', '.buttonselectartic',function(event) { // выбрать ссылку песни и вставить в поле текст ссылки
+    var elem = event.target || event.srcElement; var makeurl='';
+    var tr=$(elem).closest('tr');
+
+    if($(tr).children('td').eq(1).text()=='article') {
+       let ider= $(tr).children('td').eq(0).children('div').attr('id');
+        data={format:'selart',id:ider};
+        $.ajax({
+            type: "POST",   url: "mod/rasnoe.php",
+            data: data,//"param="+JSON.stringify(param)+ '&put='+encodeURIComponent(JSON.stringify(put)),
+            success: function(data){
+                 console.log( "Прибыли данные: " + data  ); //+ data
+                data= JSON.parse(data);
+                // console.log(data);
+                $('.cke_dialog_contents').find('input[type=text]').val(data[1]);
+
+            }// success
+        });
+    }
+
+});
 
 
 
@@ -1004,7 +1054,7 @@ $(document).on('click', '.button[name="delsong"]',function(event){
 function createMaSong(mass) {
    // console.log(mass);
 	var temp='';
-    links = {};// var i=0;
+    var links = {};// var i=0;
     links = mass;
     function punkt(elem) {
         var temp = '';
@@ -1015,44 +1065,80 @@ function createMaSong(mass) {
     }
     return {punkt: punkt};
 }
+
 function secToTime(sec) {
     dt = new Date();
     dt.setTime(sec * 1000);
     return dt.getUTCHours() + ":" + dt.getUTCMinutes() + ":" + dt.getUTCSeconds();
 }
+function changePass(event){
+    $("#errorsave").html('');
+    var elem = event.target || event.srcElement;
+    var tbl = $(elem).closest('table').attr('id');
+    var nazvan = $(elem).closest('tr').children('td').eq(1).text();
+    var tr = $(elem).closest('tr').attr('id');
+    var temp="<div class='form-group passpole ' id='password'> <label class='control-label col-xs-4' for='namepassword'>Введите пароль: </label><div class='col-xs-7'><input type='password' class='form-control' id='password1' class='editpolesong' value=''></div></div>" ;
+    temp+="<div class='form-group passpole ' id='password'> <label class='control-label col-xs-4' for='namepassword'>Повторите пароль: </label><div class='col-xs-7'><input type='password' class='form-control' id='password2' class='editpolesong' value=''></div></div>" ;
+    var massconfirm = '<div class="row delconfirm" id="delconfirm"><div class="confirm">' + 'Изменить пароль пользователя: ' + nazvan + "  </div>"+temp+"<div class='row'><div class='col-sm-2 col-sm-offset-3'><button class='btn btn-success' onclick='changePassFinal(\"" + tbl + "\",\"" + tr + "\");'>ОК</button></div><div class='col-sm-2 col-sm-offset-1'><button class='btn btn-warning' onclick='delOverley();'>Отмена</button></div></div></div>";
 
+    myConfirm(massconfirm, '')
+   // var param=document.getElementById('users').massiv;
+   // param.tbl='users2';param.shuba=1;
+  //  console.log(JSON.stringify(param));
+  //  var men=new createWindow(''); 	men.wincreate(param);
+   // return false;
+}
 
-/*$(document).on('change', 'input#picture',function(event){
-    var tmp=$('input#picture').val();
-    $('.makepreview').html('<img src="'+tmp+'">');
-    console.log(tmp);
-});*/
+function changePassFinal(tbl,tr) {
+    var pass1=$('#password1').val();
+    var pass2=$('#password2').val();
+    if(pass1==pass2) {$("#errorsave").html('');}
+    else{$("#errorsave").html('пароли не одинаковые');return false;}
+    var elem=document.getElementById(tbl);
+    var param=document.getElementById(tbl).massiv;
+    //var tr=$(elem).find('tr').eqattr('id');
+    param.pssw=pass1;
+    var data='record='+tr+'&data='+JSON.stringify(param);
+    // console.log(data);
+    $.ajax({
+        type: "POST",   url: "mod/psswsave.php",   data: data,
+        success: function(data){
+            //   console.log( "Прибыли данные: " + data );
+            //$("#errorsave").html(data);
+            var mass=datPars(data);
+            if (mass[0]==1) {location.reload();
+            }
+            if (mass[0]==0) { $("#errorsave").html(mass[1]); }
 
-/*var feilds=jQuery('.draggable');
-        	var data;
-        	data=new Object();
-        	for (i=0; i<feilds.length; i++){
-        		data['feilds['+i+'][value]']=jQuery(feilds[i]).text();
-        		data['feilds['+i+'][top]']=jQuery(feilds[i]).css('top').replace("px","");
-        		data['feilds['+i+'][left]']=jQuery(feilds[i]).css('left').replace("px","");
-        		console.log(data);
-        	};
-			
-function createMenu(param){
-	$("#errorsave").html("");
-	var ukaz=$('table').attr('id');
-	$.ajax({
-    type: "POST",   url: "mod/wincreate.php",   data: 'tbl='+ukaz+'&param='+param,
-  success: function(data){
-	// console.log( "Прибыли данные: " + data );
-	// $("#errorsave").html(data);
-	 var mass=datPars(data);
-	 if (mass[0]==1) { myConfirm(mass[1], ''); }
-	 if (mass[0]==0) { $("#errorsave").html(mass[1]); }
-  		}
-	});	
-	
-	}
-			
-			
-			*/
+        }
+    });
+    delOverley();
+}
+// ---download and upload elements------------
+function downloadElem(){ let perem='<div>Загрузить данные по элементам?</div>';
+    perem+='<div class="col-sm-3 col-sm-offset-3"><button class="btn btn-success" onclick="makeElem(0);">OK</button></div>';
+    perem+='<div class="col-sm-3"><button class="btn btn-warning" onclick="{delOverley();}">Отмена</button></div>';
+ myConfirm(perem, '');}
+function uploadElem(){let perem='<div>Выгрузить данные по элементам?</div>';
+    perem+='<div class="col-sm-3 col-sm-offset-3"><button class="btn btn-success" onclick="makeElem(1);">OK</button></div>';
+    perem+='<div class="col-sm-3"><button class="btn btn-warning" onclick="{delOverley();}">Отмена</button></div>';
+    myConfirm(perem, '');}
+function makeElem(cheker){
+    let param=document.getElementById('position');
+    if ($(param).css('display')=='none' && !cheker) {console.log('No elements'); return false;}
+     param=document.getElementById('position').massiv;
+    param.direct=cheker; console.log(param);
+    $.ajax({
+        type: "POST",   url: "mod/makeelem.php",   data: 'data='+JSON.stringify(param),
+        success: function(data){
+               console.log( "Прибыли данные: " + data );
+            //$("#errorsave").html(data);
+            var mass=datPars(data);
+            if (mass[0]==1) {location.reload();
+            }
+         //   if (mass[0]==0) { $("#errorsave").html(mass[1]); }
+
+        }
+    });
+
+}

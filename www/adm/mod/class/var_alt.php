@@ -1,7 +1,7 @@
 <?
 $massTablAlias=array('editors'=>'users','mainmenu'=>'menu','init'=>'admmenu','sets'=>'settings','rasdel'=>'section','rasdelimg'=>'sectionimg','news'=>'post','newsimg'=>'postsimg', 'punkt'=>'position');
-$picturTbl=array('rasdel'=>'rasdelimg','news'=>'newsimg','punkt'=>'punktimg');
-$picturKat=array('rasdel'=>'../../catalog/imgrasdel/', 'news'=>'../../catalog/imgnews/','punkt'=>'../../catalog/imgpunkt/');
+$picturTbl=array('rasdel'=>'rasdelimg','news'=>'newsimg','punkt'=>'punktimg','mainmenu'=>'menuimg');
+$picturKat=array('rasdel'=>'../../catalog/imgrasdel/', 'news'=>'../../catalog/imgnews/','punkt'=>'../../catalog/imgpunkt/', 'mainmenu'=>'../../catalog/imgmenu/');
 
 // иерархия
 $massLink=array('mainmenu'=>array('rasdel'=>'1'),'rasdel'=>array('rasdel'=>'1','news'=>'0','punkt'=>'0')); //here!!!

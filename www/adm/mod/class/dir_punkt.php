@@ -7,6 +7,7 @@ class dirPunkt{
     private $menu;
     private $rasdel;private $allrasdel;
     public $allmakedir=array() ;
+    public $polesout=array() ;
 
         public function __construct($nmtbl,$dbh) {
             $this->db=$dbh; $this->nametabl=$nmtbl;
@@ -76,10 +77,10 @@ class dirPunkt{
         public function makeUrl(){ //создание массива всех отображениий директорий
 
             $menu=$this->menu; $rasdel=$this->rasdel; $allrasdel=$this->allrasdel;
-            $tmp='';
+            $tmp=''; $poles=$this->polesout;
             foreach ($menu as $menrow){
                 $this->makeRasdel($menrow[0],$menrow[3]);
-                $tmp.='<tr><td><div class="dirpunkt" id="'.$menrow[0].'_'.$menrow[3].'">'.$menrow[1].'</div></td><td>DIR</td><td></td></tr>';
+                $tmp.='<tr><td><div class="'.$poles[4].'" id="'.$menrow[0].'_'.$menrow[3].'">'.$menrow[1].'</div></td><td>DIR</td><td></td></tr>';
             }
 
             $this->allmakedir['0_0']= '<table class="tblselectpunkt">'.$tmp.'</table>';
@@ -88,10 +89,11 @@ class dirPunkt{
 
         private function makeRasdel($kodmenu,$kodrasdel){ // собрать разделы в один список
             $dbh=$this->db; $mass=array();$temp=''; $return=array();
-            $mass[]='<tr><td><div class="dirpunkt" id="'.'[_UPZAM]'.'">'.'...'.'</div></td><td></td><td></td></tr>';
+            $poles=$this->polesout;
+            $mass[]='<tr><td><div class="'.$poles[4].'" id="'.'[_UPZAM]'.'">'.'...'.'</div></td><td></td><td></td></tr>';
                 foreach ($this->allrasdel as $row){
                     if($row[2]==$kodmenu and $row[3]==$kodrasdel){
-                        $mass[]='<tr><td><div class="dirpunkt" id="'.$row[2].'_'.$row[0].'">'.$row[1].'</div></td><td>DIR</td><td><div class="buttonselectsong "></div></td></tr>';
+                        $mass[]='<tr><td><div class="'.$poles[4].'" id="'.$row[2].'_'.$row[0].'">'.$row[1].'</div></td><td>DIR</td><td><div class="buttonselectsong "></div></td></tr>';
                        // $return=array($row[2].'_'.$row[0],$row[2].'_'.$row[3]);
                         $this->makeRasdel($kodmenu,$row[0]);
                     }
@@ -108,6 +110,7 @@ class dirPunkt{
         private function makePunkts($kodmenu,$kodrasdel){ //добавить пункты в раздел
             $dbh=$this->db; $mass='';$return=array();
             $tbl=$this->nametabl;
+            $poles=$this->polesout;
          //   debug_to_console($kodmenu.'-'.$kodrasdel);
             foreach ($this->allrasdel as $row){
                 if($row[2]==$kodmenu and $row[0]==$kodrasdel){
@@ -124,7 +127,8 @@ class dirPunkt{
                     $stmt->execute();
                     if($sms=$stmt->fetchAll(PDO::FETCH_ASSOC)) {
                         foreach ($sms as $row) {
-                            $mass.='<tr><td><div class="filepunkt" id="'.$row['kod'].'" title="'.$row['artist'].' - '.$row['title'].'">'.$row['artist'].' - '.$row['title'].'</div></td><td>file</td><td><div class="buttonselectsong"></div></td></td>';
+                           // $mass.='<tr><td><div class="filepunkt" id="'.$row['kod'].'" title="'.$row['artist'].' - '.$row['title'].'">'.$row['artist'].' - '.$row['title'].'</div></td><td>file</td><td><div class="buttonselectsong"></div></td></td>';
+                            $mass.='<tr><td><div class="filepunkt" id="'.$row['kod'].'" title="'.$row[$poles[0]].' - '.$row[$poles[1]].'">'.$row[$poles[0]].' - '.$row[$poles[1]].'</div></td><td>'.$poles[2].'</td><td><div class="'.$poles[3].'"></div></td></td>';
                         }
                     }
 

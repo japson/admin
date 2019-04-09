@@ -14,7 +14,7 @@ switch($tablic) {
 					 $mass_actions=array('Править'=>'editRecord','Удалить'=>'delRecord');
 					 break; 
 	
-	case 'mainmenu': $userpunkt =array('sort','name','nameurl','titlepage','vyvod', 'rol');
+	case 'mainmenu': $userpunkt =array('sort','name','nameurl','titlepage','vyvod', 'rol','pictur');
 					 $inputpunkt =array('name','nameurl','title', 'rol');
 					 $tbl_select=array('rol'=>'typmenu');
 					 $mass_actions=array('Править'=>'editRecord','Удалить'=>'delRecord');

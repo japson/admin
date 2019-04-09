@@ -1,5 +1,11 @@
 
 RewriteEngine on
+RewriteCond %{HTTPS} !=on
+RewriteRule ^/?(.*) https://japson.ru/$1 [R,L]
+
+
+RewriteCond %{HTTP_HOST} ^www.japson.ru$ [NC]
+RewriteRule ^(.*)$ https://japson.ru/$1 [R=301,L]
 
         # Don't rewrite files or directories
         RewriteCond %{REQUEST_FILENAME} -f [OR]
@@ -13,6 +19,37 @@ Redirect 301 /rss/ /rss.php
 Redirect 301 /rss /rss.php
 Redirect 301 /rss.htm /rss.php
 Redirect 301 /rss.html /rss.php
+Redirect 301 /feed/ /rss.php
+Redirect 301 /feed /rss.php
+Redirect 301 /feed.htm /rss.php
+Redirect 301 /feed.html /rss.php
+
+Redirect 301 /post/dmitrij-mityaj-krivyakin.html /mitya
+Redirect 301 /post/semya-krezov-lirichnoe-otstuplenie.html /crazys
+Redirect 301 /post/za-pyat-minut-do-yadernogo-vzryva-ya-igral-rok-n-roll-vechernij-novosibirsk-1999g.html /mitya/mitya_articles/vecher-nsk1999
+Redirect 301 /post/gruppa-syur-de-kadans-psihicheskaya-ataka-gazeta-tdt-1999-g.html /mitya/mitya_articles/tdt-1999
+Redirect 301 /post/kuda-smestilas-stolica-rok-n-rolla-gazeta-molodost-sibiri-1995-god.html /crazys/articles/molodsibiri1995
+Redirect 301 /post/skvoz-uroven-80-h-gazeta-rost-1996g.html /crazys/articles/rost1996
+Redirect 301 /post/d-krivyakin-1998-valsalva.html /mitya/mitya_music/valsalva
+
+Redirect 301 /post/d-krivyakin--dkdance-1999-stychka-ne-katit.html /mitya/mitya_music/stychka-ne-katit
+Redirect 301 /post/d-krivyakin-2003-holya-nogtej.html /mitya/mitya_music/holya-nogtey
+Redirect 301 /post/1994-semya-krezovpadaet-sneg.html //crazys/music/padaet-sneg
+Redirect 301 /post/literaturnaya-stranichka-iskitimskaya-gazeta-5-maya-1994g.html /mitya/mitya_articles/iskitimgazeta1994
+Redirect 301 /post/indi-huindi.html /articles/music/indi-huindi
+Redirect 301 /post/zakon-podlosti-1993-podlye-zakony.html /mitya/mitya_music/podlye-zakony
+
+Redirect 301 /post/raya-rozhdestvenskaya-pismeco.html /mitya/poems/raya
+Redirect 301 /post/iz-sbornika-skazki-dlya-krezov-1994g.html /crazys/poems/early-japson
+Redirect 301 /post/pyl-.html /crazys/poems/pyl-japsona
+Redirect 301 /post/glupye-skazki-.html /crazys/poems/fool-tales2
+Redirect 301 /post/iz-sbornika-post-lyubov-1995g.html /crazys/poems/post-love
+Redirect 301 /post/pust-devushka-vesna.html /crazys/poems/pust-japson
+
+Redirect 301 /post/d-krivyakin-1995-solnik-v-5-utra.html /mitya/mitya_music/solnik5utra
+Redirect 301 /post/d-krivyakin-1998-papin-chayochek.html /mitya/mitya_music/papinchai
+Redirect 301 /post/1993-deti-uo-reinkarnaciya-dushi.html /crazys/music/deti-yo
+Redirect 301 /post/podlinnye-zakony-zakony-3-podlinnik.html /mitya/mitya_music/podlinnik
 
 #RewriteRule ^/rss\.(.*)$ /rss.php [NC,L] 
 

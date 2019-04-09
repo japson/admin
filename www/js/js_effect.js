@@ -1,6 +1,8 @@
 // JavaScript Document
 $( document ).ready(function() {
-	console.log('test');
+
+    //let howlerput=function(name){if(name.substr(0,4)=='http') {return '';} else{ return '/catalog/punkts/';};}
+	//console.log('test');
     $('#textarea1').niceScroll({cursorcolor:"#77262a", cursorwidth:'7'});
 	loadComment(1);
 	loadSongs();
@@ -34,9 +36,64 @@ $('.bumenu').mouseleave( function() {
 $('.bumimg').each(function(index, element) {$(element).removeClass('povor'+index);});
 // alert(); 
  });
+    document.onkeydown = function(event) { //console.log(event.keyCode); //34 -pgdown 33-pgup
+
+        if(event.keyCode==34 || event.keyCode==39 ){ event.preventDefault();goActPage.init(); goActPage.goPage(1); goActPage.makeUrl();}
+        if(event.keyCode==33 || event.keyCode==37){ event.preventDefault();goActPage.init(); goActPage.goPage(0); goActPage.makeUrl();}
+    }
+
+    let touchStartTime;
+    let touchStartLocation;
+    let touchEndTime;
+    let touchEndLocation;
+
+    $(".mainpages").on('touchstart', function(event) {
+        let d = new Date();
+        touchStartTime = d.getTime();
+        let touches = event.changedTouches;
+        touchStartLocation = Array(touches[0].pageX,touches[0].pageY);//x horisont
+    });
+
+    $(".mainpages").on('touchend', function(event) {
+        let d = new Date();
+        touchEndTime= d.getTime();
+        let touches = event.changedTouches;
+        let end=touches.length;
+        //  var idx = ongoingTouchIndexById(touches[i].identifier);
+        touchEndLocation= Array(touches[end-1].pageX,touches[end-1].pageY);//x horisont
+        doTouchLogic();
+        //   console.log(idx);
+        //  console.log(touchStartLocation);
+//    console.log(touchEndLocation);
+    });
+
+    function doTouchLogic() {
+        let distanceX = touchEndLocation[0] - touchStartLocation[0];
+        let distanceY = touchEndLocation[1] - touchStartLocation[1];
+        let duration = touchEndTime - touchStartTime;
+        let dist=Math.abs(distanceX)-Math.abs(distanceY);
+        let dolya=Math.abs(dist)-Math.abs(distanceX);
+       // console.log('raznica X-Y '+dist+' :Rasstoyanie X '+(distanceX)+ 'dolya X:'+(Math.abs(dist)-Math.abs(distanceX)));
+        //  return false;
+
+        if (duration >= 150 && Math.abs(distanceX) >= 120 && Math.abs(dolya)<100) {
+            if(distanceX>0){ goActPage.init(); goActPage.goPage(0); goActPage.makeUrl();}
+            if(distanceX<0){ goActPage.init(); goActPage.goPage(1); goActPage.makeUrl();}
+            // Person tapped their finger (do click/tap stuff here)
+        }
+
+    }
 
 
 }); // $( document ).ready(function()
+
+$( window ).resize(function() {
+if(window.innerWidth >1170){$('.pen_list.maficon').css('background-image','url("/img_n/spisok_mafon.svg")');}
+else{
+    if($('.extra').css('display')=='none') {$('.pen_list.maficon').css('background-image','url("/img_n/spisok_mafon.svg")');} else{$('.pen_list.maficon').css('background-image','url("/img_n/spisok_mafon_activ.svg")');}
+}
+});
+
 
 function loadComment(list){
     let rasdel=curState.getall();
@@ -64,24 +121,7 @@ $(document).on("click", ".answercomm", function(event){
 $(document).on("click", "#buttonrefr", function(event){ loadComment(1); });
 
 
-tango=function (nope){ //  надо ли?-----------------------
-	
-	if(nope==1){var thikl='visible'; moto='hidden';
-	//$('.pivo_rot').children('img').attr('src','img/pivo.png');
-	$('.pivoimg').children('img').animate({src:'img/pivo.png'},1000);
-	//alert();
-	//$('.pivoimg').children('img').attr('src','img/pivo.png');
-	//$('.pivoimg').children('img').addClass('pivoimg');
-	}
-	else{thikl='hidden'; moto='visible';
-	$('.pivoimg').children('img').removeClass('pivoimg');
-	$('.pivo_rot').children('img').attr('src','img/chai.png');}
-	$('.piventer').css('visibility',thikl);
-	$('.piventer2').css('visibility',thikl);
-	$('.chaienter').css('visibility',moto);
-	$('.chaienter2').css('visibility',moto);
-	};			
-	
+
 // магнитофон ------------------------------------------------------------------------------------------
 function marqueRun(){ //Запуск скоролинга
 	/*$('.marque').on({
@@ -98,10 +138,36 @@ $(document).on("click",'#buttcomment',function(){
 });
 function provCheck() { // кнопка включения мафона
     $('.demo1').children('input').prop('checked', true);
-   // $('.demo1no').children('input').prop('checked', false);
-    $('.comment').toggle('closed');
-    $('.extra').toggle('closed');
+    if($('.pen_list.comm').css('display')!='none'){
+        console.log($('.extra').css('display'));
+        if($('.extra').css('display')!='none') {$('.pen_list.maficon').css('background-image','url("/img_n/spisok_mafon.svg")');}else{$('.pen_list.maficon').css('background-image','url("/img_n/spisok_mafon_activ.svg")');}
+        $('.extra').toggle('closed');
+    }
+    else {
+        // $('.demo1no').children('input').prop('checked', false);
+        $('.pen_list.maficon').css('background-image','url("/img_n/spisok_mafon.svg")');
+        if($('.extra').css('display')!='none' && $('.comment').css('display')!='none' ){
+            $('.extra').toggle('closed');
+        }else{
+            $('.comment').toggle('closed');  $('.extra').toggle('closed');
+        }
+    }
 }
+function provComm() { // кнопка включения comment
+    $('.demo1').children('input').prop('checked', true);
+    if($('.comment').css('display')!='none' ){$('.pen_list.comm').css('background-image','url("/img_n/spisok_comm.svg")');}
+    else{$('.pen_list.comm').css('background-image','url("/img_n/spisok_comm_activ.svg")');}
+    if($('.comment').css('display')=='none' ){$('.comment').css('display','block'); }
+    else {
+        $('.comment').toggle('closed');
+    }
+
+}
+/*$(document).on("click",'.comlist',function(){
+    $('.comlist').niceScroll({cursorcolor: "#77262a", cursorwidth: '7'});
+});*/
+
+
 //$('#main-container').animate(   {    width : '580px'  }, 200);
 function provCheck_old22(){ // кнопка включения мафона
 var per=$( '.switch.demo1' ).find('input:checked').length;
@@ -245,7 +311,7 @@ function goPageObj(){
             curPage.removeClass('current').css('z-index', '10');
             curPage.css('display', 'none');
         }
-        listing=0;
+        listing=0; $('body').animate({scrollTop: 10},300);
 						}
 	var makeUrl=function(){
         var path=window.location;
@@ -283,7 +349,7 @@ function makeCasset(param){
                //  console.log("Прибыли данные: " + dat); //+ data
             var data = JSON.parse(dat);
             let mf={songs			: data[0],songNames: data[2],sides: data[1],nomsongs:data[3],times:data[4]};
-              console.log(mf);
+           //   console.log(mf);
             let el_new = $('#vc-container').data().cassette;
             el_new._stop();
             el_new.options.songNames=mf.songNames;
