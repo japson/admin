@@ -41,15 +41,17 @@ $opgraph=$page->opengraph;
 <!DOCTYPE html>
 <html>
 <head>
+    <!-- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
     <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-124167356-1"></script>
+   <!-- <script async src="https://www.googletagmanager.com/gtag/js?id=UA-124167356-1"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
         gtag('js', new Date());
 
         gtag('config', 'UA-124167356-1');
-    </script>
+    </script>-->
+    <!-- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
 
     <link rel="icon" href="/favicon.ico" type="image/x-icon">
     <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
@@ -110,13 +112,14 @@ $opgraph=$page->opengraph;
 
 </head>
 <body >
-<<script>
+<script>
     fbq('track', 'ViewContent', {
         value: 1,
     });
 </script>
+<!-- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
 <!-- Rating@Mail.ru counter -->
-<script type="text/javascript">
+<!--<script type="text/javascript">
 var _tmr = window._tmr || (window._tmr = []);
 _tmr.push({id: "3100320", type: "pageView", start: (new Date()).getTime(), pid: "USER_ID"});
 (function (d, w, id) {
@@ -126,7 +129,7 @@ _tmr.push({id: "3100320", type: "pageView", start: (new Date()).getTime(), pid: 
   var f = function () {var s = d.getElementsByTagName("script")[0]; s.parentNode.insertBefore(ts, s);};
   if (w.opera == "[object Opera]") { d.addEventListener("DOMContentLoaded", f, false); } else { f(); }
 })(document, window, "topmailru-code");
-</script>
+</script>-->
 <!-- //Rating@Mail.ru counter -->
 
 
@@ -197,8 +200,9 @@ _tmr.push({id: "3100320", type: "pageView", start: (new Date()).getTime(), pid: 
              </div>
     </div>
          </div>
+        <!-- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
         <!-- Yandex.Metrika counter -->
-        <script type="text/javascript" >
+        <!--<script type="text/javascript" >
             (function (d, w, c) {
                 (w[c] = w[c] || []).push(function() {
                     try {
@@ -223,7 +227,7 @@ _tmr.push({id: "3100320", type: "pageView", start: (new Date()).getTime(), pid: 
                 } else { f(); }
             })(document, window, "yandex_metrika_callbacks2");
         </script>
-        <noscript><div><img src="https://mc.yandex.ru/watch/50011537" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+        <noscript><div><img src="https://mc.yandex.ru/watch/50011537" style="position:absolute; left:-9999px;" alt="" /></div></noscript>-->
         <!-- /Yandex.Metrika counter -->
          </div> <!--comment-->
 <div class="grid-element extra closed">

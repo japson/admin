@@ -22,7 +22,9 @@ if(isset($_COOKIE['auth_key'])  and $arc[0]['atribut']==1)	{
 			//debug_to_console($_POST['data']);
 			$windrecord->nameImgTbl();
 			$windrecord->createEditableFields($tablic,$record, $tbl_select);
-			$windrecord->createButton(array('Сохранить'=>'saveRecord','Удалить'=>'delRecord'));
+			$mass_actions=array('Сохранить'=>'saveRecord','Удалить'=>'delRecord');
+			if ($tablic=='punkt') {$mass_actions['Ссылка']='linkRecord';}
+			$windrecord->createButton($mass_actions);
 			$buttons=$windrecord->buttSortReturn();
 			
 			//debug_to_console($windrecord->tbl_img);

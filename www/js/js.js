@@ -102,7 +102,7 @@ $(document).on("click", ".pen_list.list", function(event){
 
             goLinkRasd(men,newhref,'#'+pageyak[1] || 1);
 
-        console.log(newhref);
+      //  console.log(newhref);
         goActPage.init();goActPage.goPage(1,'#'+pageyak[1] || 1);
 
 });
@@ -163,14 +163,15 @@ function goLinkArt(men,newhref){
 
 function makerMenu(mass,id,men,callback,newhref,yakor){
     var data3={key:mass[0],tbl:mass[1],km:mass[2],kr:mass[3],what:mass[4],href:newhref};
-
+    var path=window.location;
+    let urlold=document.querySelector('meta[property="og:url"]').getAttribute('content');
    // console.log (data3);
     $.ajax({
         type: "POST",   url: "/mod/hormenu.php",   data: data3,
         success: function(dat){
-        //  console.log( "Прибыли данные: " + dat  ); //+ data
+          //console.log( "Прибыли данные: " + dat  ); //+ data
             var data= JSON.parse(dat);
-
+         //   console.log('**'+mass[4]);
           //  console.log('**'+data[1][0]);
             if(mass[4]=='hm' || mass[4]=='hmr') $('#'+id).html(data[0]);
             if(mass[4]=='hm') $('#mainpages').html(data[1][0]).attr('name',men);
@@ -179,11 +180,13 @@ function makerMenu(mass,id,men,callback,newhref,yakor){
             if(mass[4]=='oa') {$('#mainpages').html(data[1][0]).attr('name',men); goArticle(data[2],data[3],data[4]);$('.penculinside').removeClass('hidden');}
 
             if(yakor){myYakor(yakor);}
-           // console.log(mass[4]); console.log(data[1][1]);
+           // console.log(mass[4]);
+           // console.log(data[1][1]);
            if(mass[4]!='hmr') meta(data[1][1]);
             socialButton();
             callback();
             loadComment(1);
+             madeYandex(urlold,path);
             return true;
           //  console.log(curState.getall());
             //history.pushState(curState.getall(), 'namepage', newhref);
@@ -208,6 +211,25 @@ function makerMenu(mass,id,men,callback,newhref,yakor){
     }
 
    // console.log(curState.getall());
+}
+function madeYandex(urlold,path){
+    //console.log(newhref); 50011537
+    var shablon='crazys/photo';
+    //var shablon='https://japson.ru/catalog/imgnews/';
+    var fullUrl=path.toString();
+    let nofoto=fullUrl.indexOf(shablon)+1*1;
+    let zag=document.querySelector('meta[property="og:title"]').getAttribute('content');
+    //let url=document.querySelector('meta[property="og:url"]').getAttribute('content');
+   // console.log(urlold +' '+zag+' '+path+ ' '+ location.hostname);
+  //  if(location.hostname=='japson.ru' && parseInt(nofoto) ){
+		if(location.hostname=='japson.ru'){
+        ym(50011537, 'hit', fullUrl, {title: zag, referer: urlold});
+	 ga('send', {   hitType: 'pageview',   page: location.pathname });
+
+        console.log(fullUrl);
+    }
+
+
 }
 function goArticle(prev,next,list){
     $('.pen_list.nasad').attr('name',prev[0]).attr('dathref',prev[1]).attr('redir',prev[2]);

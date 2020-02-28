@@ -314,7 +314,31 @@ function delPosition(attr) {
 
 }
 
+function linkRecord(event){
+    let elem=event.target||event.srcElement;
+    let tbl=$(elem).closest('table').attr('id');
+    let tr=$(elem).closest('tr').attr('id');
+    let temp="<div class='row'><div class='form-group gogle' id='"+tr+"'> <label class='control-label col-xs-4' for='name'>Введите ссылку: </label><div class='col-xs-7'><input type='text' class='form-control' id='foka' class='editpolesong' value=''></div></div>" ;
+    temp+="<div class='form-group ' ><label class='control-label col-xs-5' for='name'>Google ссылка:</label><input id='googlelink' class='col-xs-offset-3 col-xs-5' type='checkbox' checked value=''>  </div></div>";
+let ar=Array(tbl,tr);
+   temp+='<div class="row"><div id="mybut2" class="col-sm-3 col-sm-offset-3"><button class="btn btn-success" onclick="{insertLinkField('+ar.toString()+')}">OK</button></div>';
+    temp+='<div class="col-sm-3"><button class="btn btn-warning" onclick="{delOverley();}">Отмена</button></div></div>';
+    myConfirm(temp, 'foka');
 
+}
+function insertLinkField(elem,where){
+	let gog=document.getElementById('googlelink');
+	if(gog.checked)
+	{ let kod=$('#foka').val(); //kod='https://drive.google.com/open?id=1OTyQ4pnT1cYD5AHMwShfaVpTbN29Us0w';
+	let idkod=kod.indexOf('id=');
+	let newval='https://drive.google.com/uc?export=download&confirm=no_antivirus&'+kod.substr(idkod);
+	let tmp=$(where).children('td[name="put"]').find('input').val(newval);
+        delOverley();
+        //$(where).scroll();
+        where.scrollIntoView();
+	//console.log(where);
+	}
+}
 
 // сортировка ----------------------------------
 $(document).on("click", "i[name=sortarrowup]", function(event){ var elem=event.target||event.srcElement; sorty(elem,1);});
@@ -1115,11 +1139,11 @@ function changePassFinal(tbl,tr) {
     delOverley();
 }
 // ---download and upload elements------------
-function downloadElem(){ let perem='<div>Загрузить данные по элементам?</div>';
+function downloadElem(){ let perem='<div> Выгрузить данные по элементам?</div>';
     perem+='<div class="col-sm-3 col-sm-offset-3"><button class="btn btn-success" onclick="makeElem(0);">OK</button></div>';
     perem+='<div class="col-sm-3"><button class="btn btn-warning" onclick="{delOverley();}">Отмена</button></div>';
  myConfirm(perem, '');}
-function uploadElem(){let perem='<div>Выгрузить данные по элементам?</div>';
+function uploadElem(){let perem='<div>Загрузить данные по элементам?</div>';
     perem+='<div class="col-sm-3 col-sm-offset-3"><button class="btn btn-success" onclick="makeElem(1);">OK</button></div>';
     perem+='<div class="col-sm-3"><button class="btn btn-warning" onclick="{delOverley();}">Отмена</button></div>';
     myConfirm(perem, '');}

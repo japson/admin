@@ -61,7 +61,8 @@ class setGetFile extends InitTable{
          //   $sql = 'INSERT INTO ' . $this->nametabl() . ' (' . implode(',', $this->keys) . $dopfields.') VALUES (' . implode(',', $row) .$dopznach. ')';
             $znach=Array();
             foreach($row as $value){
-                $znach[]=htmlspecialchars($value);
+                $znach[]=($value);
+                // $znach[]=htmlspecialchars($value);
             }
             foreach($dopkeys as $value){
                 $znach[]=($value);

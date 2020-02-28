@@ -16,6 +16,7 @@ class createMenu{
     public $masspencil=array();
     public $kodarticle;
     public $prevart; public $nextart; public $listart;
+    public $predelstr=3;
 
     public function __construct($nmtbl,$dbh) {
         // $this->sql ="SELECT * FROM ".$nametabl."";
@@ -280,6 +281,7 @@ class createMenu{
                 '<div class="txt_block_str righter">'.($i+1).' из '.count($pieces).'</div></div>';
         }
        // $book='<div id="mainpages" class="mainpages" name="'.'">'.$book.'</div>';
+
         $this->makeOpenGraph($sms);
         return array($book,$this->opengraph);
     }
@@ -331,14 +333,46 @@ class createMenu{
         return array($book,$this->opengraph);
     }
 
-    private function makeStr($nomer, $all){
-        $temp = '';
+    private function makeStrOld($nomer, $all){
+        $temp = ''; //debug_to_console(($all));
         for($i=0;$i<$all;$i++){
             if($i==$nomer){$temp.='<span id="page_'.$i.'" class="nompagecurrent">'. ($i+1) .'</span>';}
             else{$temp.='<span id="page_go_'.$i.'" class="nompagelink">'.($i+1).'</span>';}
         }
         return $temp;
     }
+    private function makeStr($nomer, $all){
+        $min=1; $max=$all; $predel=$this->predelstr; $massind=array();
+        $nomer=$nomer+1;
+        $LT = $nomer - $predel * 2; $RT = $nomer + $predel * 2;
+        if ($LT<0) { $LT=$min; $RT=$predel*2;}
+        else{$LT=$nomer-($predel/2);
+            if($RT<=($max+1)){$RT=$nomer+($predel/2);}
+        }
+        if($RT>($max-1)){$RT=$max; $LT=$max-$predel*2+1;}
+        $str = "";
+        for($j=$min;$j<=$max;$j++){
+            switch ($j){
+                case $min: $str.=$this->makeStrSelect($j,$nomer); break;
+                case $max: $str.=$this->makeStrSelect($j,$nomer); $massind[]=$str; break;
+                case ($nomer): $str.=$this->makeStrSelect($j,$nomer); break;
+                default: {
+                    if ($j >= $LT && $j <= $RT) { $str .= $this->makeStrSelect($j, $nomer); }
+                    if ($j < $LT || $j > $RT) { $massind[] = $str; $str = ""; }
+                }
+            }
+        }
+        foreach ($massind as $key => $value) { if(strlen($value)==0) { unset($massind[$key]); }}
+        $str=implode('...',$massind);
+        return $str;
+    }
+    private function makeStrSelect($i,$nomer){
+        $temp = '';
+        if($i==$nomer){$temp.='<span id="page_'.($i-1).'" class="nompagecurrent">'. ($i) .'</span>';}
+        else{$temp.='<span id="page_go_'.($i-1).'" class="nompagelink">'.($i).'</span>';}
+        return $temp;
+    }
+
     private function redirect($mass,$vybor){
         $dbl=$this->db; $tbl='news'; $where=' WHERE kod=? ';$pole='description';
         $sql = "SELECT * FROM ".$tbl." ".$where."  ORDER by sort";

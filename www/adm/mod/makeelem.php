@@ -22,7 +22,7 @@ if(isset($_COOKIE['auth_key'])  and $arc[0]['atribut']==1)	{
         $file= new setGetFile($tablic,$db);
         $prefix = '../../';
         $name = $prefix . 'catalog/punkts/punkts.txt';
-        if($direct==0) {
+        if($direct==0) { //Выгрузить
             $where = ' WHERE kodmenu=' . $kodmenu . ' AND kodrasdel=' . $kodrasdel . " ORDER BY  sort";
             $field = Array('artist', 'title', 'put', 'length', 'side', 'sort');
             $json = $file->sendAllData($field, $where);

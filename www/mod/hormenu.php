@@ -7,7 +7,7 @@ $what=$_POST['what'];
 $href=$_POST['href'];
 $findme    = 'http:';
 $pos2 = stripos($href, $findme);
-if($pos2=== false) $href='http://'.$_SERVER['SERVER_NAME'].$href;
+//if($pos2=== false) $href='http://'.$_SERVER['SERVER_NAME'].$href;
 $kod=$_POST['key']; $tbl=$_POST['tbl']; $kodmenu=$_POST['km']; $kodrasdel=$_POST['kr'];
 $itogname=$kod.'_'.$kodmenu.'_'.$kodrasdel;
 include('class/createmenu.php');
@@ -26,8 +26,10 @@ include('class/makemenu.php');
         $menu->opengraph['url']=$href;
         $massart=$menu->currentArticle('news',$where,$itogname);
        // debug_to_console($menu->opengraph);
+       // debug_to_console($massart[1]);
         if(strlen($massart[0])) {
         $massart[1]=$menu->checkOpenGraph($massart[1]);}
+
         echo json_encode(array($menuhoriz,$massart));
     }
 
